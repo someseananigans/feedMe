@@ -27,7 +27,7 @@ passport.use(new JwtStrategy({
   .then(user => cb(null, user))
   .catch(err => cb(err))))
 
-app.use(require('./routes'))
+app.use(require('./controllers'))
 
 app.get('*', (req, res) => {
   res.sendFile(join(__dirname, 'client', 'build', 'index.html'))
