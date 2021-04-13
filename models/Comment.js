@@ -1,6 +1,6 @@
 const { model, Schema } = require('mongoose')
 
-const Comments = new Schema({
+const Comment = new Schema({
   comment: String,
   user: {
     type: Schema.Types.ObjectId,
@@ -8,4 +8,4 @@ const Comments = new Schema({
   }
 })
 
-module.exports = model('Comments', Comments)
+module.exports = model('Comment', Comment)
