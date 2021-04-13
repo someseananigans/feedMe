@@ -6,6 +6,7 @@ const passport = require('passport')
 router.get('/posts', (req, res) => {
   Post.find({})
     .populate('comments')
+    // .populate('user')
     .then(posts => res.json(posts))
     .catch(err => console.log(err))
 })
@@ -34,14 +35,14 @@ router.post('/post', passport.authenticate('jwt'), (req, res) => {
     .catch(err => console.log(err))
 })
 
-router.put('/post/:_id', passport.authenticate('jwt'), (req, res) => {
-  Post.findByIdAndUpdate(req.params._id, req.body)
+router.put('/post/:post_id', passport.authenticate('jwt'), (req, res) => {
+  Post.findByIdAndUpdate(req.params.post_id, req.body)
     .then(() => res.sendStatus(200))
     .catch(err => console.log(err))
 })
 
-router.delete('/post:_id', passport.authenticate('jwt') , (req, res) => {
-  Post.findByIdAndDelete(req.params._id)
+router.delete('/post/:post_id', passport.authenticate('jwt'), (req, res) => {
+  Post.findByIdAndRemove(req.params.post_id)
     .then(() => res.sendStatus(200))
     .catch(err => console.log(err))
 })

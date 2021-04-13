@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
 router.get('/users', (req, res) => {
-  User.find()
+  User.find({})
   .then(users => res.json(users))
   .catch(err => console.log(err))
 })

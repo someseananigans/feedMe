@@ -1,35 +1,43 @@
 const router = require('express').Router()
-const { Comment , Post } = require('../models')
+const { Comment, Post } = require('../models')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
 router.get('/comments', (req, res) => {
   Comment.find({})
-    .then(posts => res.json(posts))
+    // .populate('author')
+    .then(comments => res.json(comments))
     .catch(err => console.log(err))
 })
 
-router.post('/comment', passport.authenticate('jwt'), (req, res) => {
+router.get('/comments/:post_id', (req, res) => {
+  Comment.find({ post: req.params.post_id })
+    .then(comments => res.json(comments))
+    .catch(err => console.log(err))
+})
+
+router.post('/comment/:post_id', passport.authenticate('jwt'), (req, res) => {
   Comment.create({
     comment: req.body.comment,
+    post: req.params.post_id,
     user: req.user._id
   })
     .then(comment => {
-      Post.findByIdAndUpdate(req.user._id, { $push: { comments: comment._id } })
+      Post.findByIdAndUpdate(req.params.post_id, { $push: { comments: comment._id } })
         .then(() => res.json(comment))
         .catch(err => console.log(err))
     })
     .catch(err => console.log(err))
 })
 
-router.put('/comment/:_id', passport.authenticate('jwt'), (req, res) => {
-  Post.findByIdAndUpdate(req.params._id, req.body)
+router.put('/comment/:comment_id', passport.authenticate('jwt'), (req, res) => {
+  Comment.findByIdAndUpdate(req.params.comment_id, req.body)
     .then(() => res.sendStatus(200))
     .catch(err => console.log(err))
 })
 
 router.delete('/comment/:_id', passport.authenticate('jwt'), (req, res) => {
-  Post.findByIdAndDelete(req.params._id)
+  Comment.findByIdAndDelete(req.params._id)
     .then(() => res.sendStatus(200))
     .catch(err => console.log(err))
 })
