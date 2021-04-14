@@ -1,13 +1,14 @@
 import { React, useState, useEffect } from 'react'
 // import { Post } from '../../utils/Post.js'
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Card, CardHeader, CardMedia, CardContent, CardActions, IconButton,
+import { Card, CardHeader, CardMedia, 
+  CardContent, CardActions, IconButton, Button, TextField,
   Avatar, Typography }from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline'; 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import InsertEmoticon from '@material-ui/icons/InsertEmoticonIcon'
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -55,15 +56,14 @@ const Posts = () => {
           <Card className={classes.root} key={post._id}>
             <CardHeader
               avatar={
-                <Avatar aria-label={post.user.username} className={classes.avatar}>
-                  R
+                <Avatar aria-label="userAvatar" className={classes.avatar}>
                 </Avatar>
-                }
+              }
               action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
                 </IconButton>
-                }
+              }
               title={post.user.username}
             />
             <CardMedia
@@ -71,21 +71,33 @@ const Posts = () => {
               image={post.image}
             />
             <CardContent>
+              <CardActions disableSpacing>
+                <IconButton aria-label="like">
+                  <FavoriteIcon />
+                </IconButton>
+                <IconButton aria-label="comment">
+                  <ChatIcon />
+                </IconButton>
+              </CardActions>
+
               <Typography variant="body2" color="textSecondary" component="p">
-                {post.body}
+                {post.user.username}{post.caption}
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
                 {post.comments}
               </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-              <IconButton aria-label="like">
-                <FavoriteIcon />
-              </IconButton>
+            <CardContent>
               <IconButton aria-label="comment">
-                <ChatIcon />
+                <InsertEmoticon />
               </IconButton>
-            </CardActions>
+              <TextField
+                id="standard-input"
+                label="Add a comment..."
+                type="comment"
+              />
+              <Button>Post</Button>
+            </CardContent>
           </Card>
         ))
        : null

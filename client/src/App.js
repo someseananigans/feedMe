@@ -1,27 +1,27 @@
 import {
   BrowserRouter as Router,
-  Route,
   Switch,
-  Link
+  Route
 } from 'react-router-dom'
 import Home from './pages/Home'
+import Profile from './pages/Profile'
 import Login from './pages/Login'
 
 
+
+
 function App() {
-  return (<>
+  return (
     <Router>
-      <Switch>
-        <Route exact path='/'>
-          <Home />
-        </Route>
-        <Route exact path='/login'>
-          <Login />
-        </Route>
-      </Switch>
+      <div>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route path='/profile' exact component={Profile} />
+          <Route path='/auth' exact component={Login} />
+        </Switch>
+      </div>
     </Router>
-    
-  </>)
+  )
 }
 
 export default App;
