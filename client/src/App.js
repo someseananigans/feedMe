@@ -1,10 +1,10 @@
 
-import Post from './components/posts/Post.js'
+import Suggested from './components/suggested/Suggested.js'
 
 
 function App() {
   return (
-<Post />
+<Suggested />
   )
 }
 
