@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Card, CardHeader, CardMedia,
   CardContent, CardActions, IconButton, Button, TextField,
-  Avatar, Typography
+  Avatar, Typography, Box
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500],
-  },
+  }
 }));
 
 const Posts = () => {
@@ -35,8 +35,8 @@ const Posts = () => {
     posts: []
   })
 
-  useEffect(() => {
-    Post.getAll()
+  useEffect(async() => {
+    await Post.getAll()
       .then(({ data: grams }) => {
         setPostState({ ...postState, posts: grams })
       })
@@ -47,8 +47,7 @@ const Posts = () => {
   }, [])
 
   return (
-    <>
-      <h3>test</h3>
+    <Box xs={12} xl={12} lg={12} md={12} >
       {
         postState.posts.length
           ? postState.posts.map(post => (
@@ -102,7 +101,7 @@ const Posts = () => {
           ))
           : null
       }
-    </>
+    </Box>
   )
 
 }
