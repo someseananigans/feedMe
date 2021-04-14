@@ -7,7 +7,7 @@ import useStyles from './styles'
 import Input from './Input'
 
 
-const initialState = { firstName: '', lastName: '', email: '', password: '', repeatPassword: '' }
+const initialState = { username: '', email: '', password: '', repeatPassword: '' }
 
 const Auth = () => {
   const classes = useStyles()
@@ -17,7 +17,10 @@ const Auth = () => {
   const [formData, setFormData] = useState(initialState)
 
   const [loginState, setLoginState] = useState({
+    firstName: '',
+    lastName: '',
     name: '',
+    username: '',
     email: '',
     password: '',
     repeatPassword: ''
@@ -28,26 +31,23 @@ const Auth = () => {
     setLoginState({ ...loginState, [target.name]: target.value })
   }
 
-  const handleRegister = event => {
-    event.preventDefault()
+  const handleRegister = () => {
     User.register({
       name: `${loginState.firstName} ${loginState.lastName}`,
+      username: loginState.email,
       email: loginState.email,
       password: loginState.password,
-      repeatPassword: loginState.repeatPassword
     })
-
       .then(() => {
         alert('User registered!')
-        setLoginState({ ...loginState, name: '', email: '', password: '', repeatPassword: '' })
+        setLoginState({ ...loginState, firstName: '', lastname: '', username: '', email: '', password: '', repeatPassword: '' })
       })
       .catch(err => console.log(err))
   }
 
-  const handleLogin = (event) => {
-    event.preventDefault()
+  const handleLogin = () => {
     User.login({
-      email: loginState.email,
+      username: loginState.email,
       password: loginState.password
     })
       .then(({ data }) => {
@@ -55,8 +55,13 @@ const Auth = () => {
         window.location = '/'
       })
       .catch(err => console.log(err))
-
   }
+  
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    isSignup ? handleRegister() : handleLogin()
+  }
+
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup)
     handleShowPassword(false)
@@ -64,9 +69,6 @@ const Auth = () => {
 
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
 
-  const handleSubmit = () => {
-
-  }
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value })
@@ -91,7 +93,7 @@ const Auth = () => {
             <Input name="password" label="Password" handleChange={handleInputChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
             {isSignup && <Input name="confirmPassword" label="Repeat Password" handleChange={handleInputChange} type="password" />}
           </Grid>
-          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+          <Button type="submit" onClick={handleSubmit} fullWidth variant="contained" color="primary" className={classes.submit}>
             {isSignup ? 'Sign Up' : "Sign In"}
           </Button>
           <Grid container justify="flex-end">

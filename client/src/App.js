@@ -1,35 +1,26 @@
 import {
   BrowserRouter as Router,
-  Route,
-  Switch
+  Switch,
+  Route
 } from 'react-router-dom'
-import { Home, Login, Profile } from './pages'
-import { Navbar } from './components/index'
+import Home from './pages/Home'
+import Profile from './pages/Profile'
+import Login from './pages/Login'
 
-import Post from './components/posts/Post.js'
+
 
 
 function App() {
   return (
-    <>
     <Router>
       <div>
-        <Navbar />
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/profile">
-          <Profile />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-      </Switch>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route path='/profile' exact component={Profile} />
+          <Route path='/auth' exact component={Login} />
+        </Switch>
       </div>
     </Router>
-      <Post />
-</>
   )
 }
 

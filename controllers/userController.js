@@ -3,6 +3,7 @@ const { User } = require('../models')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
+// only for testing purposes
 router.get('/users', (req, res) => {
   User.find({})
   .then(users => res.json(users))
