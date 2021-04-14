@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import Post from '../utils/Post'
 
 
 const useStyles = makeStyles({
@@ -25,9 +26,7 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
-  // uploadBtn: {
-  //   border: 
-  // }
+ 
 })
 
 const useStyles1 = makeStyles((theme) => ({
@@ -39,21 +38,33 @@ const useStyles1 = makeStyles((theme) => ({
   },
 }));
 
-
-
 const CreatePost = () => {
+
   const classes = useStyles()
   const classes1 = useStyles1()
-  // const handleCreatePost = () => {
-  //   const [postState, setPostState] = useState({
-  //     title: '',
-  //     body: '',
-  //     posts: []
-  //   })
-  // }
-  // const handleInputChange = ({ target }) => {
-  //   setPostState({ ...postState, [target.name]: target.value })
-  // }
+  const [postState, setPostState] = useState({
+    body: '',
+    image: '',
+    posts: []
+  })
+  const handleInputChange = ({ target }) => {
+    setPostState({ ...postState, [target.name]: target.value })
+  }
+  const handleCreatePost = event => {
+   event.preventDefault()
+   Post.create({
+     body: postState.body,
+     image: postState.image,
+   })
+     .then(({ data: post }) => {
+       console.log(post)
+       const posts = [...postState.posts]
+       posts.push(post)
+       setPostState({ ...postState, posts, body: '', image: '' })
+     })
+     .catch(err => console.error(err))
+  }
+  
 
   return (
       <>
@@ -72,7 +83,7 @@ const CreatePost = () => {
           <form className={classes.root1} noValidate autoComplete="off"></form>
           <TextField id="standard-basic" label="Caption" />
           <br/>
-          <Button variant="contained">Post</Button>
+          <Button variant="contained" onClick={handleCreatePost}>Post</Button>
         </CardContent>
       </Card>
 
