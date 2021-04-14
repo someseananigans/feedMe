@@ -1,13 +1,9 @@
-import React from 'react'
+import { React, useState, useEffect } from 'react'
+// import { Post } from '../../utils/Post.js'
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import {
+  Card, CardHeader, CardMedia, CardContent, CardActions, IconButton,
+  Avatar, Typography }from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline'; 
@@ -28,50 +24,75 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Post = () => {
+const Posts = () => {
+
   const classes = useStyles()
+  const [postState, setPostState] = useState({
+    body: '',
+    image: '',
+    comments: '',
+    posts: []
+  })
+
+  // useEffect(() => {
+  //   Post.getAll()
+  //     .then(({ data: posts }) => {
+  //       console.log(posts)
+  //       setPostState({ ...postState, posts })
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //       window.location = '/login'
+  //     })
+  // }, [])
 
   return (
     <>
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="This will be the username"
-      />
-      <CardMedia
-        className={classes.media}
-        image="/static/images/cards/paella.jpg"
-        title="Paella dish"
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          This is where the description would be
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="like">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="comment">
-          <ChatIcon />
-        </IconButton>
-        
-      </CardActions>
-      
-    </Card>
-  
-  </>
+
+      {
+        postState.posts.length
+        ? postState.posts.map(post => (
+          <Card className={classes.root} key={post._id}>
+            <CardHeader
+              avatar={
+                <Avatar aria-label={post.user.username} className={classes.avatar}>
+                  R
+                </Avatar>
+                }
+              action={
+                <IconButton aria-label="settings">
+                  <MoreVertIcon />
+                </IconButton>
+                }
+              title={post.user.username}
+            />
+            <CardMedia
+              className={classes.media}
+              image={post.image}
+            />
+            <CardContent>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {post.body}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {post.comments}
+              </Typography>
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton aria-label="like">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton aria-label="comment">
+                <ChatIcon />
+              </IconButton>
+            </CardActions>
+          </Card>
+        ))
+       : null
+      }
+    </>
   )
 
 }
 
-export default Post
+export default Posts
