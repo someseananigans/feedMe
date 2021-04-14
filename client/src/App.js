@@ -6,9 +6,12 @@ import {
 import { Home, Login, Profile } from './pages'
 import { Navbar } from './components/index'
 
+import Post from './components/posts/Post.js'
+
 
 function App() {
   return (
+    <>
     <Router>
       <div>
         <Navbar />
@@ -25,6 +28,8 @@ function App() {
       </Switch>
       </div>
     </Router>
+      <Post />
+</>
   )
 }
 
