@@ -25,10 +25,13 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
+  // uploadBtn: {
+  //   border: 
+  // }
 })
 
 const useStyles1 = makeStyles((theme) => ({
-  root: {
+  root1: {
     '& > *': {
       margin: theme.spacing(1),
       width: '25ch',
@@ -36,30 +39,35 @@ const useStyles1 = makeStyles((theme) => ({
   },
 }));
 
-// const handleCreatePost = () => {
 
-// }
 
 const CreatePost = () => {
   const classes = useStyles()
   const classes1 = useStyles1()
+  // const handleCreatePost = () => {
+  //   const [postState, setPostState] = useState({
+  //     title: '',
+  //     body: '',
+  //     posts: []
+  //   })
+  // }
+  // const handleInputChange = ({ target }) => {
+  //   setPostState({ ...postState, [target.name]: target.value })
+  // }
 
   return (
       <>
       <Card className={classes.root} variant="outlined">
         <CardContent>
+          <h1>Create A Post</h1>
           <input
             accept="image/*"
             className={classes.input}
-            style={{ display: 'none' }}
             id="raised-button-file"
             multiple
             type="file"
           />
           <label htmlFor="raised-button-file">
-            <Button variant="raised" component="span" className={classes.button}>
-              Upload
-        </Button>
           </label>
           <form className={classes.root1} noValidate autoComplete="off"></form>
           <TextField id="standard-basic" label="Caption" />
