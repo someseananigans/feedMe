@@ -6,6 +6,7 @@ const passport = require('passport')
 router.get('/posts', (req, res) => {
   Post.find({})
     .populate('comments')
+    .populate('user')
     // .populate('user')
     .then(posts => res.json(posts))
     .catch(err => console.log(err))

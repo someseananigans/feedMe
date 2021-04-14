@@ -3,11 +3,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import Home from './pages/Home'
-import Profile from './pages/Profile'
-import Login from './pages/Login'
-
-
+import {Home, Profile, Login} from './pages'
 
 
 function App() {

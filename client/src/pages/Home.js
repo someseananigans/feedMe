@@ -1,7 +1,9 @@
+import {Navbar} from '../components'
+import { Post } from '../components'
 const Home = () => {
   return (
     <>
-    <h3>Home</h3>
+    <Post />
     </>
 
   )
