@@ -1,7 +1,15 @@
+import { CreatePost } from '../components/index'
+import Navbar from '../components/Navbar'
+
 const Profile = () => {
   return (
-    <> 
-    <h3>profile</h3>
+    <>
+    <Navbar />
+      <h1>Profile Page</h1>
+    <CreatePost />
+
+    
+   
 
 
     </>

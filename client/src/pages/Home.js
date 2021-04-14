@@ -4,6 +4,8 @@ const Home = () => {
   return (
     <>
     <Post />
+    <Navbar />
+    <h3>Home</h3>
     </>
 
   )
