@@ -1,11 +1,18 @@
-import {Navbar} from '../components'
+import { Navbar } from '../components'
 import { Post } from '../components'
+import { Box } from '@material-ui/core'
+
 const Home = () => {
   return (
     <>
-    <Post />
-    <Navbar />
-    <h3>Home</h3>
+      <Navbar />
+      <Box display="flex" alignItems="center" flexDirection="column">
+
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+      </Box>
     </>
 
   )
