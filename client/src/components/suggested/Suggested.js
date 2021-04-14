@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { Avatar, CardHeader, Typography, IconButton } from '@material-ui/core';
@@ -19,12 +20,16 @@ const useStyles = makeStyles((theme) => ({
   follow: {
     fontSize: 13,
     color: 'blue',
-    textAlign: 'bottom'
   },
 }));
 
 const Suggested = () => {
   const classes = useStyles();
+
+  const [suggState, setSuggState] = useState({
+    username: '',
+    image: '',
+  })
 
   return (
     <div className={classes.root}>
