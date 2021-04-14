@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
-import Auth from './pages/Auth'
+import Login from './pages/Login'
 
 
 
@@ -17,7 +17,7 @@ function App() {
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/profile' exact component={Profile} />
-          <Route path='/auth' exact component={Auth} />
+          <Route path='/auth' exact component={Login} />
         </Switch>
       </div>
     </Router>
