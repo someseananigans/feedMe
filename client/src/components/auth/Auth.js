@@ -45,8 +45,8 @@ const Auth = () => {
       .catch(err => console.log(err))
   }
 
-  const handleLogin = () => {
-    User.login({
+  const handleLogin = async () => {
+    await User.login({
       username: loginState.email,
       password: loginState.password
     })
