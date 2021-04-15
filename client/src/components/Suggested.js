@@ -40,13 +40,13 @@ const Suggested = () => {
       .then(({ data: users }) => {
         setUserState({ ...userState, users })
       })
-  }, [])
-
+      
     User.profile()
       .then(({ data: user }) => {
         setCurrentUserState({ ...currentUserState, user})
       })
-  
+  }, [])
+      
   return (
     <div className={classes.root}>
       <Paper>
