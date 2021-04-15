@@ -1,4 +1,4 @@
-import { Navbar, Post } from '../components'
+import { Navbar, Post, Suggested } from '../components'
 import { Box } from '@material-ui/core'
 
 const Home = () => {
@@ -9,6 +9,7 @@ const Home = () => {
 
         <Post location="home"/>
       </Box>
+        <Suggested />
     </>
 
   )
