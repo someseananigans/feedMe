@@ -1,5 +1,4 @@
-import { Navbar } from '../components'
-import { Post } from '../components'
+import { Navbar, Post } from '../components'
 import { Box } from '@material-ui/core'
 
 const Home = () => {
@@ -8,10 +7,7 @@ const Home = () => {
       <Navbar />
       <Box display="flex" alignItems="center" flexDirection="column">
 
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        <Post location="home"/>
       </Box>
     </>
 
