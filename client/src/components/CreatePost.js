@@ -47,9 +47,13 @@ const CreatePost = () => {
     image: '',
     posts: []
   })
+
   const handleInputChange = ({ target }) => {
     setPostState({ ...postState, [target.name]: target.value })
   }
+
+// firebase integration needed for getting image url and setting img within the state
+
   const handleCreatePost = event => {
    event.preventDefault()
    Post.create({
@@ -64,7 +68,6 @@ const CreatePost = () => {
      })
      .catch(err => console.error(err))
   }
-  
 
   return (
       <>
@@ -77,11 +80,9 @@ const CreatePost = () => {
             id="raised-button-file"
             multiple
             type="file"
-          />
-          <label htmlFor="raised-button-file">
-          </label>
+          /> 
           <form className={classes.root1} noValidate autoComplete="off"></form>
-          <TextField id="standard-basic" label="Caption" />
+          <TextField id="standard-basic" label="Caption" name="body" onChange={handleInputChange}/>
           <br/>
           <Button variant="contained" onClick={handleCreatePost}>Post</Button>
         </CardContent>
