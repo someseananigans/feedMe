@@ -28,22 +28,38 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Posts = () => {
+const Posts = ({location}) => {
 
   const classes = useStyles()
   const [postState, setPostState] = useState({
     posts: []
   })
 
+  
   useEffect(async() => {
-    await Post.getAll()
-      .then(({ data: grams }) => {
-        setPostState({ ...postState, posts: grams })
-      })
-      .catch(err => {
-        console.error(err)
-        window.location = '/auth'
-      })
+    switch (location) {
+      case "home":
+        await Post.getAll()
+          .then(({ data: grams }) => {
+            setPostState({ ...postState, posts: grams })
+          })
+          .catch(err => {
+            console.error(err)
+          })
+        break;
+      case "profile":
+        await Post.getOwned()
+          .then(({ data: grams }) => {
+            setPostState({ ...postState, posts: grams })
+          })
+          .catch(err => {
+            console.error(err)
+          })
+        break;
+  }
+
+
+
   }, [])
 
   return (
