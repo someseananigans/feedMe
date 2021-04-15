@@ -8,7 +8,7 @@ const Post = {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
   }),
-  make: post => axios.post('/api/post', post, {
+  create: post => axios.post('/api/post', post, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
