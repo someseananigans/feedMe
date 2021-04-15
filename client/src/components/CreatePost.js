@@ -9,6 +9,12 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Post from '../utils/Post'
 
+import { storage } from '../utils/firebase'
+import Fab from "@material-ui/core/Fab";
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
+
+
+
 
 const useStyles = makeStyles({
   root: {
@@ -26,22 +32,19 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
- 
-})
-
-const useStyles1 = makeStyles((theme) => ({
-  root1: {
-    '& > *': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
+  flexColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
-}));
+  input: {
+    display: 'none'
+  }
+})
 
 const CreatePost = () => {
 
   const classes = useStyles()
-  const classes1 = useStyles1()
   const [postState, setPostState] = useState({
     body: '',
     image: '',
@@ -52,45 +55,78 @@ const CreatePost = () => {
     setPostState({ ...postState, [target.name]: target.value })
   }
 
-// firebase integration needed for getting image url and setting img within the state
+  // firebase integration needed for getting image url and setting img within the state
 
   const handleCreatePost = event => {
-   event.preventDefault()
-   Post.create({
-     body: postState.body,
-     image: postState.image,
-   })
-     .then(({ data: post }) => {
-       console.log(post)
-       const posts = [...postState.posts]
-       posts.push(post)
-       setPostState({ ...postState, posts, body: '', image: '' })
-     })
-     .catch(err => console.error(err))
+    event.preventDefault()
+    Post.create({
+      body: postState.body,
+      image: postState.image,
+    })
+      .then(({ data: post }) => {
+        console.log(post)
+        const posts = [...postState.posts]
+        posts.push(post)
+        setPostState({ ...postState, posts, body: '', image: '' })
+      })
+      .catch(err => console.error(err))
   }
 
+  // const [image, setImage] = useState(null)
+  const handleFileChange = event => {
+    event.preventDefault()
+    // **** can put conditional on file.size to put a limit on the size of a file
+    const file = event.target.files[0]
+    const imgName = "Gram" + Date.now()
+    // imgName is the image ref inside the storage ref and you are putting the image file grabbed from the "image" state
+    const uploadTask = storage.ref(`images/${imgName}`).put(file)
+    uploadTask.on(
+      "state_changed",
+      snapshot => { },
+      err => { console.log(err) },
+      () => {
+        storage
+          .ref("images")
+          .child(imgName)
+          .getDownloadURL()
+          .then(firebaseUrl => {
+            setPostState({ ...postState, image: firebaseUrl })
+          })
+      }
+    )
+    console.log(file)
+  }
+
+
   return (
-      <>
+    <>
       <Card className={classes.root} variant="outlined">
         <CardContent>
+          <form className={classes.flexColumn} noValidate autoComplete="off">
           <h1>Create A Post</h1>
-          <input
-            accept="image/*"
-            className={classes.input}
-            id="raised-button-file"
-            multiple
-            type="file"
-          /> 
-          <form className={classes.root1} noValidate autoComplete="off"></form>
-          <TextField id="standard-basic" label="Caption" name="body" onChange={handleInputChange}/>
-          <br/>
-          <Button variant="contained" onClick={handleCreatePost}>Post</Button>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={handleFileChange}
+            />
+            <label htmlFor="contained-button-file">
+              <Fab component="span" className={classes.button}>
+                <AddPhotoAlternateIcon />
+              </Fab>
+            </label>
+            <TextField label="Write a Caption" name="body" onChange={handleInputChange} />
+            <br />
+            <Button variant="contained" onClick={handleCreatePost}>Publish</Button>
+          </form>
         </CardContent>
       </Card>
 
-      </>
+    </>
 
   )
 }
 
-export default CreatePost 
+export default CreatePost
