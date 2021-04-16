@@ -36,15 +36,26 @@ const Suggested = () => {
 
  
   useEffect(() => {
+
     Users.getUsers()
-      .then(({ data: users }) => {
-        setUserState({ ...userState, users })
+    .then(({ data: users }) => {
+        User.profile()
+          .then(({ data: user }) => { 
+            let filteredUsers = []
+            for (let i = 0; i < users.length; i++) {
+              if (users[i]._id !== user._id) {
+                filteredUsers.push(users[i])
+              }
+              console.log(users[i])
+            }
+            console.log(filteredUsers)
+            setUserState ({ ...userState, users: filteredUsers})
+            setCurrentUserState ({ ...currentUserState, user})
+
+          })
+        
       })
       
-    User.profile()
-      .then(({ data: user }) => {
-        setCurrentUserState({ ...currentUserState, user})
-      })
   }, [])
       
   return (
