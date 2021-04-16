@@ -1,5 +1,6 @@
-import { CreatePost, Post } from '../components/'
+import { CreatePost, Post, ProfileModal, EditProfile } from '../components/'
 import Navbar from '../components/Navbar'
+
 
 const Profile = () => {
   return (
@@ -8,8 +9,9 @@ const Profile = () => {
       <h1>Profile Page</h1>
     <Post location="profile"/>
     <CreatePost />
+    <profileModal />
 
-    
+    <EditProfile></EditProfile>
    
 
 
