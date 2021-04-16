@@ -1,4 +1,4 @@
-import { CreatePost } from '../components/index'
+import { CreatePost, Post } from '../components/'
 import Navbar from '../components/Navbar'
 
 const Profile = () => {
@@ -6,6 +6,7 @@ const Profile = () => {
     <>
     <Navbar />
       <h1>Profile Page</h1>
+    <Post location="profile"/>
     <CreatePost />
 
     

@@ -31,23 +31,22 @@ const Auth = () => {
     setLoginState({ ...loginState, [target.name]: target.value })
   }
 
-  const handleRegister = () => {
+  const handleRegister = (event) => {
     User.register({
       name: `${loginState.firstName} ${loginState.lastName}`,
-      username: loginState.email,
+      username: loginState.username,
       email: loginState.email,
       password: loginState.password,
     })
       .then(() => {
         alert('User registered!')
-        setLoginState({ ...loginState, firstName: '', lastname: '', username: '', email: '', password: '', repeatPassword: '' })
       })
       .catch(err => console.log(err))
   }
 
-  const handleLogin = () => {
-    User.login({
-      username: loginState.email,
+  const handleLogin = async () => {
+    await User.login({
+      username: loginState.username,
       password: loginState.password
     })
       .then(({ data }) => {
@@ -70,10 +69,6 @@ const Auth = () => {
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
 
 
-  const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value })
-  }
-
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
@@ -85,15 +80,16 @@ const Auth = () => {
           <Grid container spacing={2}>
             {isSignup && (
               <>
-                <Input name="firstName" label="First Name" handleChange={handleInputChange} half />
-                <Input name="lastName" label="Last Name" handleChange={handleInputChange} half />
+                <Input name="firstName" label="First Name" value={loginState.firstName}  handleChange={handleInputChange} half />
+                <Input name="lastName" label="Last Name" value={loginState.lastName} handleChange={handleInputChange} half />
+                <Input name="email"  label="Email Address" value={loginState.email} handleChange={handleInputChange} type="email" autocomplete="off" />
               </>
             )}
-            <Input name="email" label="Email Address" handleChange={handleInputChange} type="email" />
-            <Input name="password" label="Password" handleChange={handleInputChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
-            {isSignup && <Input name="confirmPassword" label="Repeat Password" handleChange={handleInputChange} type="password" />}
+            <Input name="username" label="username" value={loginState.username} handleChange={handleInputChange} type="username" autocomplete="off" />
+            <Input name="password" label="Password" value={loginState.password} handleChange={handleInputChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
+            {isSignup && <Input name="confirmPassword" label="Repeat Password" value={loginState.repeatPassword} handleChange={handleInputChange} type="password" />}
           </Grid>
-          <Button type="submit" onClick={handleSubmit} fullWidth variant="contained" color="primary" className={classes.submit}>
+          <Button type="submit" onClick={(event) => handleSubmit(event)} fullWidth variant="contained" color="primary" className={classes.submit}>
             {isSignup ? 'Sign Up' : "Sign In"}
           </Button>
           <Grid container justify="flex-end">

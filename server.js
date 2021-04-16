@@ -29,9 +29,11 @@ passport.use(new JwtStrategy({
 
 app.use(require('./controllers'))
 
-app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, 'client', 'build', 'index.html'))
-})
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(join(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 
 require('./db')
   .then(() => app.listen(process.env.PORT || 3001))

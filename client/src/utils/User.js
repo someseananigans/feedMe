@@ -3,6 +3,7 @@ import axios from 'axios'
 const User = {
   register: (user) => axios.post('/api/user/register', user),
   login: user => axios.post('/api/user/login', user),
+  getUsers: () => axios.get('/api/users'),
   profile: () => axios.get('/api/user', {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`

@@ -2,8 +2,14 @@ const { model, Schema } = require('mongoose')
 
 const User = new Schema({
   name: String,
-  username: String,
-  email: String,
+  username: {
+    type: String,
+    unique: true
+  },
+  email: {
+    type: String,
+    unique: true
+  },
   profile: String,
   posts: [{
     type: Schema.Types.ObjectId,
