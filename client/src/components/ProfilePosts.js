@@ -7,6 +7,7 @@ import './ProfPost.css'
 import { Typography, Modal } from '@material-ui/core';
 
 
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
@@ -21,12 +22,14 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     position: 'absolute',
-    width: 400,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  image: {
+    height: '10%',
+  }
 
 }))
 
@@ -45,6 +48,21 @@ const ProfilePosts = () => {
 
   }, [])
 
+  function rand() {
+    return Math.round(Math.random() * 20) - 10;
+  }
+
+  function getModalStyle() {
+    const top = 50 + rand();
+    const left = 50 + rand();
+
+    return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`,
+    };
+  }
+  const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => {
@@ -55,14 +73,6 @@ const ProfilePosts = () => {
     setOpen(false);
   };
 
-  const body = (
-    <div className={classes.paper}>
-      <h2 id="modalTitle"> </h2>
-      <p id="modalDesc">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-      </p>
-    </div>
-  );
  
     
     return (
@@ -71,16 +81,21 @@ const ProfilePosts = () => {
       <div className={classes.root}>
         <GridList cellHeight={160} className={classes.gridList} cols={5}>
           {postState.posts.length ? postState.posts.map(post => (
-            <GridListTile key={post._id} cols={1} className={classes.image}>
-              <img src={post.image} alt={post.caption} className='image' onClick={handleOpen}/>
+            <GridListTile key={post._id} cols={1} className={classes.image} onClick={handleOpen}>
+              <img src={post.image} alt={post.caption}  />
+              <div>
               <Modal
                 open={open}
                 onClose={handleClose}
-                aria-labelledby={post.body}
-                aria-describedby="modalDesc"
-              >
-                {body}
+                aria-labelledby={post.caption}
+                aria-describedby={post.image}
+                >
+                  <div style={modalStyle} className={classes.paper}>
+
+                    <img src={post.image} alt={post.body} className='image' />
+                  </div>
               </Modal>
+                </div>
               <div className='overlay'>
                 <Typography>
                 {post.body}
