@@ -14,6 +14,8 @@ import Fab from "@material-ui/core/Fab";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import CloseIcon from '@material-ui/icons/Close';
 import { Divider } from '@material-ui/core';
+import { PromiseProvider } from 'mongoose';
+import { PinDropSharp } from '@material-ui/icons';
 
 
 const useStyles = makeStyles({
@@ -56,7 +58,7 @@ const useStyles = makeStyles({
   }
 })
 
-const CreatePost = () => {
+const CreatePost = (props) => {
   const classes = useStyles()
 
   const [display, setDisplay] = useState(false) 
@@ -80,7 +82,9 @@ const CreatePost = () => {
     })
       .then(({ data: post }) => {
         console.log(post)
+        props.handleCloseModal()
         setPostState({ ...postState, body: '', image: '' })
+        window.location = '/profile'
       })
       .catch(err => console.error(err))
   }

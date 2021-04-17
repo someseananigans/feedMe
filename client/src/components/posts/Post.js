@@ -4,13 +4,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Card, CardHeader, CardMedia,
   CardContent, CardActions, IconButton, Button, TextField,
-  Avatar, Typography, Box
+  Avatar, Typography, Box, Grid
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertEmoticon from '@material-ui/icons/InsertEmoticon'
+import DeleteIcon from '@material-ui/icons/Delete';
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+
 const Posts = ({location}) => {
 
   const classes = useStyles()
@@ -35,6 +41,16 @@ const Posts = ({location}) => {
     posts: []
   })
 
+  const handleDeletePost = id => {
+    Post.delete(id)
+    .then(() => {
+      window.location = '/profile'
+      const posts = [postState.posts]
+      setPostState({ ...postState, posts })
+      
+    })
+    .catch(err => console.log(err))
+  }
   
   useEffect(async() => {
     switch (location) {
@@ -59,15 +75,14 @@ const Posts = ({location}) => {
   }
 
 
-
   }, [])
 
   return (
+    
     <Box xs={12} xl={12} lg={12} md={12} >
-      {
+    {
         postState.posts.length
           ? postState.posts.map(post => (
-
             <Card className={classes.root} key={post._id}>
               <CardHeader
                 avatar={
@@ -112,6 +127,7 @@ const Posts = ({location}) => {
                   type="comment"
                 />
                 <Button>Post</Button>
+                <DeleteIcon onClick={() => handleDeletePost(post._id)} />
               </CardContent>
             </Card>
           ))

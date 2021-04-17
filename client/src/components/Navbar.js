@@ -14,6 +14,10 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
+import Icon from '@material-ui/core/Icon';
+import Modal from '@material-ui/core/Modal';
+import CreatePost from './CreatePost'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -77,6 +81,14 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  }, 
 }));
 
 function HomeIcon(props) {
@@ -86,6 +98,22 @@ function HomeIcon(props) {
     </SvgIcon>
   );
 }
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+
 
 // Logo URL
 // https://dewey.tailorbrands.com/production/brand_version_mockup_image/30/5052737030_735d5db1-7053-4625-88d5-87ad4e490ea4.png?cb=1618339814
@@ -97,6 +125,9 @@ const Navbar = () => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+  
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -120,6 +151,26 @@ const Navbar = () => {
   const handleGoHome = () => {
     window.location = '/'
   }
+
+  const handleModalAddPost = () => {
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
+  const handleLogOut = () => {
+    localStorage.removeItem('user')
+    window.location = '/auth'
+  }
+
+  const modalBody = (
+<div style={modalStyle} className={classes.paper}>
+
+  <CreatePost handleModalAddPost={handleModalAddPost} handleCloseModal={handleCloseModal}/>
+</div>
+  )
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -199,13 +250,23 @@ const Navbar = () => {
             />
           </div>
           <div className={classes.grow} />
+    
+          <Icon onClick={handleModalAddPost}>add_circle</Icon>
+            <Modal 
+              open={open}
+              onClose={handleCloseModal}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+            >{modalBody}
+            </Modal>
+  
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
               <Badge badgeContent={0} color="secondary">
                 <HomeIcon />
               </Badge>
             </IconButton>
-            
+           
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -217,6 +278,7 @@ const Navbar = () => {
               <AccountCircle />
             </IconButton>
           </div>
+          
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -228,6 +290,7 @@ const Navbar = () => {
               <MoreIcon />
             </IconButton>
           </div>
+          <Typography onClick={handleLogOut}>Log Out</Typography>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

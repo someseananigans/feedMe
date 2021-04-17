@@ -7,11 +7,7 @@ const Profile = () => {
     <Navbar />
       <h1>Profile Page</h1>
     <Post location="profile"/>
-    <CreatePost />
-
-    
-   
-
+    {/* <CreatePost /> */}
 
     </>
       
