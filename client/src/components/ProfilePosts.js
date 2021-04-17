@@ -87,6 +87,7 @@ const ProfilePosts = () => {
               <Modal
                 open={open}
                 onClose={handleClose}
+                onBackdropClick={handleClose}
                 >
                   <div style={modalStyle} className={classes.paper}>
 

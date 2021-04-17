@@ -1,3 +1,9 @@
 body {
   margin: 0;
 }
+.cols {
+  display: inline-block;
+  vertical-align: top;
+  width: 30%;
+  margin-top: 50px;
+} 
