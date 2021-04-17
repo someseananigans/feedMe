@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import { Avatar, Button, Paper, Grid, Typography, Container, Fab } from '@material-ui/core'
+import { Avatar, Button, Paper, Grid, Typography, Container, Fab, Card } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "center"
   },
   inputMargin: {
-    marginBottom: "5px",
-    marginTop: "5px",
+    marginBottom: "8px",
+    marginTop: "8px",
   },
   column: {
     display: "flex",
@@ -43,6 +43,12 @@ const useStyles = makeStyles((theme) => ({
   },
   fileInput: {
     display: "none"
+  },
+  classes: {
+    background: "white",
+  },
+  padding: {
+    padding: "25px"
   }
 }));
 
@@ -99,39 +105,42 @@ const EditProfile = () => {
 
   return (
     <>
-      <Grid container>
-        <Grid xs={4} className={classes.centerContent}>
-          <div className={classes.imageParent}>
-            <img src={userInfo.profile} alt="profile_photo" className={classes.circle} />
+      <Card variant="outlined" className={classes.background}>
 
-            <input
-              accept="image/*"
-              className={classes.fileInput}
-              id="uploadNewImage"
-              multiple
-              type="file"
-              onChange={handleUpload}
-            />
-            <label htmlFor="uploadNewImage">
-              <Fab component="span" className={classes.addImage}>
-                <AddIcon />
-              </Fab>
-            </label>
-          </div>
+        <Grid container className={classes.padding}>
+          <Grid xs={4} className={classes.centerContent}>
+            <div className={classes.imageParent}>
+              <img src={userInfo.profile} alt="profile_photo" className={classes.circle} />
 
-        </Grid>
+              <input
+                accept="image/*"
+                className={classes.fileInput}
+                id="uploadNewImage"
+                multiple
+                type="file"
+                onChange={handleUpload}
+              />
+              <label htmlFor="uploadNewImage">
+                <Fab component="span" className={classes.addImage}>
+                  <AddIcon />
+                </Fab>
+              </label>
+            </div>
 
-        <Grid xs={8} className={classes.centerContent}>
-          <Grid container className={classes.column}>
-            <TextField name="name" typee="text" label="Name" variant="outlined" value={userInfo.name} className={classes.inputMargin} onChange={handleInputChange} />
-            <TextField name="email" typee="email" label="Email" variant="outlined" value={userInfo.email} className={classes.inputMargin} onChange={handleInputChange} />
-            <TextField name="username" typee="username" label="Username" variant="outlined" value={userInfo.username} className={classes.inputMargin} onChange={handleInputChange} />
-            <Button onClick={handleSave} className={classes.inputMargin} >Save</Button>
           </Grid>
+
+          <Grid xs={8} className={classes.centerContent}>
+            <Grid container className={classes.column}>
+              <TextField name="name" typee="text" label="Name" variant="outlined" value={userInfo.name} className={classes.inputMargin} onChange={handleInputChange} />
+              <TextField name="email" typee="email" label="Email" variant="outlined" value={userInfo.email} className={classes.inputMargin} onChange={handleInputChange} />
+              <TextField name="username" typee="username" label="Username" variant="outlined" value={userInfo.username} className={classes.inputMargin} onChange={handleInputChange} />
+              <Button onClick={handleSave} className={classes.inputMargin} >Save</Button>
+            </Grid>
+          </Grid>
+
         </Grid>
 
-      </Grid>
-
+      </Card>
 
 
 
