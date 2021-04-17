@@ -14,10 +14,12 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
+import AddIcon from '@material-ui/icons/Add';
 import Icon from '@material-ui/core/Icon';
 import Modal from '@material-ui/core/Modal';
 import CreatePost from './CreatePost'
+import Fab from '@material-ui/core/Fab';
+
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -46,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(3),
       width: 'auto',
     },
+    
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -89,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   }, 
+ 
 }));
 
 function HomeIcon(props) {
@@ -250,8 +254,10 @@ const Navbar = () => {
             />
           </div>
           <div className={classes.grow} />
-    
-          <Icon onClick={handleModalAddPost}>add_circle</Icon>
+          <Fab size="small" color="secondary" aria-label="add" className={classes.margin}>
+          <AddIcon onClick={handleModalAddPost}/>
+        </Fab>
+          {/* <Icon onClick={handleModalAddPost}>add_circle</Icon> */}
             <Modal 
               open={open}
               onClose={handleCloseModal}
@@ -290,7 +296,7 @@ const Navbar = () => {
               <MoreIcon />
             </IconButton>
           </div>
-          <Typography onClick={handleLogOut}>Log Out</Typography>
+          <Typography onClick={handleLogOut} className={classes.margin}>Log Out</Typography>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
