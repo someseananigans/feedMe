@@ -6,7 +6,6 @@ import {
   CardContent, CardActions, IconButton, Button, TextField,
   Avatar, Typography, Box, Grid
 } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -19,18 +18,15 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
-    marginTop: 15
+    maxWidth: 800,
+    marginBottom: 20
   },
   media: {
-    height: 100,
+    height: 300,
     paddingTop: '56.25%', // 16:9
   },
   expandOpen: {
     transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: red[500],
   },
   un: {
     display: 'inline-flex',
