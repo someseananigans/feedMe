@@ -1,15 +1,20 @@
 import { Navbar, Post, Suggested } from '../components'
 import { Box } from '@material-ui/core'
+import '../index.css'
 
 const Home = () => {
   return (
     <>
       <Navbar />
-      <Box display="flex" alignItems="center" flexDirection="column">
+      <div className="cols">
 
+      </div>
+      <div className="cols">
         <Post location="home"/>
-      </Box>
+      </div>
+      <div className="cols col3">
         <Suggested />
+      </div>
     </>
 
   )

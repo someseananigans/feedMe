@@ -4,29 +4,41 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Card, CardHeader, CardMedia,
   CardContent, CardActions, IconButton, Button, TextField,
-  Avatar, Typography, Box
+  Avatar, Typography, Box, Grid
 } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertEmoticon from '@material-ui/icons/InsertEmoticon'
+import DeleteIcon from '@material-ui/icons/Delete';
+
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    maxWidth: 800,
+    marginBottom: 20
   },
   media: {
-    height: 0,
+    height: 300,
     paddingTop: '56.25%', // 16:9
   },
   expandOpen: {
     transform: 'rotate(180deg)',
   },
-  avatar: {
-    backgroundColor: red[500],
+  un: {
+    display: 'inline-flex',
+    paddingRight: 5,
+    color: 'black'
+  },
+  cap: {
+    display: 'inline-flex'
   }
 }));
+
+
 
 const Posts = ({location}) => {
 
@@ -35,6 +47,16 @@ const Posts = ({location}) => {
     posts: []
   })
 
+  const handleDeletePost = id => {
+    Post.delete(id)
+    .then(() => {
+      window.location = '/profile'
+      const posts = [postState.posts]
+      setPostState({ ...postState, posts })
+      
+    })
+    .catch(err => console.log(err))
+  }
   
   useEffect(async() => {
     switch (location) {
@@ -59,15 +81,14 @@ const Posts = ({location}) => {
   }
 
 
-
   }, [])
 
   return (
+    
     <Box xs={12} xl={12} lg={12} md={12} >
-      {
+    {
         postState.posts.length
           ? postState.posts.map(post => (
-
             <Card className={classes.root} key={post._id}>
               <CardHeader
                 avatar={
@@ -96,7 +117,12 @@ const Posts = ({location}) => {
                 </CardActions>
 
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {post.user.username}{post.body}
+                  <div className={classes.un}> 
+                    {post.user.username}
+                    </div>
+                  <div className={classes.cap }>
+                  {post.body}
+                  </div>
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
                   {post.comments.length && post.comments[0].comment}
@@ -112,6 +138,7 @@ const Posts = ({location}) => {
                   type="comment"
                 />
                 <Button>Post</Button>
+                <DeleteIcon onClick={() => handleDeletePost(post._id)} />
               </CardContent>
             </Card>
           ))

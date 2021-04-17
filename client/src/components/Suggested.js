@@ -50,7 +50,7 @@ const Suggested = () => {
             }
             console.log(filteredUsers)
             setUserState ({ ...userState, users: filteredUsers})
-            setCurrentUserState ({ ...currentUserState, user})
+            setCurrentUserState ({ ...currentUserState, user })
 
           })
         

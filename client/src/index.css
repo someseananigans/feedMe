@@ -1,3 +1,17 @@
 body {
   margin: 0;
 }
+
+.cols {
+  display: inline-block;
+  vertical-align: top;
+  width: 30%;
+  margin-top: 100px;
+  overflow: scroll;
+}
+.col3 {
+  position: fixed;
+}
+.nav {
+  position: fixed;
+}

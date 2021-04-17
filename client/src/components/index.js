@@ -5,3 +5,4 @@ export { default as CreatePost } from "./CreatePost"
 export { default as Suggested } from './Suggested'
 export { default as ProfileModal } from './modals/ProfileModal'
 export { default as EditProfile } from './EditProfile'
+export { default as ProfilePosts } from './ProfilePosts'
