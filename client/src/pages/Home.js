@@ -12,7 +12,7 @@ const Home = () => {
       <div className="cols">
         <Post location="home"/>
       </div>
-      <div className="cols">
+      <div className="cols col3">
         <Suggested />
       </div>
     </>

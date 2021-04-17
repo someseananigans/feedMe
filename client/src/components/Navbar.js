@@ -235,7 +235,7 @@ const Navbar = () => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap onClick={handleGoHome}>
             Re-instagram
