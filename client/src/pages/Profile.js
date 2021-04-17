@@ -1,5 +1,7 @@
 import { CreatePost, ProfilePosts } from '../components/'
 import Navbar from '../components/Navbar'
+import Post from '../components/posts/Post'
+
 
 
 
@@ -8,12 +10,9 @@ const Profile = () => {
     <>
     <Navbar />
       <h1>Profile Page</h1>
-    <CreatePost />
+    {/* <CreatePost /> */}
+    {/* <Post location='profile'/> */}
     <ProfilePosts />
-
-    
-   
-
 
     </>
       
