@@ -9,9 +9,7 @@ const Profile = () => {
       <h1>Profile Page</h1>
     <Post location="profile"/>
     <CreatePost />
-    <profileModal />
-
-    <EditProfile></EditProfile>
+    <ProfileModal />
    
 
 
