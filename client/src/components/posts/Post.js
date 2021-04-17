@@ -15,9 +15,10 @@ import InsertEmoticon from '@material-ui/icons/InsertEmoticon'
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
+    marginTop: 15
   },
   media: {
-    height: 0,
+    height: 100,
     paddingTop: '56.25%', // 16:9
   },
   expandOpen: {
@@ -25,6 +26,14 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500],
+  },
+  un: {
+    display: 'inline-flex',
+    paddingRight: 5,
+    color: 'black'
+  },
+  cap: {
+    display: 'inline-flex'
   }
 }));
 
@@ -96,7 +105,12 @@ const Posts = ({location}) => {
                 </CardActions>
 
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {post.user.username}{post.body}
+                  <div className={classes.un}> 
+                    {post.user.username}
+                    </div>
+                  <div className={classes.cap }>
+                  {post.body}
+                  </div>
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
                   {post.comments.length && post.comments[0].comment}

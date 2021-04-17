@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2, 4, 3),
   },
   image: {
-    height: '10%',
+    height: 300,
   }
 
 }))
@@ -48,11 +48,11 @@ const ProfilePosts = () => {
 
   }, [])
 
-  function rand() {
+  const rand = () => {
     return Math.round(Math.random() * 20) - 10;
   }
 
-  function getModalStyle() {
+  const getModalStyle = () => {
     const top = 50 + rand();
     const left = 50 + rand();
 
@@ -62,7 +62,7 @@ const ProfilePosts = () => {
       transform: `translate(-${top}%, -${left}%)`,
     };
   }
-  const [modalStyle] = useState(getModalStyle);
+  const [modalStyle] = useState(getModalStyle)
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => {
@@ -73,7 +73,6 @@ const ProfilePosts = () => {
     setOpen(false);
   };
 
- 
     
     return (
       <>
@@ -81,18 +80,18 @@ const ProfilePosts = () => {
       <div className={classes.root}>
         <GridList cellHeight={160} className={classes.gridList} cols={5}>
           {postState.posts.length ? postState.posts.map(post => (
+              // for (let i = 0; i < postState.posts.length; i++)
             <GridListTile key={post._id} cols={1} className={classes.image} onClick={handleOpen}>
               <img src={post.image} alt={post.caption}  />
               <div>
               <Modal
                 open={open}
                 onClose={handleClose}
-                aria-labelledby={post.caption}
-                aria-describedby={post.image}
                 >
                   <div style={modalStyle} className={classes.paper}>
 
-                    <img src={post.image} alt={post.body} className='image' />
+                    <img src={post.image} alt={post.body} className={classes.image} />
+                    <Typography>{post.comments}</Typography>
                   </div>
               </Modal>
                 </div>
