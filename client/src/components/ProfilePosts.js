@@ -5,6 +5,7 @@ import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import './ProfPost.css'
 import { Typography, Modal } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 
@@ -15,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-around",
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
-    marginTop: 20,
+    marginTop: 200,
   },
   gridList: {
     width: '80%',
@@ -38,6 +39,17 @@ const ProfilePosts = () => {
   const [postState, setPostState] = useState({
     posts: []
   })
+
+  const handleDeletePost = id => {
+    Post.delete(id)
+      .then(() => {
+        window.location = '/profile'
+        const posts = [postState.posts]
+        setPostState({ ...postState, posts })
+
+      })
+      .catch(err => console.log(err))
+  }
 
   useEffect(() => {
     Post.getOwned()
@@ -80,7 +92,6 @@ const ProfilePosts = () => {
       <div className={classes.root}>
         <GridList cellHeight={160} className={classes.gridList} cols={5}>
           {postState.posts.length ? postState.posts.map(post => (
-              // for (let i = 0; i < postState.posts.length; i++)
             <GridListTile key={post._id} cols={1} className={classes.image} onClick={handleOpen}>
               <img src={post.image} alt={post.caption}  />
               <div>
@@ -99,6 +110,7 @@ const ProfilePosts = () => {
               <div className='overlay'>
                 <Typography>
                 {post.body}
+                  <DeleteIcon onClick={() => handleDeletePost(post._id)} />
                 </Typography>
               </div>
             </GridListTile>
