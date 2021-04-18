@@ -63,7 +63,7 @@ const Suggested = () => {
       <Paper>
         <CardHeader
           avatar={
-            <Avatar alt={currentUserState.user.username} src={currentUserState.user.image}>
+            <Avatar alt={currentUserState.user.username} src={currentUserState.user.profile}>
             </Avatar>
           }
           title={currentUserState.user.username}

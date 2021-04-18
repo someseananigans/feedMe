@@ -1,22 +1,10 @@
 import { React, useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Input from '@material-ui/core/Input';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Post from '../utils/Post'
-
+import { Post } from '../utils'
 import { storage } from '../utils/firebase'
-import Fab from "@material-ui/core/Fab";
-import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
-import CloseIcon from '@material-ui/icons/Close';
-import { Divider } from '@material-ui/core';
-import { PromiseProvider } from 'mongoose';
-import { PinDropSharp } from '@material-ui/icons';
+import { Card, CardActions, CardContent, Button, Input, Typography, TextField, DialogTitle, Fab } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
+import { AddPhotoAlternate as AddPhoto, Close as CloseIcon } from '@material-ui/icons'
 
 const useStyles = makeStyles({
   root: {
@@ -45,9 +33,9 @@ const useStyles = makeStyles({
     width: "50px",
     height: "50px",
     position: "absolute",
-    top: "13px",
+    top: "7px",
     right: 0,
-    bottom: '3px',
+    bottom: '7px',
     left: "13px"
   },
   padding: {
@@ -61,7 +49,7 @@ const useStyles = makeStyles({
 const CreatePost = (props) => {
   const classes = useStyles()
 
-  const [display, setDisplay] = useState(false) 
+  const [display, setDisplay] = useState(false)
   const [mainState, setState] = useState("initial")
   const [postState, setPostState] = useState({
     body: '',
@@ -82,7 +70,6 @@ const CreatePost = (props) => {
     })
       .then(({ data: post }) => {
         console.log(post)
-        props.handleCloseModal()
         setPostState({ ...postState, body: '', image: '' })
         window.location = '/profile'
       })
@@ -132,7 +119,7 @@ const CreatePost = (props) => {
         />
         <label htmlFor="contained-button-file">
           <Fab component="span" className={classes.button}>
-            <AddPhotoAlternateIcon />
+            <AddPhoto />
           </Fab>
         </label>
       </div>
@@ -157,12 +144,11 @@ const CreatePost = (props) => {
         <CardContent className={classes.padding}>
           <form className={classes.flexColumn} noValidate autoComplete="off">
             <div className={classes.relative}>
-
-              <h1>Create A Post</h1>
+              <DialogTitle id="scroll-dialog-title">Create a Post</DialogTitle>
               {display &&
-              <Fab component="span" onClick={cardReset} className={classes.absolute}>
-                <CloseIcon />
-              </Fab>
+                <Fab component="span" onClick={cardReset} className={classes.absolute}>
+                  <CloseIcon />
+                </Fab>
               }
             </div>
 

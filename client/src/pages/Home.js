@@ -10,7 +10,7 @@ const Home = () => {
 
       </div>
       <div className="cols">
-        <Post location="home"/>
+        <Post/>
       </div>
       <div className="cols col3">
         <Suggested />
