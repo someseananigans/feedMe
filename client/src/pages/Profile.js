@@ -1,6 +1,7 @@
 import { CreatePost, ProfilePosts, Post, ProfileModal, EditProfile } from '../components/'
 import Navbar from '../components/Navbar'
-import Post from '../components/posts/Post'
+
+import PostModal from '../components/modals/PostModal'
 
 
 
@@ -11,10 +12,10 @@ const Profile = () => {
     <>
     <Navbar />
       <h1>Profile Page</h1>
-    <Post location="profile"/>
     <CreatePost />
     <ProfileModal />
     <ProfilePosts />
+    <PostModal />
 
     </>
       
