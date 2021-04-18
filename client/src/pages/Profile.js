@@ -1,6 +1,6 @@
-import { CreatePost, ProfilePosts } from '../components/'
+import { ProfilePosts } from '../components/'
 import Navbar from '../components/Navbar'
-import Post from '../components/posts/Post'
+
 
 
 
