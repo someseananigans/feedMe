@@ -70,6 +70,7 @@ const Posts = () => {
     await Post.getAll()
       .then(({ data: grams }) => {
         setPostState({ ...postState, posts: grams })
+        console.log(grams[0].user.profile)
       })
       .catch(err => {
         console.error(err)
@@ -85,7 +86,7 @@ const Posts = () => {
             <Card className={classes.root} key={post._id}>
               <CardHeader
                 avatar={
-                  <Avatar aria-label="userAvatar" className={classes.avatar}>
+                  <Avatar aria-label="userAvatar" className={classes.avatar} src={post.user.profile}>
                   </Avatar>
                 }
                 action={
