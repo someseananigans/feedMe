@@ -1,11 +1,9 @@
 import { React, useState } from 'react';
-import { Avatar, Button, Paper, Grid, Typography, Container, Fab, Card } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField';
+import { User } from '../utils'
+import { storage } from '../utils/firebase'
+import { Avatar, Button, Paper, Grid, Typography, Container, Fab, Card, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import { storage } from '../utils/firebase'
-import User from '../utils/User'
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
