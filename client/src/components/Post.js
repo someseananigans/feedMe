@@ -5,11 +5,9 @@ import {
   Card, CardHeader, CardContent, CardActions, IconButton, 
   Button, TextField, Avatar, Typography, Box, Checkbox
 } from '@material-ui/core';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertEmoticon from '@material-ui/icons/InsertEmoticon'
-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
