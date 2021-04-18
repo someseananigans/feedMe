@@ -19,6 +19,8 @@ import Icon from '@material-ui/core/Icon';
 import Modal from '@material-ui/core/Modal';
 import CreatePost from './CreatePost'
 import Fab from '@material-ui/core/Fab';
+import PostModal from '../components/modals/PostModal'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(3),
       width: 'auto',
     },
-    
+
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -83,16 +85,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
-  },
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  }, 
- 
+  }
 }));
 
 function HomeIcon(props) {
@@ -101,20 +94,6 @@ function HomeIcon(props) {
       <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
     </SvgIcon>
   );
-}
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
 }
 
 
@@ -129,9 +108,8 @@ const Navbar = () => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  
+
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -156,25 +134,10 @@ const Navbar = () => {
     window.location = '/'
   }
 
-  const handleModalAddPost = () => {
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
-
   const handleLogOut = () => {
     localStorage.removeItem('user')
     window.location = '/auth'
   }
-
-  const modalBody = (
-<div style={modalStyle} className={classes.paper}>
-
-  <CreatePost handleModalAddPost={handleModalAddPost} handleCloseModal={handleCloseModal}/>
-</div>
-  )
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -254,25 +217,14 @@ const Navbar = () => {
             />
           </div>
           <div className={classes.grow} />
-          <Fab size="small" color="secondary" aria-label="add" className={classes.margin}>
-          <AddIcon onClick={handleModalAddPost}/>
-        </Fab>
-          {/* <Icon onClick={handleModalAddPost}>add_circle</Icon> */}
-            <Modal 
-              open={open}
-              onClose={handleCloseModal}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-            >{modalBody}
-            </Modal>
-  
+          <PostModal />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
               <Badge badgeContent={0} color="secondary">
                 <HomeIcon />
               </Badge>
             </IconButton>
-           
+
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -284,7 +236,7 @@ const Navbar = () => {
               <AccountCircle />
             </IconButton>
           </div>
-          
+
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
