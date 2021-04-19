@@ -88,7 +88,6 @@ const EditProfile = () => {
   }
 
   const handleSave = () => {
-    console.log('hi')
     User.edit({
       profile: userInfo.profile,
       name: userInfo.name,

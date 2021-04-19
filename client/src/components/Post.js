@@ -72,6 +72,16 @@ const Posts = () => {
         console.error(err)
       })
   }, [])
+  const [likeState, setLikeState] = useState({
+    likes: 0
+  })
+  const handleLikeChange = ({ target }) => {
+    setLikeState({ ... likeState, id: target.id })
+  }
+  
+  const handleLike = () => {
+    setLikeState({ likes: likeState.likes+1})
+  }
 
   return (
 
@@ -109,8 +119,10 @@ const Posts = () => {
                     <FormControlLabel
                       control={<Checkbox icon={<FavoriteBorder className={classes.button} />}
                         checkedIcon={<Favorite className={classes.button} />}
-                        name="checkedH" />}
-                    />
+                        name="checkedH" />} 
+                        onClick={handleLike}
+                        onChange={handleLikeChange}
+                    />{likeState.likes}
                   </IconButton>
                   <IconButton aria-label="comment">
                     <ChatIcon className={classes.button} />
