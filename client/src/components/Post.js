@@ -186,7 +186,7 @@ const Posts = () => {
                   </div>
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {post.comments.length && post.comments[0].comment}
+                  {/* {post.comments.length && post.comments[0].comment} */}
                 </Typography>
               </CardContent>
               <CardContent>
