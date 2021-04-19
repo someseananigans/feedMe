@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from 'react'
+import {Link} from 'react-router-dom'
 import Post from '../utils/Post.js'
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   un: {
     display: 'inline-flex',
     paddingRight: 5,
-    color: 'black'
+    color: 'black',
   },
   cap: {
     display: 'inline-flex'
@@ -90,13 +91,13 @@ const Posts = () => {
                     <MoreVertIcon />
                   </IconButton>
                 }
-                title={post.user.username}
+                title={
+                <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                  {post.user.username}
+                </Link>
+                }
               />
               <div className={classes.imageWrapper}>
-                {/* <CardMedia
-                  className={classes.media}
-                  image={post.image}
-                /> */}
                 <img
                   className={classes.media}
                   src={post.image}
@@ -119,7 +120,9 @@ const Posts = () => {
 
                 <Typography variant="body2" color="textSecondary" component="p">
                   <div className={classes.un}>
+                    <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
                     {post.user.username}
+                    </Link>
                   </div>
                   <div className={classes.cap}>
                     {post.body}
