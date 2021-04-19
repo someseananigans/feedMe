@@ -50,8 +50,12 @@ const Auth = () => {
       password: loginState.password
     })
       .then(({ data }) => {
-        localStorage.setItem('user', data)
-        window.location = '/'
+        if (data) {
+          localStorage.setItem('user', data)
+          window.location = '/'
+        } else {
+          console.log('Username or password was input correctly')
+        }
       })
       .catch(err => console.log(err))
   }
