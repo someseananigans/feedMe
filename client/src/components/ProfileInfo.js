@@ -46,10 +46,8 @@ const ProfileInfo = (PofilePosts) => {
         {userState.user.username}
         <br />
         <div className={classes.name}>
-
         {userState.user.name}
         </div>
-
         <ProfileModal />
       </div>
     </div>
