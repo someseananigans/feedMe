@@ -12,6 +12,8 @@ import InsertEmoticon from '@material-ui/icons/InsertEmoticon'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import User from '../utils/User'
+
 
 
 
@@ -78,6 +80,12 @@ const Posts = () => {
   }
   
   const handleLike = () => {
+    User.touchPost({likes: likeState.likes}, postState.id)
+    .then(data => {
+      console.log(data)
+    })
+    .catch(err => console.log(err))
+    console.log(likeState)
     setLikeState({ likes: likeState.likes+1})
   }
 
