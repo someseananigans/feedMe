@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import './ProfPost.css'
-import { Typography, Modal } from '@material-ui/core';
+import { Typography, Modal, } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-around",
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
-    marginTop: 200,
+    marginTop: 100,
   },
   gridList: {
     width: '80%',
