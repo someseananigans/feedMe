@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-flex',
     fontSize: 26,
 
+  },
+  name: {
+    fontSize: 16
   }
 }));
 
@@ -42,8 +45,11 @@ const ProfileInfo = (PofilePosts) => {
       <div>
         {userState.user.username}
         <br />
+        <div className={classes.name}>
+
         {userState.user.name}
-        <br />
+        </div>
+
         <ProfileModal />
       </div>
     </div>
