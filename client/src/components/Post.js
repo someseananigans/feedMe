@@ -11,7 +11,7 @@ import InsertEmoticon from '@material-ui/icons/InsertEmoticon'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-
+import Comment from '../utils'
 
 
 
@@ -58,6 +58,10 @@ const Posts = () => {
   const [postState, setPostState] = useState({
     posts: []
   })
+  const [comment, setComment] = useState({
+    body: '',
+    post_id: ''
+  })
 
   useEffect(async () => {
     await Post.getAll()
@@ -69,6 +73,15 @@ const Posts = () => {
         console.error(err)
       })
   }, [])
+
+  const handleCommentInput = ({ target }) => {
+    setComment({...comment, body: target.value, post_id: target.postid})
+    console.log(target)
+  }
+  
+  const handleComment = ({target}) => {
+    console.log(target)
+  }
 
   return (
 
@@ -134,8 +147,10 @@ const Posts = () => {
                   id="standard-input"
                   label="Add a comment..."
                   type="comment"
+                  postid={post._id}
+                  onChange={handleCommentInput}
                 />
-                <Button>Post</Button>
+                <Button onClick={handleComment}>Post</Button>
                 
               </CardContent>
             </Card>

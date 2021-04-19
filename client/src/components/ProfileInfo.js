@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import User from '../utils/User.js'
 
 
-const UserProfile = () => {
+const ProfileInfo = () => {
 
   const [userState, setUserState] = useState({
     user: {}
@@ -57,7 +57,7 @@ const UserProfile = () => {
     </Profile>
   )
 }
-export default UserProfile
+export default ProfileInfo
 
 const Profile = styled.div`
   margin-top: 100px;
