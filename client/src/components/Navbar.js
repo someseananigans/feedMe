@@ -85,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+  },
+  margin: {
+    marginLeft: 20
   }
 }));
 

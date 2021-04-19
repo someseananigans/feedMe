@@ -73,7 +73,7 @@ const Suggested = () => {
 
             <CardHeader
               avatar={
-              <Avatar alt={user.firstName} src={user.image}>
+              <Avatar alt={user.firstName} src={user.profile}>
             </Avatar>
               } 
           title={user.username}
