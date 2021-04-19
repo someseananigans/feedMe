@@ -19,11 +19,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 800,
-    marginBottom: 20
+    marginBottom: 20,
+    height: "100%"
   },
   media: {
-    height: 300,
-    paddingTop: '56.25%', // 16:9
+    width: "100%",
+    // paddingTop: '56.25%', // 16:9
   },
   expandOpen: {
     transform: 'rotate(180deg)',
@@ -35,12 +36,19 @@ const useStyles = makeStyles((theme) => ({
   },
   cap: {
     display: 'inline-flex'
+  },
+  imageWrapper: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    position: "relative",
+    justifyContent: "center"
   }
 }));
 
 
 
-const Posts = ({location}) => {
+const Posts = () => {
 
   const classes = useStyles()
   const [postState, setPostState] = useState({
@@ -49,50 +57,36 @@ const Posts = ({location}) => {
 
   const handleDeletePost = id => {
     Post.delete(id)
-    .then(() => {
-      window.location = '/profile'
-      const posts = [postState.posts]
-      setPostState({ ...postState, posts })
-      
-    })
-    .catch(err => console.log(err))
-  }
-  
-  useEffect(async() => {
-    switch (location) {
-      case "home":
-        await Post.getAll()
-          .then(({ data: grams }) => {
-            setPostState({ ...postState, posts: grams })
-          })
-          .catch(err => {
-            console.error(err)
-          })
-        break;
-      case "profile":
-        await Post.getOwned()
-          .then(({ data: grams }) => {
-            setPostState({ ...postState, posts: grams })
-          })
-          .catch(err => {
-            console.error(err)
-          })
-        break;
+      .then(() => {
+        window.location = '/profile'
+        const posts = [postState.posts]
+        setPostState({ ...postState, posts })
+
+      })
+      .catch(err => console.log(err))
   }
 
-
+  useEffect(async () => {
+    await Post.getAll()
+      .then(({ data: grams }) => {
+        setPostState({ ...postState, posts: grams })
+        console.log(grams[0].user.profile)
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }, [])
 
   return (
-    
+
     <Box xs={12} xl={12} lg={12} md={12} >
-    {
+      {
         postState.posts.length
           ? postState.posts.map(post => (
             <Card className={classes.root} key={post._id}>
               <CardHeader
                 avatar={
-                  <Avatar aria-label="userAvatar" className={classes.avatar}>
+                  <Avatar aria-label="userAvatar" className={classes.avatar} src={post.user.profile}>
                   </Avatar>
                 }
                 action={
@@ -102,10 +96,17 @@ const Posts = ({location}) => {
                 }
                 title={post.user.username}
               />
-              <CardMedia
-                className={classes.media}
-                image={post.image}
-              />
+              <div className={classes.imageWrapper}>
+                {/* <CardMedia
+                  className={classes.media}
+                  image={post.image}
+                /> */}
+                <img
+                  className={classes.media}
+                  src={post.image}
+                  alt="your image"
+                />
+              </div>
               <CardContent>
                 <CardActions disableSpacing>
                   <IconButton aria-label="like">
@@ -117,11 +118,11 @@ const Posts = ({location}) => {
                 </CardActions>
 
                 <Typography variant="body2" color="textSecondary" component="p">
-                  <div className={classes.un}> 
+                  <div className={classes.un}>
                     {post.user.username}
-                    </div>
-                  <div className={classes.cap }>
-                  {post.body}
+                  </div>
+                  <div className={classes.cap}>
+                    {post.body}
                   </div>
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">

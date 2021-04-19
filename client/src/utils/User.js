@@ -9,12 +9,12 @@ const User = {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
   }),
-  edit: updates => axios.put('/user', {
+  edit: updates => axios.put('/api/user', updates, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
   }),
-  delete: () => axios.delete('/user', {
+  delete: () => axios.delete('/api/user', {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
