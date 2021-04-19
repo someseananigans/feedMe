@@ -7,12 +7,12 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(18),
     height: theme.spacing(18),
-    marginLeft: 100,
-    marginTop: 100,
     display: 'inline-flex',
     marginRight: 60
   },
   userInfo: {
+    marginTop: 75,
+    marginLeft: 135,
     alignItems: 'center',
     display: 'inline-flex',
     fontSize: 26,
@@ -43,6 +43,8 @@ const ProfileInfo = (PofilePosts) => {
         {userState.user.username}
         <br />
         {userState.user.name}
+        <br />
+        <ProfileModal />
       </div>
     </div>
     </>

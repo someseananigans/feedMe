@@ -14,7 +14,6 @@ const Profile = () => {
       <div style={{ marginTop: '64px' }}>
         <ProfileInfo />
         <ProfilePosts />
-        <ProfileModal />
       </div>
 
     </>
