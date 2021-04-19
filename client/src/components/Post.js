@@ -60,9 +60,6 @@ const Posts = () => {
     posts: []
   })
 
-
-
-
   useEffect(async () => {
     await Post.getAll()
       .then(({ data: grams }) => {

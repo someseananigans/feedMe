@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { User } from '../utils'
 import { storage } from '../utils/firebase'
 import { Button, Grid, Fab, Card, TextField } from '@material-ui/core'
@@ -53,13 +53,28 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const EditProfile = () => {
+const EditProfile = ({toggleOpen}) => {
   const classes = useStyles()
+
+  useEffect(() => {
+    User.profile()
+      .then(({ data: user }) => {
+        setUserInfo({ ...userInfo, 
+          profile: user.profile,
+          name: user.name,
+          username: user.username,
+          email: user.email,
+          bio: user.bio
+        })
+      })
+  }, [])
 
   const [userInfo, setUserInfo] = useState({
     profile: '',
     name: '',
-    email: ''
+    username: '',
+    email: '',
+    bio: ''
   })
 
   const handleInputChange = ({ target }) => {
@@ -93,17 +108,18 @@ const EditProfile = () => {
       name: userInfo.name,
       email: userInfo.email,
       username: userInfo.username,
+      bio: userInfo.bio
     })
-      .then(() => console.log('updated'))
+      .then(() => {
+        console.log('updated')
+        toggleOpen()
+      })
       .catch(err => console.log(err))
   }
-
-
 
   return (
     <>
       <Card variant="outlined" className={classes.background}>
-
         <Grid container className={classes.padding}>
           <Grid xs={4} className={classes.centerContent}>
             <div className={classes.imageParent}>
@@ -123,24 +139,19 @@ const EditProfile = () => {
                 </Fab>
               </label>
             </div>
-
           </Grid>
 
           <Grid xs={8} className={classes.centerContent}>
             <Grid container className={classes.column}>
-              <TextField name="name" typee="text" label="Name" variant="outlined" value={userInfo.name} className={classes.inputMargin} onChange={handleInputChange} />
-              <TextField name="email" typee="email" label="Email" variant="outlined" value={userInfo.email} className={classes.inputMargin} onChange={handleInputChange} />
-              <TextField name="username" typee="username" label="Username" variant="outlined" value={userInfo.username} className={classes.inputMargin} onChange={handleInputChange} />
+              <TextField name="name" type="text" label="Name" variant="outlined" value={userInfo.name} className={classes.inputMargin} onChange={handleInputChange} />
+              <TextField name="email" type="email" label="Email" variant="outlined" value={userInfo.email} className={classes.inputMargin} onChange={handleInputChange} />
+              <TextField name="username" type="username" label="Username" variant="outlined" value={userInfo.username} className={classes.inputMargin} onChange={handleInputChange} />
+              <TextField name="bio" type="text" label="bio" variant="outlined" value={userInfo.bio} className={classes.inputMargin} onChange={handleInputChange} />
               <Button onClick={handleSave} className={classes.inputMargin} >Save</Button>
             </Grid>
           </Grid>
-
         </Grid>
-
       </Card>
-
-
-
     </>
   )
 }
