@@ -1,5 +1,4 @@
 import { Navbar, Post, Suggested } from '../components'
-import { Box } from '@material-ui/core'
 import '../index.css'
 
 const Home = () => {

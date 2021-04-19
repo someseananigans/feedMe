@@ -10,6 +10,12 @@ router.get('/users', (req, res) => {
   .catch(err => console.log(err))
 })
 
+router.get('/users/:id', (req, res) => {
+  User.findById({})
+  .then(user => res.json(user))
+  .catch(err => console.log(err))
+})
+
 router.get('/user', passport.authenticate('jwt'), (req, res) => {
   res.json(req.user)
 })

@@ -4,6 +4,7 @@ const User = {
   register: (user) => axios.post('/api/user/register', user),
   login: user => axios.post('/api/user/login', user),
   getUsers: () => axios.get('/api/users'),
+  getUser: () => axios.get('/api/users/:id'),
   profile: () => axios.get('/api/user', {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`

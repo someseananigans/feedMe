@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { Avatar, CardHeader, Typography, IconButton } from '@material-ui/core';
+import { Link } from 'react-router-dom'
 import Users from '../utils/User.js'
 import User from '../utils/User.js'
 
@@ -66,7 +67,11 @@ const Suggested = () => {
             <Avatar alt={currentUserState.user.username} src={currentUserState.user.profile}>
             </Avatar>
           }
-          title={currentUserState.user.username}
+          title={
+            <Link to={`/${currentUserState.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+            {currentUserState.user.username}
+            </Link>
+          }
         />
         <Typography className={classes.suggestions}>Suggestions for you</Typography>
           {userState.users.length ? userState.users.map(user => (
@@ -76,7 +81,11 @@ const Suggested = () => {
               <Avatar alt={user.firstName} src={user.profile}>
             </Avatar>
               } 
-          title={user.username}
+              title={
+              <Link to={`/${user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+                {user.username}
+              </Link>
+              }
           action={
             <IconButton className={classes.follow}>
               Follow

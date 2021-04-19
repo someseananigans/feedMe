@@ -1,20 +1,18 @@
 import { useState } from 'react'
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core'
 import User from '../../utils/User'
-import { useHistory } from 'react-router-dom'
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import useStyles from './styles'
 import Input from './Input'
 
 
-const initialState = { username: '', email: '', password: '', repeatPassword: '' }
-
 const Auth = () => {
   const classes = useStyles()
-  const history = useHistory
+
   const [showPassword, setShowPassword] = useState(false)
   const [isSignup, setIsSignup] = useState(false)
-  const [formData, setFormData] = useState(initialState)
+
 
   const [loginState, setLoginState] = useState({
     firstName: '',
