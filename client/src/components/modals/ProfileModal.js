@@ -38,7 +38,7 @@ const ProfileModal = () => {
   return (
     <div>
       <button type="button" onClick={toggleOpen} >
-        Open Modal
+        Edit Profile
       </button>
       <Modal
         open={open}

@@ -1,16 +1,16 @@
 import { React, useState, useEffect } from 'react'
-import Post from '../../utils/Post.js'
+import Post from '../utils/Post.js'
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Card, CardHeader, CardMedia,
-  CardContent, CardActions, IconButton, Button, TextField,
-  Avatar, Typography, Box, Grid
+  Card, CardHeader, CardContent, CardActions, IconButton, 
+  Button, TextField, Avatar, Typography, Box, Checkbox
 } from '@material-ui/core';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InsertEmoticon from '@material-ui/icons/InsertEmoticon'
-import DeleteIcon from '@material-ui/icons/Delete';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 
 
@@ -43,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     position: "relative",
     justifyContent: "center"
+  },
+  button: {
+    padding: 0,
+    margin: 0
   }
 }));
 
@@ -55,16 +59,8 @@ const Posts = () => {
     posts: []
   })
 
-  const handleDeletePost = id => {
-    Post.delete(id)
-      .then(() => {
-        window.location = '/profile'
-        const posts = [postState.posts]
-        setPostState({ ...postState, posts })
 
-      })
-      .catch(err => console.log(err))
-  }
+
 
   useEffect(async () => {
     await Post.getAll()
@@ -108,12 +104,16 @@ const Posts = () => {
                 />
               </div>
               <CardContent>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="like">
-                    <FavoriteIcon />
+                <CardActions disableSpacing className={classes.button}>
+                  <IconButton aria-label="like" color="danger" className={classes.button}>
+                    <FormControlLabel
+                      control={<Checkbox icon={<FavoriteBorder className={classes.button} />}
+                        checkedIcon={<Favorite className={classes.button} />}
+                        name="checkedH" />}
+                    />
                   </IconButton>
                   <IconButton aria-label="comment">
-                    <ChatIcon />
+                    <ChatIcon className={classes.button} />
                   </IconButton>
                 </CardActions>
 
@@ -139,7 +139,7 @@ const Posts = () => {
                   type="comment"
                 />
                 <Button>Post</Button>
-                <DeleteIcon onClick={() => handleDeletePost(post._id)} />
+                
               </CardContent>
             </Card>
           ))
