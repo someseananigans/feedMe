@@ -77,7 +77,7 @@ const Posts = () => {
     likes: 0
   })
   const handleLikeChange = ({ target }) => {
-    setLikeState({ ... likeState, id: target.id })
+    setLikeState({ ... likeState, likes: target.value, id: target.id })
   }
   
   const handleLike = () => {
