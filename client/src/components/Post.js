@@ -1,9 +1,9 @@
 import { React, useState, useEffect } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Post from '../utils/Post.js'
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Card, CardHeader, CardContent, CardActions, IconButton, 
+  Card, CardHeader, CardContent, CardActions, IconButton,
   Button, TextField, Avatar, Typography, Box, Checkbox
 } from '@material-ui/core';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
@@ -58,7 +58,8 @@ const Posts = () => {
 
   const classes = useStyles()
   const [postState, setPostState] = useState({
-    posts: []
+    posts: [],
+    user: {}
   })
   const [comment, setComment] = useState({
     body: '',
@@ -68,8 +69,11 @@ const Posts = () => {
   useEffect(async () => {
     await Post.getAll()
       .then(({ data: grams }) => {
-        setPostState({ ...postState, posts: grams })
-        console.log(grams[0].user.profile)
+        User.profile()
+          .then(({ data }) => {
+            setPostState({ ...postState, posts: grams, user: data })
+            console.log(grams[0].user.profile)
+          })
       })
       .catch(err => {
         console.error(err)
@@ -79,25 +83,49 @@ const Posts = () => {
     likes: 0
   })
   const handleLikeChange = ({ target }) => {
-    setLikeState({ ... likeState, likes: target.value, id: target.id })
+    setLikeState({ ...likeState, likes: target.value, id: target.id })
   }
-  
-  const handleLike = () => {
-    User.touchPost({likes: likeState.likes}, postState.id)
-    .then(data => {
-      console.log(data)
+
+  const handleLike = post_id => {
+    let type = 'like'
+    postState.posts.forEach(post => {
+      if (post._id === post_id) {
+        post.liked_by.forEach(like => {
+          if (like === postState.user._id) {
+            type = 'unlike'
+          }
+        })
+      }
     })
-    .catch(err => console.log(err))
+    User.touchPost({
+      type,
+      user_id: postState.user._id,
+      post_id
+    })
+      .then(data => {
+        // console.log(data)
+        Post.getAll()
+          .then(({ data: grams }) => {
+            console.log('hi')
+            console.log(grams)
+            setPostState({ ...postState, posts: grams })
+            // console.log(grams[0].user.profile)
+          })
+          .catch(err => {
+            console.error(err)
+          })
+      })
+      .catch(err => console.log(err))
     console.log(likeState)
-    setLikeState({ likes: likeState.likes+1})
+    // setLikeState({ likes: likeState.likes+1})
   }
 
   const handleCommentInput = ({ target }) => {
-    setComment({...comment, body: target.value, post_id: target.postid})
+    setComment({ ...comment, body: target.value, post_id: target.postid })
     console.log(target)
   }
-  
-  const handleComment = ({target}) => {
+
+  const handleComment = ({ target }) => {
     console.log(target)
   }
 
@@ -119,9 +147,9 @@ const Posts = () => {
                   </IconButton>
                 }
                 title={
-                <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }}>
-                  {post.user.username}
-                </Link>
+                  <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                    {post.user.username}
+                  </Link>
                 }
               />
               <div className={classes.imageWrapper}>
@@ -135,12 +163,16 @@ const Posts = () => {
                 <CardActions disableSpacing className={classes.button}>
                   <IconButton aria-label="like" color="danger" className={classes.button}>
                     <FormControlLabel
-                      control={<Checkbox icon={<FavoriteBorder className={classes.button} />}
-                        checkedIcon={<Favorite className={classes.button} />}
-                        name="checkedH" />} 
-                        onClick={handleLike}
-                        onChange={handleLikeChange}
-                    />{likeState.likes}
+                      control={
+                        <Checkbox
+                          icon={<FavoriteBorder className={classes.button} />}
+                          checkedIcon={<Favorite className={classes.button} />}
+                          name="checkedH"
+                          onClick={() => handleLike(post._id)}
+                          checked={post.liked_by.indexOf(postState.user._id) !== -1}
+                        />}
+                    // onChange={handleLikeChange}
+                    />{post.liked_by.length}
                   </IconButton>
                   <IconButton aria-label="comment">
                     <ChatIcon className={classes.button} />
@@ -150,7 +182,7 @@ const Posts = () => {
                 <Typography variant="body2" color="textSecondary" component="p">
                   <div className={classes.un}>
                     <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
-                    {post.user.username}
+                      {post.user.username}
                     </Link>
                   </div>
                   <div className={classes.cap}>
@@ -173,7 +205,7 @@ const Posts = () => {
                   onChange={handleCommentInput}
                 />
                 <Button onClick={handleComment}>Post</Button>
-                
+
               </CardContent>
             </Card>
           ))
