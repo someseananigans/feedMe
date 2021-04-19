@@ -103,13 +103,11 @@ const Posts = () => {
       post_id
     })
       .then(data => {
-        // console.log(data)
         Post.getAll()
           .then(({ data: grams }) => {
             console.log('hi')
             console.log(grams)
             setPostState({ ...postState, posts: grams })
-            // console.log(grams[0].user.profile)
           })
           .catch(err => {
             console.error(err)
@@ -117,7 +115,6 @@ const Posts = () => {
       })
       .catch(err => console.log(err))
     console.log(likeState)
-    // setLikeState({ likes: likeState.likes+1})
   }
 
   const handleCommentInput = ({ target }) => {
@@ -171,7 +168,6 @@ const Posts = () => {
                           onClick={() => handleLike(post._id)}
                           checked={post.liked_by.indexOf(postState.user._id) !== -1}
                         />}
-                    // onChange={handleLikeChange}
                     />{post.liked_by.length}
                   </IconButton>
                   <IconButton aria-label="comment">
