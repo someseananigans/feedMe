@@ -11,10 +11,15 @@ const User = new Schema({
     unique: true
   },
   profile: String,
+  bio: String,
   posts: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
-  }] 
+  }],
+  liked_post: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
+  }]
   // following: []
   // followers: []
 })
