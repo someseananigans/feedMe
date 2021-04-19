@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import { User } from '../utils'
 import { storage } from '../utils/firebase'
-import { Avatar, Button, Paper, Grid, Typography, Container, Fab, Card, TextField } from '@material-ui/core'
+import { Button, Grid, Fab, Card, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 

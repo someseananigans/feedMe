@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProfileInfo = (PofilePosts) => {
+const ProfileInfo = () => {
   const classes = useStyles();
   const [userState, setUserState] = useState({
     user: {}

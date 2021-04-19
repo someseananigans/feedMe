@@ -1,7 +1,7 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import { Post } from '../utils'
 import { storage } from '../utils/firebase'
-import { Card, CardActions, CardContent, Button, Input, Typography, TextField, DialogTitle, Fab } from '@material-ui/core';
+import { Card, CardContent, Button, TextField, DialogTitle, Fab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { AddPhotoAlternate as AddPhoto, Close as CloseIcon } from '@material-ui/icons'
@@ -132,7 +132,7 @@ const CreatePost = (props) => {
         <img
           width="100%"
           src={postState.image}
-          alt="your image"
+          alt={postState.body}
         />
       </div>
     )
@@ -152,7 +152,7 @@ const CreatePost = (props) => {
               }
             </div>
 
-            {(mainState == "initial" && renderAddImage()) || (mainState == "uploaded" && renderUploaded())}
+            {(mainState === "initial" && renderAddImage()) || (mainState === "uploaded" && renderUploaded())}
 
             <TextField className={classes.toFrame} label="Write a Caption" name="body" onChange={handleInputChange} value={postState.body} />
             <br />

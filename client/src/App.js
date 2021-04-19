@@ -3,7 +3,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import {Home, Profile, Login} from './pages'
+import {Home, Profile, Login, User} from './pages'
 
 
 function App() {
@@ -13,6 +13,7 @@ function App() {
           <Route exact path='/' component={Home} />
           <Route path='/profile' exact component={Profile} />
           <Route path='/auth' exact component={Login} />
+          <Route path='user/:id' component={User} />
         </Switch>
     </Router>
   )

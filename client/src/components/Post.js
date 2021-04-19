@@ -100,7 +100,7 @@ const Posts = () => {
                 <img
                   className={classes.media}
                   src={post.image}
-                  alt="your image"
+                  alt={post.body}
                 />
               </div>
               <CardContent>
