@@ -91,7 +91,7 @@ const UserProf = ({id}) => {
     <>
 
       <div className={classes.root}>
-        <GridList cellHeight={160} className={classes.gridList} cols={5}>
+        <GridList cellHeight={300} className={classes.gridList} cols={3}>
           {postState.posts.length ? postState.posts.map(post => (
             <GridListTile key={post._id} cols={1} className={classes.image} onClick={handleOpen} >
               <img src={post.image} alt={post.caption} />

@@ -89,7 +89,7 @@ const ProfilePosts = () => {
     return (
       <>
       <div className={classes.root}>
-        <GridList cellHeight={160} className={classes.gridList} cols={5}>
+        <GridList cellHeight={300} className={classes.gridList} cols={3}>
           { postState.posts.length ? postState.posts.map((post, index) => (
             
             <GridListTile key={post._id} cols={1} className={classes.image}  onClick={handleOpen}  >
