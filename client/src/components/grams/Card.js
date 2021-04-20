@@ -4,9 +4,10 @@ import {
   Card as PostCard, CardHeader, CardContent, CardActions, IconButton,
   Button, TextField, Avatar, Typography, Checkbox, FormControlLabel
 } from '@material-ui/core';
-import { ChatBubbleOutline as ChatIcon, MoreVert as MoreVertIcon, InsertEmoticon,  Favorite, FavoriteBorder } from '@material-ui/icons'
+import { ChatBubbleOutline as ChatIcon, MoreVert as MoreVertIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
 import Comment from './Comment'
-import { Comment as Cmnt, Post } from '../../utils'
+import { Link } from 'react-router-dom'
+import { Comment as Cmnt, Post, User } from '../../utils'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,10 +38,24 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     justifyContent: "center"
   },
-  button: {
+  noMargPad: {
     padding: 0,
     margin: 0
-  }, 
+  },
+  likeComment: {
+    padding: 0,
+    margin: 0,
+    marginLeft: '-10px'
+  },
+  addComment: {
+    display: 'flex',
+    paddingBottom: '20px !important',
+    paddingTop: 0,
+  },
+  likeCommentField: {
+    paddingTop: '5px',
+    paddingBottom: '5px'
+  }
 }));
 
 
@@ -51,10 +66,16 @@ const Card = (props) => {
     profile,
     username,
     image,
+    userId,
     // hours,
     caption,
     likedByNumber,
-    postId
+    postId,
+    likedByUsers,
+    update,
+    setUpdate,
+    currentUser,
+    setCurrentUser
   } = props
 
   const [comment, setComment] = useState({
@@ -63,24 +84,38 @@ const Card = (props) => {
     list: []
   })
 
-  const [update, setUpdate] = useState('Comments are Up-to-Date')
+  // const [currentUser, setCurrentUser] = useState({
+  //   user: {}
+  // })
+
+  // const [likeState, setLikeState] = useState({
+  //   likes: likedByNumber
+  // })
+
+  // const [update, setUpdate] = useState('Comments are Up-to-Date')
 
   useEffect(() => {
     Cmnt.getFromPost(postId)
       .then(({ data: postComments }) => {
-        console.log('ping')
         setComment({ ...comment, list: postComments })
-        setUpdate('Comments are Up-to-Date')
-        console.log(postComments)
+        setUpdate('Up-to-Date')
       })
       .catch(err => {
         console.error(err)
       })
   }, [update])
 
+  // useEffect(() => {
+  //   User.profile()
+  //     .then(({ data }) => {
+  //       setCurrentUser({ user: data })
+  //       setUpdate('Up-to-Date')
+  //     })
+  //     .catch(err => console.error(err))
+  // }, [update])
+
   const handleCommentInput = ({ target }) => {
     setComment({ ...comment, body: target.value, post_id: target.id })
-    console.log(comment)
   }
 
   const handleComment = () => {
@@ -89,12 +124,28 @@ const Card = (props) => {
       post_id: comment.post_id
     })
       .then(({ data: cmnt }) => {
-        console.log(cmnt)
         setComment({ ...comment, body: '', post_id: '' })
-        setUpdate('Comments Need Update')
-        console.log(comment)
+        setUpdate('Need Update')
       })
       .catch(err => console.error(err))
+  }
+
+  const handleLike = () => {
+    let type = 'like'
+    likedByUsers.forEach(liker => {
+      if (liker == currentUser.user._id) {
+        type = 'unlike'
+      }
+    })
+    User.touchPost({
+      type,
+      user_id: currentUser.user._id,
+      post_id: postId
+    })
+      .then(data => {
+        setUpdate('Need Update')
+      })
+      .catch(err => console.log(err))
   }
 
   return (
@@ -110,7 +161,11 @@ const Card = (props) => {
               <MoreVertIcon />
             </IconButton>
           }
-          title={username}
+          title={
+            <Link to={`/${userId}`} style={{ textDecoration: 'none', color: 'black' }}>
+              {username}
+            </Link>
+          }
         />
         <div className={classes.imageWrapper}>
           <img
@@ -120,17 +175,20 @@ const Card = (props) => {
           />
         </div>
 
-        <CardContent>
-          <CardActions disableSpacing className={classes.button}>
-            <IconButton aria-label="like" color="danger" className={classes.button}>
-              <FormControlLabel
-                control={<Checkbox icon={<FavoriteBorder className={classes.button} />}
-                  checkedIcon={<Favorite className={classes.button} />}
-                  name="checkedH" />}
+        <CardContent className={classes.likeCommentField}>
+          <CardActions disableSpacing className={classes.likeComment}>
+            <IconButton aria-label="like" color="danger" className={classes.noMargPad}>
+              <FormControlLabel className={classes.noMargPad}
+                control={<Checkbox icon={<FavoriteBorder />}
+                  checkedIcon={<Favorite />}
+                  name="checkedH" 
+                  onClick={handleLike}
+                  checked={likedByUsers.indexOf(currentUser.user._id) != -1}
+                  />}
               />
             </IconButton>
             <IconButton aria-label="comment">
-              <ChatIcon className={classes.button} />
+              <ChatIcon className={classes.noMargPad} />
             </IconButton>
           </CardActions>
 
@@ -146,7 +204,7 @@ const Card = (props) => {
           <Typography variant="body2" color="textSecondary" component="p">
             {comment.list.length > 1 ? `View all ${comment.list.length} comments` : null}
             {comment.list.map((com, index) => {
-              if (comment.list.length <= index+3) {
+              if (comment.list.length <= index + 3) {
                 return (
                   <Comment
                     key={com._id}
@@ -158,7 +216,7 @@ const Card = (props) => {
             })}
           </Typography>
         </CardContent>
-        <CardContent>
+        <CardContent className={classes.addComment}>
           <IconButton aria-label="comment">
             <InsertEmoticon />
           </IconButton>

@@ -2,7 +2,7 @@ import Card from './Card.js'
 import { React, useState, useEffect } from 'react'
 import { Box } from '@material-ui/core';
 
-import { Post } from '../../utils'
+import { Post, User } from '../../utils'
 
 
 
@@ -11,17 +11,29 @@ const Cards = () => {
   const [postState, setPostState] = useState({
     posts: []
   })
+  const [update, setUpdate] = useState('Comments are Up-to-Date')
+  const [currentUser, setCurrentUser] = useState({
+    user: {}
+  })
 
   useEffect(() => {
     Post.getAll()
       .then(({ data: grams }) => {
         setPostState(grams)
-        console.log(grams)
       })
       .catch(err => {
         console.error(err)
       })
-  }, [])
+  }, [update])
+
+  useEffect(() => {
+    User.profile()
+      .then(({ data }) => {
+        setCurrentUser({ user: data })
+        setUpdate('Up-to-Date')
+      })
+      .catch(err => console.error(err))
+  }, [update])
 
 
 
@@ -30,12 +42,18 @@ const Cards = () => {
       { postState.length
         ? postState.map(post =>
           <Card
-            profile={post.user.profile}
+            postId={post._id}
+            userId={post.user._id}
             username={post.user.username}
+            profile={post.user.profile}
             image={post.image}
             caption={post.body}
             likedByNumber={post.liked_by.length ? post.liked_by.length : 0}
-            postId={post._id}
+            likedByUsers={post.liked_by}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+            update={update}
+            setUpdate={setUpdate}
           />
         ) : null
       }

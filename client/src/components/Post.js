@@ -70,8 +70,8 @@ const Posts = () => {
         User.profile()
           .then(({ data }) => {
             setPostState({ ...postState, posts: grams, user: data })
-            console.log(grams[0].user.profile)
-          }
+            console.log(data)
+          })
       })
       .catch(err => {
         console.error(err)
@@ -80,9 +80,9 @@ const Posts = () => {
   const [likeState, setLikeState] = useState({
     likes: 0
   })
-  const handleLikeChange = ({ target }) => {
-    setLikeState({ ...likeState, likes: target.value, id: target.id })
-  }
+  // const handleLikeChange = ({ target }) => {
+  //   setLikeState({ ...likeState, likes: target.value, id: target.id })
+  // }
 
   const handleLike = post_id => {
     let type = 'like'
