@@ -92,8 +92,8 @@ const ProfilePosts = () => {
         <GridList cellHeight={160} className={classes.gridList} cols={5}>
           { postState.posts.length ? postState.posts.map((post, index) => (
             
-            <GridListTile key={post._id} cols={1} className={classes.image} >
-              <img src={post.image} alt={post.body} onClick={handleOpen} />
+            <GridListTile key={post._id} cols={1} className={classes.image}  onClick={handleOpen}  >
+              <img src={post.image} alt={post.body}/>
               <div>
               <Modal
                 open={open}
