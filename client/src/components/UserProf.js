@@ -1,5 +1,5 @@
 import { useState, useEffect, React } from 'react'
-import { Post } from '../utils/'
+import { User, Post } from '../utils'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-around",
+    overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
     marginTop: 100,
   },
@@ -30,49 +31,48 @@ const useStyles = makeStyles(theme => ({
   image: {
     height: 300,
   }
-  
+
 }))
 
-const ProfilePosts = () => {
+const UserProf = ({id}) => {
   const classes = useStyles()
   const [postState, setPostState] = useState({
     posts: []
   })
 
-  useEffect(() => {
+  const handleDeletePost = id => {
+    Post.delete(id)
+      .then(() => {
+        window.location = '/profile'
+        const posts = [postState.posts]
+        setPostState({ ...postState, posts })
 
-    Post.getOwned()
-    .then(({ data }) => {
-    const posts = data.map(post => ({
-      ...post,
-      open: false
-    }))
-    setPostState({ ...postState, posts })
-    })
-    .catch(err => {console.log(err)})
-  
+      })
+      .catch(err => console.log(err))
+  }
+
+  useEffect(() => {
+ 
+    User.getUser(id)
+      .then(({ data }) => {
+        const posts = data.posts.map(post => ({
+        ...post, 
+        open: false
+      }))
+      setPostState({ ...postState, posts })
+      })
+      .catch(err => { console.log(err) })
+
   }, [])
 
-  const handleDeletePost = id => {
-    
-    Post.delete(id)
-    .then(() => {
-      window.location = '/profile'
-      const posts = [postState.posts]
-      setPostState({ ...postState, posts })
-      
-    })
-    .catch(err => console.log(err))
-  }
-  
   const rand = () => {
     return Math.round(Math.random() * 20) - 10;
   }
-  
+
   const getModalStyle = () => {
     const top = 50 + rand();
     const left = 50 + rand();
-    
+
     return {
       top: `${top}%`,
       left: `${left}%`,
@@ -81,7 +81,7 @@ const ProfilePosts = () => {
   }
   const [modalStyle] = useState(getModalStyle)
   // const [open, setOpen] = useState(false)
-  
+
   const handleOpen = id => {
     const posts = [...postState.posts]
     posts.forEach(post => {
@@ -93,6 +93,7 @@ const ProfilePosts = () => {
     // setOpen(true);
   };
 
+  
 
   const handleForceClose = async function () {
     const res = await new Promise((resolve, reject) => {
@@ -110,35 +111,38 @@ const ProfilePosts = () => {
         setPostState({ ...postState, posts })
       })
   };
-  console.log(postState)
-    return (
-      <>
+
+
+  return (
+    <>
+
       <div className={classes.root}>
         <GridList cellHeight={300} className={classes.gridList} cols={3}>
-          { postState.posts.length ? postState.posts.map(post => (
-            
-            <GridListTile key={post._id} cols={1} className={classes.image}  onClick={() => handleOpen(post._id)}  >
-              <img src={post.image} alt={post.body}/>
+          {postState.posts.length ? postState.posts.map(post => (
+            <GridListTile key={post._id} cols={1} className={classes.image} onClick={() => handleOpen(post._id)} >
+              <img src={post.image} alt={post.caption} />
               <div>
-              <Modal
-                open={post.open}
-                onClose={handleClose}
-
+                <Modal
+                  open={post.open}
+                  onClose={handleClose}
+                  
                 >
                   <div style={modalStyle} className={classes.paper}>
+
                     <img src={post.image} alt={post.body} className={classes.image} />
                     <Typography>{post.comments}</Typography>
                   </div>
-              </Modal>
-                </div>
+                </Modal>
+              </div>
               <div className='overlay'>
                 <Typography>
-                {post.body}
+                  {post.body}
                   <DeleteIcon onClick={() => handleDeletePost(post._id)} />
                 </Typography>
               </div>
             </GridListTile>
-            )) : null
+          ))
+            : null
           }
         </GridList>
       </div>
@@ -146,4 +150,4 @@ const ProfilePosts = () => {
   )
 }
 
-export default ProfilePosts
+export default UserProf

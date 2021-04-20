@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { Avatar, CardHeader, Typography, IconButton } from '@material-ui/core';
 import { Link } from 'react-router-dom'
-import Users from '../utils/User.js'
+
 import User from '../utils/User.js'
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +38,7 @@ const Suggested = () => {
  
   useEffect(() => {
 
-    Users.getUsers()
+    User.getUsers()
     .then(({ data: users }) => {
         User.profile()
           .then(({ data: user }) => { 
@@ -68,7 +68,7 @@ const Suggested = () => {
             </Avatar>
           }
           title={
-            <Link to={`/${currentUserState.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+            <Link to={`/user/${currentUserState.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
             {currentUserState.user.username}
             </Link>
           }
@@ -82,7 +82,7 @@ const Suggested = () => {
             </Avatar>
               } 
               title={
-              <Link to={`/${user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+              <Link to={`/user/${user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
                 {user.username}
               </Link>
               }

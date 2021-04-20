@@ -31,6 +31,7 @@ router.get('/posts', (req, res) => {
 
 router.get('/user/posts', passport.authenticate('jwt'), (req, res) => {
   // req.user is the user information that has posts.... > req.user._id is it's id
+  // res.json(req.user)
   Post.find({ user: req.user._id })
     .populate('comments')
     .then(posts => res.json(posts))
