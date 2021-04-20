@@ -11,9 +11,9 @@ function App() {
     <Router>
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route path='/profile' exact component={Profile} />
+          <Route path='/profile'exact component={Profile} />
           <Route path='/auth' exact component={Login} />
-          <Route path='user/:id' component={User} />
+          <Route path='/user/:id' exact component={User} />
         </Switch>
     </Router>
   )

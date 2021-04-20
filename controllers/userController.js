@@ -11,7 +11,8 @@ router.get('/users', (req, res) => {
 })
 
 router.get('/users/:id', (req, res) => {
-  User.findById({})
+  User.findById(req.params.id)
+  .populate({path:'posts', model: 'Post'})
   .then(user => res.json(user))
   .catch(err => console.log(err))
 })

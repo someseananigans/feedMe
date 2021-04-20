@@ -92,7 +92,7 @@ const Posts = () => {
                   </IconButton>
                 }
                 title={
-                <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }}>
                   {post.user.username}
                 </Link>
                 }
@@ -120,7 +120,7 @@ const Posts = () => {
 
                 <Typography variant="body2" color="textSecondary" component="p">
                   <div className={classes.un}>
-                    <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+                    <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
                     {post.user.username}
                     </Link>
                   </div>
