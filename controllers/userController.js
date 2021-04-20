@@ -1,13 +1,13 @@
 const router = require('express').Router()
-const { User } = require('../models')
+const { User, Post } = require('../models')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
 // only for testing purposes
 router.get('/users', (req, res) => {
   User.find({})
-  .then(users => res.json(users))
-  .catch(err => console.log(err))
+    .then(users => res.json(users))
+    .catch(err => console.log(err))
 })
 
 router.get('/users/:id', (req, res) => {
@@ -47,6 +47,26 @@ router.delete('/user', passport.authenticate('jwt'), (req, res) => {
   User.findByIdAndRemove(req.user.id)
     .then(() => res.sendStatus(200))
     .catch(err => console.log(err))
+})
+
+// <------------------ Interacting with Post ---------------------->
+
+router.put('/post/interaction', passport.authenticate('jwt'), async (req, res) => {
+
+  try {
+    if (req.body.type === 'like') {
+      await Post.findByIdAndUpdate(req.body.post_id, { $addToSet: { liked_by: req.body.user_id } }, { "new": true })
+      await User.findByIdAndUpdate(req.body.user_id, { $addToSet: { liked_posts: req.body.post_id } }, { "new": true })
+    }
+    if (req.body.type === 'unlike') {
+      await Post.findByIdAndUpdate(req.body.post_id, { $pull: { liked_by: req.body.user_id } }, { "new": true })
+      await User.findByIdAndUpdate(req.body.user_id, { $pull: { liked_posts: req.body.post_id } }, { "new": true })
+    }
+  } catch (err) {
+    res.send(err)
+    return
+  }
+
 })
 
 module.exports = router

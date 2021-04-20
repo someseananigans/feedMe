@@ -19,6 +19,11 @@ const User = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
+  }),
+  touchPost: details => axios.put('/api/post/interaction', details, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('user')}`
+    }
   })
 }
 

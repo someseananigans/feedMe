@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Post from '../utils/Post.js'
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -12,7 +12,7 @@ import InsertEmoticon from '@material-ui/icons/InsertEmoticon'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-
+import { Comment, Post } from '../utils'
 
 
 
@@ -59,9 +59,10 @@ const Posts = () => {
   const [postState, setPostState] = useState({
     posts: []
   })
-
-
-
+  const [comment, setComment] = useState({
+    body: '',
+    post_id: ''
+  })
 
   useEffect(async () => {
     await Post.getAll()
@@ -73,6 +74,24 @@ const Posts = () => {
         console.error(err)
       })
   }, [])
+
+  const handleCommentInput = ({ target }) => {
+    setComment({...comment, body: target.value, post_id: target.id})
+    console.log(comment) 
+  }
+  
+  const handleComment = () => {
+    Comment.create({
+      comment: comment.body, 
+      post_id: comment.post_id
+    })
+      .then(({ data: cmnt }) => {
+        console.log(cmnt)
+        setComment({body: '', post_id: ''})
+        console.log(comment)
+      })
+      .catch(err => console.error(err))
+  }
 
   return (
 
@@ -137,11 +156,13 @@ const Posts = () => {
                   <InsertEmoticon />
                 </IconButton>
                 <TextField
-                  id="standard-input"
+                  id={post._id}
                   label="Add a comment..."
                   type="comment"
+                  value={comment.post_id == post._id ? comment.body : ""}
+                  onChange={handleCommentInput}
                 />
-                <Button>Post</Button>
+                <Button onClick={handleComment}>Post</Button>
                 
               </CardContent>
             </Card>
