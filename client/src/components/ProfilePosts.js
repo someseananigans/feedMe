@@ -41,7 +41,11 @@ const ProfilePosts = () => {
 
   useEffect(() => {
     Post.getOwned()
-    .then(({ data: posts }) => {
+    .then(({ data }) => {
+    const posts = data.map(post => ({
+      ...post,
+      open: false
+    }))
     setPostState({ ...postState, posts })
     console.log(posts)
     })
@@ -76,14 +80,28 @@ const ProfilePosts = () => {
     };
   }
   const [modalStyle] = useState(getModalStyle)
-  const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(false)
   
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpen = id => {
+    const posts = [...postState.posts]
+    posts.forEach(post => {
+      if (post._id === id) {
+        post.open = true
+      }
+    })
+    setPostState({ ...postState, posts })
+    // setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = id => {
+    const posts = [...postState.posts]
+    posts.forEach(post => {
+      if (post._id === id) {
+        post.open = false
+      }
+    })
+    setPostState({ ...postState, posts })
+    // setOpen(false);
   };
   console.log(postState)
     return (
@@ -92,13 +110,13 @@ const ProfilePosts = () => {
         <GridList cellHeight={300} className={classes.gridList} cols={3}>
           { postState.posts.length ? postState.posts.map((post, index) => (
             
-            <GridListTile key={post._id} cols={1} className={classes.image}  onClick={handleOpen}  >
+            <GridListTile key={post._id} cols={1} className={classes.image}  onClick={() => handleOpen(post._id)}  >
               <img src={post.image} alt={post.body}/>
               <div>
               <Modal
-                open={open}
-                onClose={handleClose}
-                onBackdropClick={handleClose}
+                open={post.open}
+                onClose={() => handleClose(post._id)}
+                onBackdropClick={() => handleClose(post._id)}
                 >
                   <div style={modalStyle} className={classes.paper}>
                     <img src={post.image} alt={post.body} className={classes.image} />
