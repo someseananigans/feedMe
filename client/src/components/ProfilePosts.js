@@ -93,15 +93,22 @@ const ProfilePosts = () => {
     // setOpen(true);
   };
 
-  const handleClose = id => {
-    const posts = [...postState.posts]
-    posts.forEach(post => {
-      if (post._id === id) {
-        post.open = false
-      }
+
+  const handleForceClose = async function () {
+    const res = await new Promise((resolve, reject) => {
+      const posts = postState.posts.map(post => ({
+        ...post,
+        open: false
+      }))
+      resolve(posts)
     })
-    setPostState({ ...postState, posts })
-    // setOpen(false);
+    return res
+  }
+  const handleClose = () => {
+    handleForceClose()
+      .then(posts => {
+        setPostState({ ...postState, posts })
+      })
   };
   console.log(postState)
     return (
@@ -115,8 +122,8 @@ const ProfilePosts = () => {
               <div>
               <Modal
                 open={post.open}
-                onClose={() => handleClose(post._id)}
-                onBackdropClick={() => handleClose(post._id)}
+                onClose={handleClose}
+
                 >
                   <div style={modalStyle} className={classes.paper}>
                     <img src={post.image} alt={post.body} className={classes.image} />
