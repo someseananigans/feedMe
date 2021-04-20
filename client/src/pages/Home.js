@@ -1,5 +1,4 @@
-import { Navbar, Suggested } from '../components'
-import { Box } from '@material-ui/core'
+import { Navbar, Suggested, Post } from '../components'
 import '../index.css'
 import Cards from '../components/grams/Cards'
 

@@ -1,11 +1,4 @@
-import { ProfilePosts, ProfileModal, ProfileInfo } from '../components/'
-import Navbar from '../components/Navbar'
-
-
-
-
-
-
+import { ProfilePosts, ProfileInfo, Navbar } from '../components/'
 
 const Profile = () => {
   return (

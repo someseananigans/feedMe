@@ -6,7 +6,6 @@ import User from '../utils/User.js'
 
 
 const ProfileInfo = () => {
-
   const [userState, setUserState] = useState({
     user: {}
   })
