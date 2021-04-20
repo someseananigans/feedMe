@@ -162,7 +162,7 @@ const Card = (props) => {
             </IconButton>
           }
           title={
-            <Link to={`/${userId}`} style={{ textDecoration: 'none', color: 'black' }}>
+            <Link to={`/user/${userId}`} style={{ textDecoration: 'none', color: 'black' }}>
               {username}
             </Link>
           }
