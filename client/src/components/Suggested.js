@@ -68,7 +68,7 @@ const Suggested = () => {
             </Avatar>
           }
           title={
-            <Link to={`/user/${currentUserState.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+            <Link to="/profile" style={{ textDecoration: 'none', color: 'black' }} >
             {currentUserState.user.username}
             </Link>
           }

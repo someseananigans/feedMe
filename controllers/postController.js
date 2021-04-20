@@ -34,6 +34,25 @@ router.get('/user/posts', passport.authenticate('jwt'), (req, res) => {
   // res.json(req.user)
   Post.find({ user: req.user._id })
     .populate('comments')
+    .populate(
+      {
+        path: 'comments',
+        model: 'Comment',
+        select: 'comment user _id',
+        populate: {
+          path: 'user',
+          model: 'User',
+          select: 'username profile _id'
+        }
+      }
+    )
+    .populate(
+      {
+        path: 'user',
+        model: 'User',
+        select: 'username profile _id'
+      }
+    )
     .then(posts => res.json(posts))
     .catch(err => console.log(err))
 })

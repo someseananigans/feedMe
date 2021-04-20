@@ -1,11 +1,13 @@
 import { useState, useEffect, React } from 'react'
+import { Link } from 'react-router-dom'
 import { Post } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import './ProfPost.css'
-import { Typography, Modal, } from '@material-ui/core';
+import { Typography, Modal, Avatar, CardHeader } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Comment from './grams/Comment'
 
 
 
@@ -22,13 +24,15 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     position: 'absolute',
+    width: '600px',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
   image: {
-    height: 300,
+    height: 400,
+    width: 300
   }
   
 }))
@@ -110,7 +114,7 @@ const ProfilePosts = () => {
         setPostState({ ...postState, posts })
       })
   };
-  console.log(postState)
+
     return (
       <>
       <div className={classes.root}>
@@ -118,6 +122,7 @@ const ProfilePosts = () => {
           { postState.posts.length ? postState.posts.map(post => (
             
             <GridListTile key={post._id} cols={1} className={classes.image}  onClick={() => handleOpen(post._id)}  >
+              {console.log(post)}
               <img src={post.image} alt={post.body}/>
               <div>
               <Modal
@@ -126,8 +131,32 @@ const ProfilePosts = () => {
 
                 >
                   <div style={modalStyle} className={classes.paper}>
+                    <div className="images">
                     <img src={post.image} alt={post.body} className={classes.image} />
-                    <Typography>{post.comments}</Typography>
+                    </div>
+                    <div className='comments'>
+                      <ul style={{listStyle: "none"}}>
+                      <li>
+
+                      <CardHeader
+                        avatar={
+                          <Avatar alt={post.user.firstName} src={post.user.profile}>
+                          </Avatar>
+                        }
+                        title={
+                          <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+                            {post.user.username}
+                          </Link>
+                        }
+                        subheader={post.body}
+                        />
+                        </li>
+                        <hr />
+                        <li>
+                          Comments:
+                        </li>
+                        </ul>
+                    </div>
                   </div>
               </Modal>
                 </div>
