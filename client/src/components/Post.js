@@ -15,7 +15,7 @@ import User from '../utils/User'
 import { Comment, Post } from '../utils'
 
 
-
+// <--------------------- TO BE REMOVED ----------------------->
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -193,7 +193,7 @@ const Posts = () => {
                   </div>
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {/* {post.comments.length && post.comments[0].comment} */}
+                  {post.comments.length > 1 ? `View all ${post.comments.length} comments` : `View 1 Comment`}
                 </Typography>
               </CardContent>
               <CardContent>

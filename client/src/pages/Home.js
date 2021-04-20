@@ -1,6 +1,7 @@
-import { Navbar, Post, Suggested } from '../components'
+import { Navbar, Suggested } from '../components'
 import '../index.css'
-
+import Cards from '../components/grams/Cards'
+import Post from '../components/Post'
 const Home = () => {
   return (
     <>
@@ -9,7 +10,8 @@ const Home = () => {
 
       </div>
       <div className="cols">
-        <Post/>
+        <Cards />
+        <Post />
       </div>
       <div className="cols col3">
         <Suggested />
