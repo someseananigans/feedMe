@@ -19,8 +19,11 @@ const User = new Schema({
   liked_post: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
+  }],
+  following: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
   }]
-  // following: []
   // followers: []
 })
 
