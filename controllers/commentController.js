@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Comment, Post } = require('../models')
+const { Comment, Post, User } = require('../models')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
@@ -12,12 +12,17 @@ router.get('/comments', (req, res) => {
 
 router.get('/comments/:post_id', (req, res) => {
   Comment.find({ post: req.params.post_id })
+    .populate(
+      {
+        path: 'user',
+        model: 'User'
+      }
+    )
     .then(comments => res.json(comments))
     .catch(err => console.log(err))
 })
 
 router.post('/comment/:post_id', passport.authenticate('jwt'), (req, res) => {
-  console.log(req)
   Comment.create({
     comment: req.body.comment,
     post: req.params.post_id,
@@ -25,6 +30,12 @@ router.post('/comment/:post_id', passport.authenticate('jwt'), (req, res) => {
   })
     .then(cmnt => {
       Post.findByIdAndUpdate(req.params.post_id, { $push: { comments: cmnt._id } })
+        .populate(
+          {
+            path: 'user',
+            model: 'User'
+          }
+        )
         .then(() => res.json(cmnt))
         .catch(err => console.log(err))
     })
