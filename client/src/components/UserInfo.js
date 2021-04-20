@@ -5,19 +5,23 @@ import { useState, useEffect } from 'react'
 import User from '../utils/User.js'
 
 
-const ProfileInfo = () => {
+const UserInfo = ({id}) => {
+
   const [userState, setUserState] = useState({
     user: {}
   })
 
   useEffect(() => {
-    User.profile()
+
+    User.getUser(id)
       .then(({ data: user }) => {
         setUserState({ ...userState, user })
       })
+      .catch(err => { console.log(err) })
+
   }, [])
 
-  
+
 
   const { user } = userState
 
@@ -58,7 +62,7 @@ const ProfileInfo = () => {
     </Profile>
   )
 }
-export default ProfileInfo
+export default UserInfo
 
 const Profile = styled.div`
   margin-top: 100px;

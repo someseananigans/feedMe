@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const Comment = {
-  create: (details, post_id) => axios.post(`/comment/${post_id}`, {
+  create: (commentInfo) => axios.post(`api/comment/${commentInfo.post_id}`,
+    commentInfo, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }

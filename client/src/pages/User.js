@@ -1,15 +1,13 @@
-import Navbar from '../components/Navbar'
+import { UserProf, Navbar, UserInfo } from '../components'
 
-
-const Profile = () => {
+const User = ({match}) => {
   return (
     <>
-      <Navbar />
-
-
+    <Navbar />
+    <UserInfo id={match.params.id} />
+    <UserProf id={match.params.id} />
     </>
-
   )
 }
 
-export default Profile
+export default User

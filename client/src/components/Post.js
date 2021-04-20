@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Post from '../utils/Post.js'
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card, CardHeader, CardContent, CardActions, IconButton,
@@ -12,8 +11,8 @@ import InsertEmoticon from '@material-ui/icons/InsertEmoticon'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-import Comment from '../utils'
 import User from '../utils/User'
+import { Comment, Post } from '../utils'
 
 
 
@@ -105,7 +104,6 @@ const Posts = () => {
       .then(data => {
         Post.getAll()
           .then(({ data: grams }) => {
-            console.log('hi')
             console.log(grams)
             setPostState({ ...postState, posts: grams })
           })
@@ -118,12 +116,21 @@ const Posts = () => {
   }
 
   const handleCommentInput = ({ target }) => {
-    setComment({ ...comment, body: target.value, post_id: target.postid })
-    console.log(target)
+    setComment({...comment, body: target.value, post_id: target.id})
+    console.log(comment) 
   }
-
-  const handleComment = ({ target }) => {
-    console.log(target)
+  
+  const handleComment = () => {
+    Comment.create({
+      comment: comment.body, 
+      post_id: comment.post_id
+    })
+      .then(({ data: cmnt }) => {
+        console.log(cmnt)
+        setComment({body: '', post_id: ''})
+        console.log(comment)
+      })
+      .catch(err => console.error(err))
   }
 
   return (
@@ -144,9 +151,9 @@ const Posts = () => {
                   </IconButton>
                 }
                 title={
-                  <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }}>
-                    {post.user.username}
-                  </Link>
+                <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }}>
+                  {post.user.username}
+                </Link>
                 }
               />
               <div className={classes.imageWrapper}>
@@ -177,8 +184,8 @@ const Posts = () => {
 
                 <Typography variant="body2" color="textSecondary" component="p">
                   <div className={classes.un}>
-                    <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
-                      {post.user.username}
+                    <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+                    {post.user.username}
                     </Link>
                   </div>
                   <div className={classes.cap}>
@@ -194,10 +201,10 @@ const Posts = () => {
                   <InsertEmoticon />
                 </IconButton>
                 <TextField
-                  id="standard-input"
+                  id={post._id}
                   label="Add a comment..."
                   type="comment"
-                  postid={post._id}
+                  value={comment.post_id == post._id ? comment.body : ""}
                   onChange={handleCommentInput}
                 />
                 <Button onClick={handleComment}>Post</Button>

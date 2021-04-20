@@ -17,14 +17,15 @@ router.get('/comments/:post_id', (req, res) => {
 })
 
 router.post('/comment/:post_id', passport.authenticate('jwt'), (req, res) => {
+  console.log(req)
   Comment.create({
     comment: req.body.comment,
     post: req.params.post_id,
     user: req.user._id
   })
-    .then(comment => {
-      Post.findByIdAndUpdate(req.params.post_id, { $push: { comments: comment._id } })
-        .then(() => res.json(comment))
+    .then(cmnt => {
+      Post.findByIdAndUpdate(req.params.post_id, { $push: { comments: cmnt._id } })
+        .then(() => res.json(cmnt))
         .catch(err => console.log(err))
     })
     .catch(err => console.log(err))
