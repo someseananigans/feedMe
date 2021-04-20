@@ -40,6 +40,7 @@ const ProfilePosts = () => {
   })
 
   useEffect(() => {
+
     Post.getOwned()
     .then(({ data }) => {
     const posts = data.map(post => ({
@@ -47,7 +48,6 @@ const ProfilePosts = () => {
       open: false
     }))
     setPostState({ ...postState, posts })
-    console.log(posts)
     })
     .catch(err => {console.log(err)})
   
@@ -108,7 +108,7 @@ const ProfilePosts = () => {
       <>
       <div className={classes.root}>
         <GridList cellHeight={300} className={classes.gridList} cols={3}>
-          { postState.posts.length ? postState.posts.map((post, index) => (
+          { postState.posts.length ? postState.posts.map(post => (
             
             <GridListTile key={post._id} cols={1} className={classes.image}  onClick={() => handleOpen(post._id)}  >
               <img src={post.image} alt={post.body}/>

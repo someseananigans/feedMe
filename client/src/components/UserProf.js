@@ -54,8 +54,12 @@ const UserProf = ({id}) => {
   useEffect(() => {
  
     User.getUser(id)
-      .then(({ data: user }) => {
-        setPostState({ ...postState, posts: user.posts })
+      .then(({ data }) => {
+        const posts = data.posts.map(post => ({
+        ...post, 
+        open: false
+      }))
+      setPostState({ ...postState, posts })
       })
       .catch(err => { console.log(err) })
 
@@ -76,14 +80,28 @@ const UserProf = ({id}) => {
     };
   }
   const [modalStyle] = useState(getModalStyle)
-  const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(false)
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpen = id => {
+    const posts = [...postState.posts]
+    posts.forEach(post => {
+      if (post._id === id) {
+        post.open = true
+      }
+    })
+    setPostState({ ...postState, posts })
+    // setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = id => {
+    const posts = [...postState.posts]
+    posts.forEach(post => {
+      if (post._id === id) {
+        post.open = false
+      }
+    })
+    setPostState({ ...postState, posts })
+    // setOpen(false);
   };
 
 
@@ -93,13 +111,13 @@ const UserProf = ({id}) => {
       <div className={classes.root}>
         <GridList cellHeight={300} className={classes.gridList} cols={3}>
           {postState.posts.length ? postState.posts.map(post => (
-            <GridListTile key={post._id} cols={1} className={classes.image} onClick={handleOpen} >
+            <GridListTile key={post._id} cols={1} className={classes.image} onClick={() => handleOpen(post._id)} >
               <img src={post.image} alt={post.caption} />
               <div>
                 <Modal
-                  open={open}
-                  onClose={handleClose}
-                  onBackdropClick={handleClose}
+                  open={post.open}
+                  onClose={() => handleClose(post._id)}
+                  onBackdropClick={() => handleClose(post._id)}
                 >
                   <div style={modalStyle} className={classes.paper}>
 
