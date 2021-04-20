@@ -6,7 +6,8 @@ const Comment = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
-  })
+  }),
+  getFromPost: post_id => axios.get(`api/comments/${post_id}`)
 }
 
 export default Comment
