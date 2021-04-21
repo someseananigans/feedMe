@@ -12,7 +12,16 @@ router.get('/users', (req, res) => {
 
 router.get('/users/:id', (req, res) => {
   User.findById(req.params.id)
-  .populate({path:'posts', model: 'Post'})
+  .populate(
+    {
+      path:'posts', 
+      model: 'Post',
+      populate: {
+        path: 'user',
+        model: 'User',
+        select: 'username profile _id'
+      }
+    })
   .then(user => res.json(user))
   .catch(err => console.log(err))
 })
