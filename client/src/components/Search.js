@@ -29,15 +29,6 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const handleSearch = () => {
-    // User.search({
-    //   username: searchState.value
-    // })
-    // .then(({ data: users}))
-    // .catch(err => console.log(err))
-  }
-
-
 const Search = (props) => {
 
 
@@ -60,7 +51,6 @@ const Search = (props) => {
       <Paper>
         <Typography className={classes.suggestions}>Search Results</Typography>
           {users.length > 0 && users.map(user => (
-
             <CardHeader
               key={user._id}
               avatar={

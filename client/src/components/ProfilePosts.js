@@ -7,7 +7,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import './ProfPost.css'
 import { Typography, Modal, Avatar, CardHeader } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Comment from './grams/Comment'
+// import Comment from './grams/Comment'
 
 
 
