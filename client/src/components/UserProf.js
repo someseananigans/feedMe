@@ -1,10 +1,11 @@
 import { useState, useEffect, React } from 'react'
 import { User, Post } from '../utils'
+import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import './ProfPost.css'
-import { Typography, Modal, } from '@material-ui/core';
+import { Typography, Modal, Avatar, CardHeader } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
@@ -54,11 +55,16 @@ const UserProf = ({id}) => {
   useEffect(() => {
  
     User.getUser(id)
-      .then(({ data: user }) => {
-        setPostState({ ...postState, posts: user.posts })
-      })
-      .catch(err => { console.log(err) })
+      .then(({ data }) => {
+        const posts = data.posts.map(post => ({
+        ...post, 
+        open: false
+      }))
+      setPostState({ ...postState, posts })
+    })
+    .catch(err => { console.log(err) })
 
+    
   }, [])
 
   const rand = () => {
@@ -76,16 +82,38 @@ const UserProf = ({id}) => {
     };
   }
   const [modalStyle] = useState(getModalStyle)
-  const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(false)
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpen = id => {
+    const posts = [...postState.posts]
+    posts.forEach(post => {
+      if (post._id === id) {
+        post.open = true
+      }
+    })
+    setPostState({ ...postState, posts })
+    // setOpen(true);
   };
 
+  
+
+  const handleForceClose = async function () {
+    const res = await new Promise((resolve, reject) => {
+      const posts = postState.posts.map(post => ({
+        ...post,
+        open: false
+      }))
+      resolve(posts)
+    })
+    return res
+  }
   const handleClose = () => {
-    setOpen(false);
+    handleForceClose()
+      .then(posts => {
+        setPostState({ ...postState, posts })
+      })
   };
-
+console.log(postState)
 
   return (
     <>
@@ -93,18 +121,43 @@ const UserProf = ({id}) => {
       <div className={classes.root}>
         <GridList cellHeight={300} className={classes.gridList} cols={3}>
           {postState.posts.length ? postState.posts.map(post => (
-            <GridListTile key={post._id} cols={1} className={classes.image} onClick={handleOpen} >
-              <img src={post.image} alt={post.caption} />
+            <GridListTile key={post._id} cols={1} className={classes.image} onClick={() => handleOpen(post._id)} >
+              {console.log(post)}
+              <img src={post.image} alt={post.body} />
               <div>
                 <Modal
-                  open={open}
+                  open={post.open}
                   onClose={handleClose}
-                  onBackdropClick={handleClose}
+                  
                 >
                   <div style={modalStyle} className={classes.paper}>
 
-                    <img src={post.image} alt={post.body} className={classes.image} />
-                    <Typography>{post.comments}</Typography>
+                    <div className="images">
+                      <img src={post.image} alt={post.body} className={classes.image} />
+                    </div>
+                    <div className='comments'>
+                      <ul style={{ listStyle: "none" }}>
+                        <li>
+
+                          <CardHeader
+                            avatar={
+                              <Avatar alt={post.user.firstName} src={post.user.profile}>
+                              </Avatar>
+                            }
+                            title={
+                              <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+                                {post.user.username}
+                              </Link>
+                            }
+                            subheader={post.body}
+                          />
+                        </li>
+                        <hr />
+                        <li>
+                          Comments:
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </Modal>
               </div>
