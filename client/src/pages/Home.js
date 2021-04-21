@@ -11,7 +11,7 @@ const Home = () => {
       </div>
       <div className="cols">
         <Cards />
-        <Post />
+        {/* <Post /> */}
       </div>
       <div className="cols col3">
         <Suggested />
