@@ -55,7 +55,7 @@ const ProfilePosts = () => {
     })
     .catch(err => {console.log(err)})
   
-  }, [postState])
+  }, [])
 
   const handleDeletePost = id => {
     
@@ -69,13 +69,11 @@ const ProfilePosts = () => {
     .catch(err => console.log(err))
   }
   
-  const rand = () => {
-    return Math.round(Math.random() * 20) - 10;
-  }
+ 
   
   const getModalStyle = () => {
-    const top = 50 + rand();
-    const left = 50 + rand();
+    const top = 50
+    const left = 50
     
     return {
       top: `${top}%`,
@@ -114,13 +112,12 @@ const ProfilePosts = () => {
         setPostState({ ...postState, posts })
       })
   };
-
+    
     return (
       <>
       <div className={classes.root}>
         <GridList cellHeight={300} className={classes.gridList} cols={3}>
           { postState.posts.length ? postState.posts.map(post => (
-            
             <GridListTile key={post._id} cols={1} className={classes.image}  onClick={() => handleOpen(post._id)}  >
               {console.log(post)}
               <img src={post.image} alt={post.body}/>
@@ -152,9 +149,18 @@ const ProfilePosts = () => {
                         />
                         </li>
                         <hr />
-                        <li>
-                          Comments:
+                          {post.comments.length ? post.comments.map(comment => ( 
+                        <li key={post._id} >
+                              <CardHeader
+                                avatar={
+                                  <Avatar alt={comment.user.username} src={comment.user.profile}>
+                                  </Avatar>
+                                }
+                              title={`${comment.user.username} ${comment.comment}`}
+
+                              />
                         </li>
+                          )):null }
                         </ul>
                     </div>
                   </div>

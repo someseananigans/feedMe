@@ -91,7 +91,7 @@ const Card = (props) => {
       .catch(err => {
         console.error(err)
       })
-  }, [update.comments])
+  }, [])
 
 
   const handleLike = () => {

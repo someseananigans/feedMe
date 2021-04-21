@@ -53,7 +53,15 @@ router.get('/user/posts', passport.authenticate('jwt'), (req, res) => {
         select: 'username profile _id'
       }
     )
-    .then(posts => res.json(posts))
+    .then(posts => {
+      res.json(posts)
+      Comment.find({})
+        .then (comments => res.json(comments))
+        .catch(err => console.log(err))
+    
+    })
+      
+      
     .catch(err => console.log(err))
 })
 

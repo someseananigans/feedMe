@@ -47,14 +47,12 @@ const Suggested = () => {
               if (users[i]._id !== user._id) {
                 filteredUsers.push(users[i])
               }
-              console.log(users[i])
             }
-            console.log(filteredUsers)
             setUserState ({ ...userState, users: filteredUsers})
             setCurrentUserState ({ ...currentUserState, user })
           })
       })
-  }, [currentUserState, userState])
+  }, [])
       
   return (
     <div className={classes.root}>

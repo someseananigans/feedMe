@@ -40,8 +40,11 @@ const useStyles = makeStyles(theme => ({
 const UserProf = ({id}) => {
   const classes = useStyles()
   const [postState, setPostState] = useState({
-    posts: []
+    posts: [],
+    username: '',
+    profile: ''
   })
+  
 
   const handleDeletePost = id => {
     Post.delete(id)
@@ -58,24 +61,26 @@ const UserProf = ({id}) => {
  
     User.getUser(id)
       .then(({ data }) => {
+
         const posts = data.posts.map(post => ({
         ...post, 
         open: false
       }))
-      setPostState({ ...postState, posts })
+      setPostState({ ...postState, posts, profile: data.profile, username: data.username })
+
     })
+      
     .catch(err => { console.log(err) })
 
-    
   }, [])
 
-  const rand = () => {
-    return Math.round(Math.random() * 20) - 10;
-  }
+  // const rand = () => {
+  //   return Math.round(Math.random() * 20) - 10;
+  // }
 
   const getModalStyle = () => {
-    const top = 50 + rand();
-    const left = 50 + rand();
+    const top = 50 
+    const left = 50 
 
     return {
       top: `${top}%`,
@@ -84,7 +89,7 @@ const UserProf = ({id}) => {
     };
   }
   const [modalStyle] = useState(getModalStyle)
-  const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(false)
 
   const handleOpen = id => {
     const posts = [...postState.posts]
@@ -115,8 +120,10 @@ const UserProf = ({id}) => {
         setPostState({ ...postState, posts })
       })
   };
-console.log(postState)
 
+
+
+  
   return (
     <>
 
@@ -124,7 +131,6 @@ console.log(postState)
         <GridList cellHeight={300} className={classes.gridList} cols={3}>
           {postState.posts.length ? postState.posts.map(post => (
             <GridListTile key={post._id} cols={1} className={classes.image} onClick={() => handleOpen(post._id)} >
-              {console.log(post)}
               <img src={post.image} alt={post.body} />
               <div>
                 <Modal
@@ -143,21 +149,30 @@ console.log(postState)
 
                           <CardHeader
                             avatar={
-                              <Avatar alt={post.user.firstName} src={post.user.profile}>
+                              <Avatar alt={postState.username} src={postState.profile}>
                               </Avatar>
                             }
                             title={
                               <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
-                                {post.user.username}
+                                {postState.username}
                               </Link>
                             }
                             subheader={post.body}
                           />
                         </li>
                         <hr />
-                        <li>
-                          {post.comments[0]}
-                        </li>
+                        {post.comments.length ? post.comments.map(comment => (
+                          <li key={post._id} >
+                            <CardHeader
+                              avatar={
+                                <Avatar alt={comment.user.username} src={comment.user.profile}>
+                                </Avatar>
+                              }
+                              title={`${comment.user.username} ${comment.comment}`}
+
+                            />
+                          </li>
+                        )) : null}
                       </ul>
                     </div>
                   </div>

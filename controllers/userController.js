@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { User, Post } = require('../models')
+const { User, Post, Comment } = require('../models')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
@@ -19,9 +19,18 @@ router.get('/users/:id', (req, res) => {
       populate: {
         path: 'user',
         model: 'User',
-        select: 'username profile _id'
+      },
+      populate: {
+        path: 'comments',
+        model: 'Comment',
+        populate: {
+          path: 'user',
+          model: 'User'
+        }
       }
     })
+  
+  
   .then(user => res.json(user))
   .catch(err => console.log(err))
 })
