@@ -26,11 +26,13 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
+    width: '600px',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
   image: {
-    height: 300,
+    height: 450,
+    width: 300
   }
 
 }))
@@ -154,7 +156,7 @@ console.log(postState)
                         </li>
                         <hr />
                         <li>
-                          Comments:
+                          {post.comments[0]}
                         </li>
                       </ul>
                     </div>

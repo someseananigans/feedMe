@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2, 4, 3),
   },
   image: {
-    height: 400,
+    height: 450,
     width: 300
   }
   
