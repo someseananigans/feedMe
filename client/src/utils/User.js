@@ -24,6 +24,11 @@ const User = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
+  }),
+  search: username => axios.get(`/api/users/search/${username}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('user')}`
+    }
   })
 }
 

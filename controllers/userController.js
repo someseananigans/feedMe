@@ -10,6 +10,28 @@ router.get('/users', (req, res) => {
     .catch(err => console.log(err))
 })
 
+const getMatches = async function (users, username) {
+  const res = await new Promise((resolve, reject) => {
+    let searchResults = []
+    for (let i = 0; i < users.length; i++){
+      if (users[i].username.includes(username)) {
+        searchResults.push(users[i])
+      }
+    }
+    searchResults.sort((a,b) => (a.createdAt-b.createdAt))
+    resolve(searchResults)
+  })
+  return res
+}
+
+router.get('/users/search/:username', passport.authenticate('jwt'), (req, res) => {
+  console.log(req.params)
+  User.find({})
+  .then(users => getMatches(users, req.params.username))
+  .then(users => res.json(users))
+  .catch(err => console.log(err))
+})
+
 router.get('/users/:id', (req, res) => {
   User.findById(req.params.id)
   .populate(
