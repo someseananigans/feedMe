@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState }from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,6 +14,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PostModal from '../components/modals/PostModal'
+import User from '../utils/User'
 
 
 
@@ -28,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
+      
     },
+    fontStyle: 'italic'
   },
   search: {
     position: 'relative',
@@ -82,6 +85,11 @@ const useStyles = makeStyles((theme) => ({
   },
   margin: {
     marginLeft: 20
+  },
+  logo: {
+    maxHeight: 60,
+    maxWidth: 100
+
   }
 }));
 
@@ -100,12 +108,12 @@ function HomeIcon(props) {
 
 const Navbar = () => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  // const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
 
   // const handleProfileMenuOpen = (event) => {
@@ -136,6 +144,21 @@ const Navbar = () => {
     localStorage.removeItem('user')
     window.location = '/auth'
   }
+
+  const [searchState, setSearchState] = useState({
+    search: ''
+  })
+  const handleSearchChange = ({ target }) => {
+    setSearchState({ ...searchState, search: target.value })
+  }
+
+  // const handleSearch = () => {
+  //   User.search({
+  //     username: searchState.value
+  //   })
+  //   .then(({ data: users}))
+  //   .catch(err => console.log(err))
+  // }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -196,16 +219,23 @@ const Navbar = () => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="fixed">
+      <AppBar position="relative">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap onClick={handleGoHome}>
+          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/30/5052737030_735d5db1-7053-4625-88d5-87ad4e490ea4.png?cb=1618339814" />
+          {/* <Typography className={classes.title} variant="h6" noWrap onClick={handleGoHome}>
             Re-instagram
-          </Typography>
+          </Typography> */}
           <div className={classes.search}>
+            <form onSubmit={(event) => {
+              event.preventDefault()
+              window.location= `/search/${searchState.search}`
+              }}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
+              onChange={handleSearchChange}
+              value={searchState.search}
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
@@ -213,6 +243,7 @@ const Navbar = () => {
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
+            </form>
           </div>
           <div className={classes.grow} />
           <PostModal />
