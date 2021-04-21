@@ -7,7 +7,7 @@ import {
 import { ChatBubbleOutline as ChatIcon, MoreVert as MoreVertIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
 import Comment from './Comment'
 import { Link } from 'react-router-dom'
-import { Comment as Cmnt, Post, User } from '../../utils'
+import { Comment as Cmnt, User } from '../../utils'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -75,65 +75,29 @@ const Card = (props) => {
     update,
     setUpdate,
     currentUser,
-    setCurrentUser
+    comment,
+    handleCommentInput,
+    handleComment
   } = props
 
-  const [comment, setComment] = useState({
-    body: '',
-    post_id: '',
-    list: []
-  })
-
-  // const [currentUser, setCurrentUser] = useState({
-  //   user: {}
-  // })
-
-  // const [likeState, setLikeState] = useState({
-  //   likes: likedByNumber
-  // })
-
-  // const [update, setUpdate] = useState('Comments are Up-to-Date')
+  const [commentList, setCommentList] = useState([])
 
   useEffect(() => {
     Cmnt.getFromPost(postId)
       .then(({ data: postComments }) => {
-        setComment({ ...comment, list: postComments })
-        setUpdate('Up-to-Date')
+        setCommentList(postComments)
+        setUpdate({ ...update, comments: 'Up-to-Date' })
       })
       .catch(err => {
         console.error(err)
       })
-  }, [update])
+  }, [update.comments])
 
-  // useEffect(() => {
-  //   User.profile()
-  //     .then(({ data }) => {
-  //       setCurrentUser({ user: data })
-  //       setUpdate('Up-to-Date')
-  //     })
-  //     .catch(err => console.error(err))
-  // }, [update])
-
-  const handleCommentInput = ({ target }) => {
-    setComment({ ...comment, body: target.value, post_id: target.id })
-  }
-
-  const handleComment = () => {
-    Cmnt.create({
-      comment: comment.body,
-      post_id: comment.post_id
-    })
-      .then(({ data: cmnt }) => {
-        setComment({ ...comment, body: '', post_id: '' })
-        setUpdate('Need Update')
-      })
-      .catch(err => console.error(err))
-  }
 
   const handleLike = () => {
     let type = 'like'
     likedByUsers.forEach(liker => {
-      if (liker == currentUser.user._id) {
+      if (liker === currentUser.user._id) {
         type = 'unlike'
       }
     })
@@ -143,7 +107,7 @@ const Card = (props) => {
       post_id: postId
     })
       .then(data => {
-        setUpdate('Need Update')
+        setUpdate({ ...update, likes: 'Need Update' })
       })
       .catch(err => console.log(err))
   }
@@ -181,10 +145,10 @@ const Card = (props) => {
               <FormControlLabel className={classes.noMargPad}
                 control={<Checkbox icon={<FavoriteBorder />}
                   checkedIcon={<Favorite />}
-                  name="checkedH" 
+                  name="checkedH"
                   onClick={handleLike}
-                  checked={likedByUsers.indexOf(currentUser.user._id) != -1}
-                  />}
+                  checked={likedByUsers.indexOf(currentUser.user._id) !== -1}
+                />}
               />
             </IconButton>
             <IconButton aria-label="comment">
@@ -192,7 +156,7 @@ const Card = (props) => {
             </IconButton>
           </CardActions>
 
-          <strong>{likedByNumber != 1 ? `${likedByNumber} likes` : '1 like'}</strong>
+          <strong>{likedByNumber !== 1 ? `${likedByNumber} likes` : '1 like'}</strong>
           <Typography variant="body2" color="textSecondary" component="p">
             <div className={classes.un}>
               {username}
@@ -202,9 +166,9 @@ const Card = (props) => {
             </div>
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {comment.list.length > 1 ? `View all ${comment.list.length} comments` : null}
-            {comment.list.map((com, index) => {
-              if (comment.list.length <= index + 3) {
+            {commentList.length > 1 ? `View all ${commentList.length} comments` : null}
+            {commentList.map((com, index) => {
+              if (commentList.length <= index + 3) {
                 return (
                   <Comment
                     key={com._id}
@@ -212,7 +176,7 @@ const Card = (props) => {
                     comment={com.comment}
                   />
                 )
-              }
+              } else return null
             })}
           </Typography>
         </CardContent>
@@ -224,7 +188,7 @@ const Card = (props) => {
             id={postId}
             label="Add a comment..."
             type="comment"
-            value={comment.post_id == postId ? comment.body : ""}
+            value={comment.post_id === postId ? comment.body : ""}
             onChange={handleCommentInput}
           />
           <Button onClick={handleComment}>Post</Button>
