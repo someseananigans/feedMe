@@ -48,7 +48,6 @@ const Search = (props) => {
     User.search(props.searchQuery)
       .then(({ data }) => {
         setUsers(data)
-        console.log(data)
       })
       .catch(err => console.log(err))
     console.log(props)

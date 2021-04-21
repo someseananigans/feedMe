@@ -25,7 +25,6 @@ const getMatches = async function (users, username) {
 }
 
 router.get('/users/search/:username', passport.authenticate('jwt'), (req, res) => {
-  console.log(req.params)
   User.find({})
   .then(users => getMatches(users, req.params.username))
   .then(users => res.json(users))
