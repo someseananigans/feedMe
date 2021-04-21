@@ -35,13 +35,13 @@ const Suggested = () => {
     user: {}
   })
 
- 
+
   useEffect(() => {
 
     User.getUsers()
-    .then(({ data: users }) => {
+      .then(({ data: users }) => {
         User.profile()
-          .then(({ data: user }) => { 
+          .then(({ data: user }) => {
             let filteredUsers = []
             for (let i = 0; i < users.length; i++) {
               if (users[i]._id !== user._id) {
@@ -50,12 +50,12 @@ const Suggested = () => {
               console.log(users[i])
             }
             console.log(filteredUsers)
-            setUserState ({ ...userState, users: filteredUsers})
-            setCurrentUserState ({ ...currentUserState, user })
+            setUserState({ ...userState, users: filteredUsers })
+            setCurrentUserState({ ...currentUserState, user })
           })
       })
-  }, [currentUserState, userState])
-      
+  }, [])
+
   return (
     <div className={classes.root}>
       <Paper>
@@ -66,30 +66,30 @@ const Suggested = () => {
           }
           title={
             <Link to="/profile" style={{ textDecoration: 'none', color: 'black' }} >
-            {currentUserState.user.username}
+              {currentUserState.user.username}
             </Link>
           }
         />
         <Typography className={classes.suggestions}>Suggestions for you</Typography>
-          {userState.users.length ? userState.users.map(user => (
+        {userState.users.length ? userState.users.map(user => (
 
-            <CardHeader
-              avatar={
+          <CardHeader key={user._id}
+            avatar={
               <Avatar alt={user.firstName} src={user.profile}>
-            </Avatar>
-              } 
-              title={
+              </Avatar>
+            }
+            title={
               <Link to={`/user/${user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
                 {user.username}
               </Link>
-              }
-          action={
-            <IconButton className={classes.follow}>
-              Follow
+            }
+            action={
+              <IconButton className={classes.follow}>
+                Follow
             </IconButton>
-                }
-            />
-          )) : null
+            }
+          />
+        )) : null
         }
       </Paper>
     </div>

@@ -64,7 +64,7 @@ const UserProf = ({id}) => {
     })
     .catch(err => { console.log(err) })
 
-  }, [postState, id])
+  }, [])
 
   const rand = () => {
     return Math.round(Math.random() * 20) - 10;
