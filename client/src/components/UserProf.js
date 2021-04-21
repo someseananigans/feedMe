@@ -80,7 +80,7 @@ const UserProf = ({id}) => {
     };
   }
   const [modalStyle] = useState(getModalStyle)
-  // const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const handleOpen = id => {
     const posts = [...postState.posts]

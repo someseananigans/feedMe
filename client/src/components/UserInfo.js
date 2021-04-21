@@ -5,9 +5,6 @@ import { useState, useEffect } from 'react'
 import User from '../utils/User.js'
 
 
-
-// --------------> Can this be removed? <-----------------
-
 const UserInfo = ({id}) => {
 
   const [userState, setUserState] = useState({
