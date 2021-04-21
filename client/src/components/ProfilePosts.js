@@ -51,7 +51,7 @@ const ProfilePosts = () => {
     })
     .catch(err => {console.log(err)})
   
-  }, [])
+  }, [postState])
 
   const handleDeletePost = id => {
     
