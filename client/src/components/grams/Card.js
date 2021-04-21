@@ -103,7 +103,6 @@ const Card = (props) => {
     })
     User.touchPost({
       type,
-      user_id: currentUser.user._id,
       post_id: postId
     })
       .then(data => {
