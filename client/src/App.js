@@ -3,7 +3,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import {Home, Profile, Login, User} from './pages'
+import { Home, Profile, Login, User, Search } from './pages'
 import { LockedView } from './utils'
 
 
@@ -16,13 +16,16 @@ function App() {
             <Home />
           </LockedView>
         </Route>
+        <Route exact path='/auth' component={Login} />
         <Route exact path='/profile'>
           <LockedView>
             <Profile />
           </LockedView>
         </Route>
-        <Route path='/auth' exact component={Login} />
-        <Route path='/user/:id' exact component={User} />
+        <Route exact path='/user/:id' component={User} />
+        <LockedView>
+          <Route exact path='/search/:username' component={Search} />
+        </LockedView>
       </Switch>
     </Router>
   )

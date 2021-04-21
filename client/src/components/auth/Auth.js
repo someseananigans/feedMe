@@ -38,6 +38,8 @@ const Auth = () => {
     })
       .then(() => {
         alert('User registered!')
+        // setLoginState({ ...loginState, firstName: '', lastName: '', name: '', username: '', email: '', password: '', repeatPassword: ''})
+        window.location = '/auth'
       })
       .catch(err => console.log(err))
   }
@@ -52,7 +54,7 @@ const Auth = () => {
           localStorage.setItem('user', data)
           window.location = '/'
         } else {
-          console.log('Username or password was input correctly')
+          alert('Username or password are incorrect')
         }
       })
       .catch(err => console.log(err))

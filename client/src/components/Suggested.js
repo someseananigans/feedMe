@@ -14,11 +14,13 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: 300,
       height: 400,
+      overflow: 'scroll'
     },
   },
   suggestions: {
     marginLeft: 20,
-    color: 'gray'
+    color: 'gray',
+    
   },
   follow: {
     fontSize: 13,
