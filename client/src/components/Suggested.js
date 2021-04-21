@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: 300,
       height: 400,
-      overflow: 'scroll'
+      overflow: 'auto'
     },
   },
   suggestions: {

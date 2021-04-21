@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     suggestions: {
       marginLeft: 20,
       color: 'gray',
-      
     },
     follow: {
       fontSize: 13,
