@@ -2,6 +2,7 @@ import { Navbar, Suggested } from '../components'
 import '../index.css'
 import Cards from '../components/grams/Cards'
 
+
 const Home = () => {
   return (
     <>

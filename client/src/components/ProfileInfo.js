@@ -16,7 +16,7 @@ const ProfileInfo = () => {
       .then(({ data: user }) => {
         setUserState({ ...userState, user })
       })
-  }, [])
+  }, [userState])
 
   
 

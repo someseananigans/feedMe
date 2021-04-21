@@ -52,12 +52,9 @@ const Suggested = () => {
             console.log(filteredUsers)
             setUserState ({ ...userState, users: filteredUsers})
             setCurrentUserState ({ ...currentUserState, user })
-
           })
-        
       })
-      
-  }, [])
+  }, [currentUserState, userState])
       
   return (
     <div className={classes.root}>
