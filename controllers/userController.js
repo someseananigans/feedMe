@@ -89,6 +89,29 @@ router.delete('/user', passport.authenticate('jwt'), (req, res) => {
     .catch(err => console.log(err))
 })
 
+//  <------------------ Interacting with User ---------------------->
+
+router.put('/user/interaction', passport.authenticate('jwt'), async (req, res) => {
+  try {
+    if (req.body.type === 'follow') {
+      await User.findByIdAndUpdate(req.user.id, { $addToSet: { following: req.body.follow_user_id } }, { "new": true })
+      await User.findByIdAndUpdate(req.body.follow_user_id, { $addToSet: { followers: req.user.id } }, { "new": true })
+    }
+    if (req.body.type === 'unfollow') {
+      await User.findByIdAndUpdate(req.user.id, { $pull: { following: req.body.follow_user_id } }, { "new": true })
+      await User.findByIdAndUpdate(req.body.follow_user_id, { $pull: { followers: req.user.id } }, { "new": true })
+    }
+    res.json({
+      status: 200,
+      message: `Successfully ${req.body.type}ed`
+    })
+  } catch (err) {
+    res.send(err)
+    return
+  }
+})
+
+
 // <------------------ Interacting with Post ---------------------->
 
 router.put('/post/interaction', passport.authenticate('jwt'), async (req, res) => {
@@ -97,18 +120,19 @@ router.put('/post/interaction', passport.authenticate('jwt'), async (req, res) =
     if (req.body.type === 'like') {
       await Post.findByIdAndUpdate(req.body.post_id, { $addToSet: { liked_by: req.user._id } }, { "new": true })
       await User.findByIdAndUpdate(req.user._id, { $addToSet: { liked_posts: req.body.post_id } }, { "new": true })
-      res.sendStatus(200)
     }
     if (req.body.type === 'unlike') {
       await Post.findByIdAndUpdate(req.body.post_id, { $pull: { liked_by: req.user._id } }, { "new": true })
       await User.findByIdAndUpdate(req.user._id, { $pull: { liked_posts: req.body.post_id } }, { "new": true })
-      res.sendStatus(200)
     }
+    res.json({
+      status: 200,
+      message: `Successfully ${req.body.type}ed`
+    })
   } catch (err) {
     res.send(err)
     return
   }
-
 })
 
 module.exports = router

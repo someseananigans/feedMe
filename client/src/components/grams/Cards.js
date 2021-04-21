@@ -16,10 +16,7 @@ const Cards = () => {
     body: '',
     post_id: ''
   })
-  const [update, setUpdate] = useState({
-    likes: '',
-    comments: ''
-  })
+  const [update, setUpdate] = useState('')
 
   const handleCommentInput = ({ target }) => {
     setComment({ ...comment, body: target.value, post_id: target.id })
@@ -33,7 +30,7 @@ const Cards = () => {
     })
       .then(({ data: cmnt }) => {
         setComment({ ...comment, body: '', post_id: '' })
-        setUpdate({ ...update, comments: 'Need Update' })
+        setUpdate('Need Update')
       })
       .catch(err => console.error(err))
   }
@@ -42,21 +39,19 @@ const Cards = () => {
     Post.getAll()
       .then(({ data: grams }) => {
         setPostState(grams)
-        setUpdate({ ...update, likes: 'Up-to-Date' })
       })
       .catch(err => {
         console.error(err)
       })
-  }, [update.likes])
+  }, [])
 
   useEffect(() => {
     User.profile()
       .then(({ data }) => {
         setCurrentUser({ user: data })
-        setUpdate({ ...update, likes: 'Up-to-Date' })
       })
       .catch(err => console.error(err))
-  }, [update.likes])
+  }, [])
 
 
 

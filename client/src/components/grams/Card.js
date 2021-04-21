@@ -81,39 +81,42 @@ const Card = (props) => {
   } = props
 
   const [commentList, setCommentList] = useState([])
+  const [likeAction, setLikeAction] = useState(false)
+  const [likeCount, setLikeCount] = useState(likedByNumber)
+  
+  const likeCheck = () => {
+    setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
+  }
 
+  // renders on page load and re-renders when update is triggered
   useEffect(() => {
     Cmnt.getFromPost(postId)
       .then(({ data: postComments }) => {
         setCommentList(postComments)
-        setUpdate({ ...update, comments: 'Up-to-Date' })
+        setUpdate('Up-to-Date' )
+        // initial like check
+        likeCheck()
       })
       .catch(err => {
         console.error(err)
       })
-  }, [])
+  }, [update])
 
-
-  const handleLike = () => {
-    let type = 'like'
-    likedByUsers.forEach(liker => {
-      if (liker === currentUser.user._id) {
-        type = 'unlike'
-      }
-    })
-    User.touchPost({
-      type,
+  const handleLike = async () => {
+    await User.touchPost({
+      type: likeAction,
       post_id: postId
     })
-      .then(data => {
-        setUpdate({ ...update, likes: 'Need Update' })
-      })
+      .then()
       .catch(err => console.log(err))
+    setLikeCount(likeAction == 'like' ? (likeCount + 1) : (likeCount - 1))
+    setLikeAction(likeAction == 'like' ? 'unlike' : 'like')
+    console.log(likeAction)
   }
 
   return (
     <div>
-      <PostCard className={classes.root}>
+      <PostCard className={classes.root} key={postId}>
         <CardHeader
           avatar={
             <Avatar aria-label="userAvatar" className={classes.avatar} src={profile}>
@@ -140,13 +143,13 @@ const Card = (props) => {
 
         <CardContent className={classes.likeCommentField}>
           <CardActions disableSpacing className={classes.likeComment}>
-            <IconButton aria-label="like" color="danger" className={classes.noMargPad}>
+            <IconButton aria-label="like" color="default" className={classes.noMargPad}>
               <FormControlLabel className={classes.noMargPad}
                 control={<Checkbox icon={<FavoriteBorder />}
                   checkedIcon={<Favorite />}
                   name="checkedH"
                   onClick={handleLike}
-                  checked={likedByUsers.indexOf(currentUser.user._id) !== -1}
+                  checked={likeAction == 'unlike' ? true : false}
                 />}
               />
             </IconButton>
@@ -155,7 +158,7 @@ const Card = (props) => {
             </IconButton>
           </CardActions>
 
-          <strong>{likedByNumber !== 1 ? `${likedByNumber} likes` : '1 like'}</strong>
+          <strong>{likeCount !== 1 ? `${likeCount} likes` : '1 like'}</strong>
           <Typography variant="body2" color="textSecondary" component="p">
             <div className={classes.un}>
               {username}

@@ -1,3 +1,4 @@
+import { CallMissedSharp } from '@material-ui/icons'
 import { useState } from 'react'
 import { User } from '../utils'
 
@@ -18,34 +19,22 @@ const FollowContext = () => {
         let type = 'unfollow'
       }
     })
-    // User.touchPost({
-    //   type,
-    //   follow_user_id: 
-    // })
+    User.touchPost({
+      type,
+      follow_user_id: 
+    })
+      .then(data => {
+        console.log(data)
+      })
+      .catch(err => console.log(err))
   }
 
 
+  const[followed, setFollowed] = useState(false)
+
+
+  value={followed ? 'Unfollow' : 'Follow'}
+  className={followed ? classes.blend : classes.highlight}
 }
 
 
-/// note ----> // <------------------ Interacting with User ---------------------->
-
-// router.put('/user/interaction', passport.authenticate('jwt'), async (req, res) => {
-//   try {
-//     if (req.body.type === 'follow') {
-//       await User.findByIdAndUpdate(req.user.id, { $addToSet: { following: req.body.follow_user_id } }, { "new": true })
-//       await User.findByIdAndUpdate(req.body.follow_user_id, { $addToSet: { followers: req.user.id} }, { "new": true })
-//     }
-//     if (req.body.type === 'unfollow') {
-//       await User.findByIdAndUpdate(req.user.id, { $pull: { following: req.body.follow_user_id } }, { "new": true })
-//       await User.findByIdAndUpdate(req.body.follow_user_id, { $pull: { followers: req.user.id } }, { "new": true })
-//     }
-//   } catch (err) {
-//     res.send(err)
-//     return
-//   }
-//   res.json({
-//     status: 200,
-//     successfully: `Successfully ${req.body.type}ed`
-//   })
-// })
