@@ -23,8 +23,11 @@ const User = new Schema({
   following: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
+  }],
+  followers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
   }]
-  // followers: []
 })
 
 User.plugin(require('passport-local-mongoose'))
