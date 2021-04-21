@@ -56,19 +56,6 @@ const useStyles = makeStyles((theme) => ({
 const EditProfile = ({toggleOpen}) => {
   const classes = useStyles()
 
-  useEffect(() => {
-    User.profile()
-      .then(({ data: user }) => {
-        setUserInfo({ ...userInfo, 
-          profile: user.profile,
-          name: user.name,
-          username: user.username,
-          email: user.email,
-          bio: user.bio
-        })
-      })
-  }, [])
-
   const [userInfo, setUserInfo] = useState({
     profile: '',
     name: '',
@@ -76,12 +63,13 @@ const EditProfile = ({toggleOpen}) => {
     email: '',
     bio: ''
   })
-
+  
+  
   const handleInputChange = ({ target }) => {
     setUserInfo({ ...userInfo, [target.name]: target.value })
     console.log(userInfo)
   }
-
+  
   const handleUpload = event => {
     const file = event.target.files[0]
     const imgName = "Gram" + Date.now()
@@ -92,16 +80,16 @@ const EditProfile = ({toggleOpen}) => {
       err => { console.log(err) },
       () => {
         storage
-          .ref("images")
+        .ref("images")
           .child(imgName)
           .getDownloadURL()
           .then(firebaseUrl => {
             setUserInfo({ ...userInfo, profile: firebaseUrl })
           })
-      }
-    )
+        }
+        )
   }
-
+  
   const handleSave = () => {
     User.edit({
       profile: userInfo.profile,
@@ -110,12 +98,25 @@ const EditProfile = ({toggleOpen}) => {
       username: userInfo.username,
       bio: userInfo.bio
     })
-      .then(() => {
-        console.log('updated')
-        toggleOpen()
-      })
-      .catch(err => console.log(err))
+    .then(() => {
+      console.log('updated')
+      toggleOpen()
+    })
+    .catch(err => console.log(err))
   }
+  
+    useEffect(() => {
+      User.profile()
+        .then(({ data: user }) => {
+          setUserInfo({ ...userInfo, 
+            profile: user.profile,
+            name: user.name,
+            username: user.username,
+            email: user.email,
+            bio: user.bio
+          })
+        })
+    }, [userInfo])
 
   return (
     <>
