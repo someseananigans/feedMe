@@ -19,9 +19,15 @@ const User = new Schema({
   liked_post: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
+  }],
+  following: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
+  }],
+  followers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
   }]
-  // following: []
-  // followers: []
 })
 
 User.plugin(require('passport-local-mongoose'))

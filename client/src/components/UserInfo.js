@@ -19,7 +19,7 @@ const UserInfo = ({id}) => {
       })
       .catch(err => { console.log(err) })
 
-  }, [])
+  }, [userState, id])
 
 
 
