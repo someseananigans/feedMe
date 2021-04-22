@@ -45,6 +45,7 @@ const ProfilePosts = (props) => {
   const [postState, setPostState] = useState({
     posts: []
   })
+  const [update, setUpdate] = useState('')
   useEffect(() => {
 
     Post.getOwned()
@@ -57,7 +58,7 @@ const ProfilePosts = (props) => {
       })
       .catch(err => { console.log(err) })
 
-  }, [])
+  }, [update])
 
   const handleDeletePost = id => {
 
@@ -124,6 +125,7 @@ const ProfilePosts = (props) => {
     setComment({ ...comment, body: target.value, post_id: target.id })
   }
 
+
   const handleComment = () => {
     Cmnt.create({
       comment: comment.body,
@@ -131,6 +133,7 @@ const ProfilePosts = (props) => {
     })
       .then(({ data: cmnt }) => {
         setComment({ ...comment, body: '', post_id: '' })
+        setUpdate('Need Update')
       })
       .catch(err => console.error(err))
   }
