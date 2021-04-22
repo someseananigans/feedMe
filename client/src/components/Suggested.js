@@ -76,14 +76,13 @@ const Suggested = () => {
               if (users[i]._id !== user._id) {
                 filteredUsers.push(users[i])
               }
-              // console.log(users[i])
             }
             // console.log(filteredUsers)
             setUserState({ ...userState, users: filteredUsers })
           })
       })
   }, [])
-
+      
   return (
     <div className={classes.root}>
       <Paper>

@@ -54,7 +54,7 @@ const Auth = () => {
           localStorage.setItem('user', data)
           window.location = '/'
         } else {
-          alert('Username or password are incorrect')
+          alert('Username or password are incorrect (usernames are all lowercase)')
         }
       })
       .catch(err => console.log(err))

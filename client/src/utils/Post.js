@@ -3,7 +3,7 @@ import axios from 'axios'
 const Post = {
   getAll: () => axios.get('/api/posts'),
   // May not be necessry. User already contains its post... but not comments. Can include comments in back-end if using the user to call and populate whole page.
-  getOwned: () => axios.get('/api/user/posts', {
+  getOwned: (id) => axios.get('/api/user/posts', {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }

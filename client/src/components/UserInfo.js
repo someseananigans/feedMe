@@ -1,5 +1,4 @@
 import { Avatar } from '@material-ui/core'
-import ProfileModal from './modals/ProfileModal'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import User from '../utils/User.js'
@@ -34,7 +33,6 @@ const UserInfo = ({id}) => {
       <CharacterField>
         <RowField>
           <Username>{user.username}</Username>
-          <ProfileModal />
         </RowField>
 
         <RowField>

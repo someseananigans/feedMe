@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { User, Post } = require('../models')
+const { User, Post, Comment } = require('../models')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
@@ -25,7 +25,6 @@ const getMatches = async function (users, username) {
 }
 
 router.get('/users/search/:username', passport.authenticate('jwt'), (req, res) => {
-  console.log(req.params)
   User.find({})
   .then(users => getMatches(users, req.params.username))
   .then(users => res.json(users))
@@ -41,9 +40,18 @@ router.get('/users/:id', (req, res) => {
       populate: {
         path: 'user',
         model: 'User',
-        select: 'username profile _id'
+      },
+      populate: {
+        path: 'comments',
+        model: 'Comment',
+        populate: {
+          path: 'user',
+          model: 'User'
+        }
       }
     })
+  
+  
   .then(user => res.json(user))
   .catch(err => console.log(err))
 })
@@ -53,8 +61,9 @@ router.get('/user', passport.authenticate('jwt'), (req, res) => {
 })
 
 router.post('/user/register', (req, res) => {
-  const { name, email, username } = req.body
-  User.register(new User({ name, email, username }), req.body.password, err => {
+  let lowerCaseUsername = req.body.username.toLowerCase()
+  const { name, email } = req.body
+  User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, err => {
     if (err) { console.log(err) }
     res.sendStatus(200)
   })
