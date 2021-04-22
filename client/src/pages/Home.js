@@ -6,16 +6,26 @@ import Cards from '../components/grams/Cards'
 const Home = () => {
   return (
     <>
-      <Navbar />
-      <div className="cols">
+      <div className='container'>
 
-      </div>
-      <div className="cols">
-        <Cards />
-        <Post />
-      </div>
-      <div className="cols col3">
-        <Suggested />
+        <div className='nav'>
+
+          <Navbar />
+        </div>
+
+
+        <div className='wrapper'>
+
+          <div className='posting'>
+            <Cards />
+          </div>
+          <div className='suggests'>
+            <div className='fixed'>
+              <Suggested />
+            </div>
+          </div>
+        </div>
+
       </div>
     </>
 
