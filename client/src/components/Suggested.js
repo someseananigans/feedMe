@@ -1,57 +1,88 @@
 import { useState, useEffect } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import { Avatar, CardHeader, Typography, IconButton } from '@material-ui/core';
 import { Link } from 'react-router-dom'
-
-import User from '../utils/User.js'
+import { Avatar, CardHeader, Typography, Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { User, FollowContext } from '../utils'
+import SuggestedUsers from './SuggestedUsers'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
     '& > *': {
-      margin: theme.spacing(1),
-      width: 300,
+      margin: 0,
+      width: 320,
       height: 400,
-      overflow: 'scroll'
+      overflowY: 'auto',
+      boxShadow: 'none',
+      backgroundColor: 'transparent'
     },
   },
-  suggestions: {
+  suggestBox: {
     marginLeft: 20,
     color: 'gray',
-    
+  },
+  suggestions: {
+    paddingRight: 0
   },
   follow: {
     fontSize: 13,
-    color: 'blue',
+    color: 'blue'
   },
+  following: {
+    fontSize: 13,
+    color: 'black'
+  },
+  buttonParent: {
+    margin: 0
+  },
+  avatar: {
+    height: '32px',
+    width: '32px',
+  },
+  bigAvatar: {
+    height: '55px',
+    width: '55px',
+  },
+  username: {
+    textDecoration: 'none',
+    color: 'black',
+    fontWeight: 500
+  },
+  name: {
+    margin: 0
+  }
 }));
 
 const Suggested = () => {
   const classes = useStyles();
+
+  const {
+    setFollowersOnLoad // The current user's followed accounts is stored in following.users
+  } = FollowContext()
+
   const [userState, setUserState] = useState({
     users: []
   })
+
   const [currentUserState, setCurrentUserState] = useState({
     user: {}
   })
 
-
   useEffect(() => {
-
     User.getUsers()
       .then(({ data: users }) => {
         User.profile()
           .then(({ data: user }) => {
+            setFollowersOnLoad(user.following)
             let filteredUsers = []
             for (let i = 0; i < users.length; i++) {
               if (users[i]._id !== user._id) {
                 filteredUsers.push(users[i])
               }
-              console.log(users[i])
+              // console.log(users[i])
             }
-            console.log(filteredUsers)
+            // console.log(filteredUsers)
             setUserState({ ...userState, users: filteredUsers })
             setCurrentUserState({ ...currentUserState, user })
           })
@@ -63,35 +94,32 @@ const Suggested = () => {
       <Paper>
         <CardHeader
           avatar={
-            <Avatar alt={currentUserState.user.username} src={currentUserState.user.profile}>
-            </Avatar>
-          }
-          title={
-            <Link to="/profile" style={{ textDecoration: 'none', color: 'black' }} >
-              {currentUserState.user.username}
+            <Link to="/profile" >
+              <Avatar alt={currentUserState.user.username} src={currentUserState.user.profile} className={classes.bigAvatar}>
+                </Avatar>
             </Link>
           }
+          title={
+            <>
+            <Link to="/profile" className={classes.username} >
+              {currentUserState.user.username}
+            </Link>
+            <p className={classes.name}>{currentUserState.user.name}</p>
+            </>
+          }
         />
-        <Typography className={classes.suggestions}>Suggestions for you</Typography>
-        {userState.users.length ? userState.users.map(user => (
+        <Typography className={classes.suggestBox}>Suggestions for you</Typography>
+        {userState.users.length ? userState.users.map(user =>
 
-          <CardHeader key={user._id}
-            avatar={
-              <Avatar alt={user.firstName} src={user.profile}>
-              </Avatar>
-            }
-            title={
-              <Link to={`/user/${user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
-                {user.username}
-              </Link>
-            }
-            action={
-              <IconButton className={classes.follow}>
-                Follow
-            </IconButton>
-            }
+          <SuggestedUsers
+            user_id={user._id}
+            username={user.username}
+            profile={user.profile}
+            firstName={user.firstName}
+            classes={classes}
           />
-        )) : null
+
+        ) : null
         }
       </Paper>
     </div>
