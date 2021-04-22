@@ -57,10 +57,6 @@ const useStyles = makeStyles((theme) => ({
 const Suggested = () => {
   const classes = useStyles();
 
-  const {
-    setFollowersOnLoad // The current user's followed accounts is stored in following.users
-  } = FollowContext()
-
   const [userState, setUserState] = useState({
     users: []
   })
@@ -74,7 +70,7 @@ const Suggested = () => {
       .then(({ data: users }) => {
         User.profile()
           .then(({ data: user }) => {
-            setFollowersOnLoad(user.following)
+            setCurrentUserState({ ...currentUserState, user })
             let filteredUsers = []
             for (let i = 0; i < users.length; i++) {
               if (users[i]._id !== user._id) {
@@ -84,7 +80,6 @@ const Suggested = () => {
             }
             // console.log(filteredUsers)
             setUserState({ ...userState, users: filteredUsers })
-            setCurrentUserState({ ...currentUserState, user })
           })
       })
   }, [])
@@ -110,13 +105,13 @@ const Suggested = () => {
         />
         <Typography className={classes.suggestBox}>Suggestions for you</Typography>
         {userState.users.length ? userState.users.map(user =>
-
           <SuggestedUsers
             user_id={user._id}
             username={user.username}
             profile={user.profile}
             firstName={user.firstName}
             classes={classes}
+            usersfollowing={currentUserState.user.following}
           />
 
         ) : null

@@ -10,11 +10,6 @@ const FollowContext = () => {
   })
 
   const[followAction, setFollowAction] = useState('follow')
-  
-  // use effect will setFollowing({ users: dataPulled }) the current user's following users id
-  const setFollowersOnLoad = (usersFollow) => {
-    setFollowing({users: usersFollow})
-  }
 
   const handleFollow = (focusedUser) => {
     User.touchUser({
@@ -28,10 +23,8 @@ const FollowContext = () => {
       .catch(err => console.log(err))
   }
 
-
-
-  const followCheck = (focusedUser) => {
-    setFollowAction(following.users.indexOf(focusedUser) !== -1 ? 'following' : 'follow')
+  const followCheck = (usersFollow, focusedUser) => {
+    setFollowAction(usersFollow.indexOf(focusedUser) !== -1 ? 'following' : 'follow')
   }
 
   return {
@@ -40,10 +33,9 @@ const FollowContext = () => {
     handleFollow,
     followAction,
     setFollowAction, 
-    followCheck,
-    setFollowersOnLoad
+    followCheck
   }
-  
+
 }
 
 
