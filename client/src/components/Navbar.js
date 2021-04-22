@@ -113,7 +113,7 @@ const Navbar = () => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = React.useState(false);
 
 
   // const handleProfileMenuOpen = (event) => {
