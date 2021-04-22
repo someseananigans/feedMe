@@ -1,6 +1,6 @@
 import { useState, useEffect, React } from 'react'
 import { Link } from 'react-router-dom'
-import { Post, User } from '../utils/'
+import { Post, User, Comment as Cmnt  } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from "@material-ui/core/GridList"
 import GridListTile from "@material-ui/core/GridListTile"
@@ -118,6 +118,26 @@ const UserProf = ({ id }) => {
       })
   };
 
+  const [comment, setComment] = useState({
+    body: '',
+    post_id: ''
+  })
+
+  const handleCommentInput = ({ target }) => {
+    setComment({ ...comment, body: target.value, post_id: target.id })
+  }
+
+  const handleComment = () => {
+    Cmnt.create({
+      comment: comment.body,
+      post_id: comment.post_id
+    })
+      .then(({ data: cmnt }) => {
+        setComment({ ...comment, body: '', post_id: '' })
+      })
+      .catch(err => console.error(err))
+  }
+
 
 
   return (
@@ -159,7 +179,10 @@ const UserProf = ({ id }) => {
                         <hr />
                         <div style={{ overflow: 'scroll', height: '300px' }}>
                           {post.comments.length ? post.comments.map(comment => (
+                            
                             <li key={post._id} >
+                              {console.log(post)}
+                              {/* {console.log(comment)} */}
                               <CardHeader
                                 avatar={
                                   <Avatar alt={comment.user.username} src={comment.user.profile}>
@@ -194,11 +217,12 @@ const UserProf = ({ id }) => {
                               <InsertEmoticon />
                             </IconButton>
                             <TextField
+                              id={post._id}
                               label="Add a comment..."
                               type="comment"
+                              onChange={handleCommentInput}
                             />
-                            <Button>Post</Button>
-
+                            <Button onClick={handleComment}>Post</Button>
                           </CardContent>
                         </div>
                       </ul>
