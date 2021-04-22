@@ -22,7 +22,7 @@ function App() {
             <Profile />
           </LockedView>
         </Route>
-        <Route exact path='/user/:id' component={User} />
+        <Route exact path='/:id' component={User} />
         <LockedView>
           <Route exact path='/search/:username' component={Search} />
         </LockedView>
