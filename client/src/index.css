@@ -1,16 +1,47 @@
 body {
   margin: 0;
+  background-color: #fafafa;
 }
 
-.cols {
-  display: inline-block;
-  vertical-align: top;
-  width: 30%;
-  margin-top: 100px;
+.fixed {
+  position: fixed !important;
 }
-.col3 {
-  position: fixed;
-}
+
 .nav {
   position: fixed;
+  width: 100%;
+  z-index: 9;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  /* padding: 20px; */
+}
+
+.posting {
+  width: auto;
+  max-width: 600px;
+}
+
+.suggests {
+  width: 300px;
+  padding-left: 15px;
+}
+
+@media screen and (max-width: 1000px) {
+  .suggests {
+    display: none;
+  }
+  .wrapper {
+    justify-content: center;
+  }
+}
+
+.wrapper {
+  margin-top: 100px;
+  display: flex;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
