@@ -149,7 +149,7 @@ const Navbar = () => {
     search: ''
   })
   const handleSearchChange = ({ target }) => {
-    setSearchState({ ...searchState, search: target.value })
+    setSearchState({ ...searchState, search: target.value.toLowerCase() })
   }
 
   // const handleSearch = () => {
@@ -236,7 +236,7 @@ const Navbar = () => {
             <InputBase
               onChange={handleSearchChange}
               value={searchState.search}
-              placeholder="Search…"
+              placeholder="Search for a user…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,

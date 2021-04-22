@@ -23,7 +23,7 @@ const FollowContext = () => {
     })
       .then(data => {
         console.log(data)
-        setFollowAction(followAction == 'follow' ? 'following' : 'follow')
+        setFollowAction(followAction === 'follow' ? 'following' : 'follow')
       })
       .catch(err => console.log(err))
   }

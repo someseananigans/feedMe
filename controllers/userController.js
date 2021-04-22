@@ -52,8 +52,9 @@ router.get('/user', passport.authenticate('jwt'), (req, res) => {
 })
 
 router.post('/user/register', (req, res) => {
-  const { name, email, username } = req.body
-  User.register(new User({ name, email, username }), req.body.password, err => {
+  let lowerCaseUsername = req.body.username.toLowerCase()
+  const { name, email } = req.body
+  User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, err => {
     if (err) { console.log(err) }
     res.sendStatus(200)
   })

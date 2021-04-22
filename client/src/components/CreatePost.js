@@ -71,7 +71,7 @@ const CreatePost = (props) => {
       .then(({ data: post }) => {
         console.log(post)
         setPostState({ ...postState, body: '', image: '' })
-        window.location = '/profile'
+        window.location.reload()
       })
       .catch(err => console.error(err))
   }
