@@ -88,7 +88,7 @@ router.put('/user/interaction', passport.authenticate('jwt'), async (req, res) =
       await User.findByIdAndUpdate(req.user.id, { $addToSet: { following: req.body.follow_user_id } }, { "new": true })
       await User.findByIdAndUpdate(req.body.follow_user_id, { $addToSet: { followers: req.user.id } }, { "new": true })
     }
-    if (req.body.type === 'unfollow') {
+    if (req.body.type === 'following') {
       await User.findByIdAndUpdate(req.user.id, { $pull: { following: req.body.follow_user_id } }, { "new": true })
       await User.findByIdAndUpdate(req.body.follow_user_id, { $pull: { followers: req.user.id } }, { "new": true })
     }
