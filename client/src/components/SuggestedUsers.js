@@ -39,7 +39,7 @@ const SuggestedUsers = (props) => {
         }
         action={
           <Button
-            className={followAction == 'follow' ? classes.follow : classes.following}
+            className={followAction === 'follow' ? classes.follow : classes.following}
             onClick={(() => handleFollow(user_id))}
           >
             {followAction}

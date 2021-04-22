@@ -122,8 +122,8 @@ const Card = (props) => {
     })
       .then()
       .catch(err => console.log(err))
-    setLikeCount(likeAction == 'like' ? (likeCount + 1) : (likeCount - 1))
-    setLikeAction(likeAction == 'like' ? 'unlike' : 'like')
+    setLikeCount(likeAction === 'like' ? (likeCount + 1) : (likeCount - 1))
+    setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
     console.log(likeAction)
   }
 
@@ -164,7 +164,7 @@ const Card = (props) => {
                   checkedIcon={<Favorite />}
                   name="checkedH"
                   onClick={handleLike}
-                  checked={likeAction == 'unlike' ? true : false}
+                  checked={likeAction === 'unlike' ? true : false}
                 />}
               />
             </IconButton>

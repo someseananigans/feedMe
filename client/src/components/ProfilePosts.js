@@ -8,7 +8,7 @@ import './ProfPost.css'
 import { Typography, Modal, Avatar, CardHeader, CardContent, CardActions, IconButton, FormControlLabel, Checkbox, TextField, Button } from '@material-ui/core';
 import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
 import DeleteIcon from '@material-ui/icons/Delete';
-import Comment from './grams/Comment'
+// import Comment from './grams/Comment'
 
 
 

@@ -20,22 +20,12 @@ const useStyles = makeStyles((theme) => ({
     suggestions: {
       marginLeft: 20,
       color: 'gray',
-      
     },
     follow: {
       fontSize: 13,
       color: 'blue',
     },
   }));
-
-
-const handleSearch = () => {
-    // User.search({
-    //   username: searchState.value
-    // })
-    // .then(({ data: users}))
-    // .catch(err => console.log(err))
-  }
 
 
 const Search = (props) => {
@@ -48,7 +38,6 @@ const Search = (props) => {
     User.search(props.searchQuery)
       .then(({ data }) => {
         setUsers(data)
-        console.log(data)
       })
       .catch(err => console.log(err))
     console.log(props)
@@ -61,7 +50,6 @@ const Search = (props) => {
       <Paper>
         <Typography className={classes.suggestions}>Search Results</Typography>
           {users.length > 0 && users.map(user => (
-
             <CardHeader
               key={user._id}
               avatar={

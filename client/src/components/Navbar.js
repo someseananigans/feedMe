@@ -14,7 +14,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PostModal from '../components/modals/PostModal'
-import User from '../utils/User'
+// import User from '../utils/User'
 
 
 
@@ -149,7 +149,7 @@ const Navbar = () => {
     search: ''
   })
   const handleSearchChange = ({ target }) => {
-    setSearchState({ ...searchState, search: target.value })
+    setSearchState({ ...searchState, search: target.value.toLowerCase() })
   }
 
   // const handleSearch = () => {
@@ -221,7 +221,7 @@ const Navbar = () => {
     <div className={classes.grow}>
       <AppBar position="relative">
         <Toolbar>
-          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/30/5052737030_735d5db1-7053-4625-88d5-87ad4e490ea4.png?cb=1618339814" />
+          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/30/5052737030_735d5db1-7053-4625-88d5-87ad4e490ea4.png?cb=1618339814" alt="logo"/>
           {/* <Typography className={classes.title} variant="h6" noWrap onClick={handleGoHome}>
             Re-instagram
           </Typography> */}
@@ -236,7 +236,7 @@ const Navbar = () => {
             <InputBase
               onChange={handleSearchChange}
               value={searchState.search}
-              placeholder="Search…"
+              placeholder="Search for a user…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
