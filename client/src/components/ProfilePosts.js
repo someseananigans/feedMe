@@ -40,35 +40,11 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ProfilePosts = (props) => {
-  const {
-    profile,
-    username,
-    image,
-    userId,
-    // hours,
-    caption,
-    likedByNumber,
-    postId,
-    likedByUsers,
-    update,
-    setUpdate,
-    currentUser,
-    comment,
-    handleCommentInput,
-    handleComment
-  } = props
 
   const classes = useStyles()
   const [postState, setPostState] = useState({
     posts: []
   })
-  const [commentList, setCommentList] = useState([])
-  const [likeAction, setLikeAction] = useState(false)
-  const [likeCount, setLikeCount] = useState(likedByNumber)
-
-  const likeCheck = () => {
-    setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
-  }
   useEffect(() => {
 
     Post.getOwned()
@@ -139,30 +115,9 @@ const ProfilePosts = (props) => {
       })
   };
 
-  useEffect(() => {
-    Cmnt.getFromPost(postId)
-      .then(({ data: postComments }) => {
-        setCommentList(postComments)
-        setUpdate('Up-to-Date')
-        // initial like check
-        likeCheck()
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  }, [update])
 
-  const handleLike = async () => {
-    await User.touchPost({
-      type: likeAction,
-      post_id: postId
-    })
-      .then()
-      .catch(err => console.log(err))
-    setLikeCount(likeAction == 'like' ? (likeCount + 1) : (likeCount - 1))
-    setLikeAction(likeAction == 'like' ? 'unlike' : 'like')
-    console.log(likeAction)
-  }
+
+
 
   return (
     <>
@@ -175,7 +130,6 @@ const ProfilePosts = (props) => {
                 <Modal
                   open={post.open}
                   onClose={handleClose}
-
                 >
                   <div style={modalStyle} className={classes.paper}>
                     <div className="images">
@@ -184,7 +138,6 @@ const ProfilePosts = (props) => {
                     <div className='comments'>
                       <ul style={{ listStyle: "none" }}>
                         <li>
-
                           <CardHeader
                             avatar={
                               <Avatar alt={post.user.firstName} src={post.user.profile}>
@@ -199,33 +152,28 @@ const ProfilePosts = (props) => {
                           />
                         </li>
                         <hr />
-                        <div style={{overflow: 'scroll', height: '300px'}}>
+                        <div style={{ overflow: 'scroll', height: '300px' }}>
                           {post.comments.length ? post.comments.map(comment => (
-                            <li key={post._id} >
+                            <li key={post._id}>
+
                               <CardHeader
                                 avatar={
                                   <Avatar alt={comment.user.username} src={comment.user.profile}>
                                   </Avatar>
                                 }
                                 title={`${comment.user.username} ${comment.comment}`}
-
                               />
                             </li>
-
                           )) : null}
                         </div>
                         <div>
-
-
-                          <CardContent className={classes.likeCommentField}>
-                            <CardActions disableSpacing className={classes.likeComment}>
-                              <IconButton aria-label="like" color="default" className={classes.noMargPad}>
-                                <FormControlLabel className={classes.noMargPad}
+                          <CardContent>
+                            <CardActions disableSpacing>
+                              <IconButton aria-label="like" color="default">
+                                <FormControlLabel
                                   control={<Checkbox icon={<FavoriteBorder />}
                                     checkedIcon={<Favorite />}
                                     name="checkedH"
-                                    onClick={handleLike}
-                                    checked={likeAction == 'unlike' ? true : false}
                                   />}
                                 />
                               </IconButton>
@@ -233,30 +181,16 @@ const ProfilePosts = (props) => {
                                 <ChatIcon className={classes.noMargPad} />
                               </IconButton>
                             </CardActions>
-
-                            <strong>{likeCount !== 1 ? `${likeCount} likes` : '1 like'}</strong>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                              <div className={classes.un}>
-                                {username}
-                              </div>
-                              <div className={classes.cap}>
-                                {caption}
-                              </div>
-                            </Typography>
                           </CardContent>
                           <CardContent className={classes.addComment}>
                             <IconButton aria-label="comment">
                               <InsertEmoticon />
                             </IconButton>
                             <TextField
-                              id={postId}
                               label="Add a comment..."
                               type="comment"
-                              // value={comment.post_id === postId ? comment.body : ""}
-                              onChange={handleCommentInput}
                             />
-                            <Button onClick={handleComment}>Post</Button>
-
+                            <Button>Post</Button>
                           </CardContent>
                         </div>
                       </ul>

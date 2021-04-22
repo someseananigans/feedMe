@@ -1,11 +1,12 @@
 import { useState, useEffect, React } from 'react'
-import { User, Post } from '../utils'
 import { Link } from 'react-router-dom'
+import { Post, User } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
+import GridList from "@material-ui/core/GridList"
+import GridListTile from "@material-ui/core/GridListTile"
 import './ProfPost.css'
-import { Typography, Modal, Avatar, CardHeader } from '@material-ui/core';
+import { Typography, Modal, Avatar, CardHeader, CardContent, CardActions, IconButton, FormControlLabel, Checkbox, TextField, Button } from '@material-ui/core'
+import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
@@ -15,7 +16,6 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
     marginTop: 100,
   },
@@ -24,27 +24,31 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     position: 'absolute',
+    width: '800px',
+    height: '600px',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
-    width: '600px',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
   image: {
-    height: 450,
-    width: 300
+    height: 525,
+    width: 425
   }
 
 }))
 
-const UserProf = ({id}) => {
+const UserProf = ({ id }) => {
+
   const classes = useStyles()
+ 
+
   const [postState, setPostState] = useState({
     posts: [],
     username: '',
-    profile: ''
+    profile: '',
   })
-  
+
 
   const handleDeletePost = id => {
     Post.delete(id)
@@ -58,29 +62,22 @@ const UserProf = ({id}) => {
   }
 
   useEffect(() => {
- 
     User.getUser(id)
       .then(({ data }) => {
-
         const posts = data.posts.map(post => ({
-        ...post, 
-        open: false
-      }))
-      setPostState({ ...postState, posts, profile: data.profile, username: data.username })
-
-    })
-      
-    .catch(err => { console.log(err) })
-
+          ...post,
+          open: false
+        }))
+        setPostState({ ...postState, posts, profile: data.profile, username: data.username })
+      })
+      .catch(err => { console.log(err) })
   }, [])
 
-  // const rand = () => {
-  //   return Math.round(Math.random() * 20) - 10;
-  // }
+
 
   const getModalStyle = () => {
-    const top = 50 
-    const left = 50 
+    const top = 50
+    const left = 50
 
     return {
       top: `${top}%`,
@@ -102,7 +99,7 @@ const UserProf = ({id}) => {
     // setOpen(true);
   };
 
-  
+
 
   const handleForceClose = async function () {
     const res = await new Promise((resolve, reject) => {
@@ -123,7 +120,6 @@ const UserProf = ({id}) => {
 
 
 
-  
   return (
     <>
 
@@ -136,7 +132,7 @@ const UserProf = ({id}) => {
                 <Modal
                   open={post.open}
                   onClose={handleClose}
-                  
+
                 >
                   <div style={modalStyle} className={classes.paper}>
 
@@ -161,18 +157,50 @@ const UserProf = ({id}) => {
                           />
                         </li>
                         <hr />
-                        {post.comments.length ? post.comments.map(comment => (
-                          <li key={post._id} >
-                            <CardHeader
-                              avatar={
-                                <Avatar alt={comment.user.username} src={comment.user.profile}>
-                                </Avatar>
-                              }
-                              title={`${comment.user.username} ${comment.comment}`}
+                        <div style={{ overflow: 'scroll', height: '300px' }}>
+                          {post.comments.length ? post.comments.map(comment => (
+                            <li key={post._id} >
+                              <CardHeader
+                                avatar={
+                                  <Avatar alt={comment.user.username} src={comment.user.profile}>
+                                  </Avatar>
+                                }
+                                title={`${comment.user.username} ${comment.comment}`}
 
+                              />
+                            </li>
+                          )) : null}
+                        </div>
+                        <div>
+
+
+                          <CardContent className={classes.likeCommentField}>
+                            <CardActions disableSpacing className={classes.likeComment}>
+                              <IconButton aria-label="like" color="default" className={classes.noMargPad}>
+                                <FormControlLabel className={classes.noMargPad}
+                                  control={<Checkbox icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite />}
+                                    name="checkedH"
+                                  />}
+                                />
+                              </IconButton>
+                              <IconButton aria-label="comment">
+                                <ChatIcon className={classes.noMargPad} />
+                              </IconButton>
+                            </CardActions>
+                          </CardContent>
+                          <CardContent className={classes.addComment}>
+                            <IconButton aria-label="comment">
+                              <InsertEmoticon />
+                            </IconButton>
+                            <TextField
+                              label="Add a comment..."
+                              type="comment"
                             />
-                          </li>
-                        )) : null}
+                            <Button>Post</Button>
+
+                          </CardContent>
+                        </div>
                       </ul>
                     </div>
                   </div>
