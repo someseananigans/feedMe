@@ -12,9 +12,9 @@ import { Comment as Cmnt, User } from '../../utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 800,
     marginBottom: 20,
-    height: "100%"
+    height: "100%",
+    backgroundColor: '#fff'
   },
   media: {
     width: "100%",
@@ -55,6 +55,19 @@ const useStyles = makeStyles((theme) => ({
   likeCommentField: {
     paddingTop: '5px',
     paddingBottom: '5px'
+  },
+  avatar: {
+    height: '32px',
+    width: '32px',
+  }, 
+  postUsername: {
+    textDecoration: 'none', 
+    color: 'black',
+    fontWeight: 500
+  },
+  cardHeader: {
+    paddingTop: '9px',
+    paddingBottom: '9px'
   }
 }));
 
@@ -117,10 +130,12 @@ const Card = (props) => {
   return (
     <div>
       <PostCard className={classes.root} key={postId}>
-        <CardHeader
+        <CardHeader className={classes.cardHeader}
           avatar={
+            <Link to={`/user/${userId}`}>
             <Avatar aria-label="userAvatar" className={classes.avatar} src={profile}>
             </Avatar>
+            </Link>
           }
           action={
             <IconButton aria-label="settings">
@@ -128,7 +143,7 @@ const Card = (props) => {
             </IconButton>
           }
           title={
-            <Link to={`/user/${userId}`} style={{ textDecoration: 'none', color: 'black' }}>
+            <Link to={`/user/${userId}`} className={classes.postUsername}>
               {username}
             </Link>
           }
