@@ -128,7 +128,7 @@ const UserProf = ({ id }) => {
     console.log(comment)
   }
 
-  const handleComment = () => {
+  const handleComment1 = () => {
     Cmnt.create({
       comment: comment.body,
       post_id: comment.post_id
@@ -224,7 +224,7 @@ const UserProf = ({ id }) => {
                               onChange={handleCommentInput}
                               value={comment.body}
                             />
-                            <Button onClick={handleComment}>Post</Button>
+                            <Button onClick={handleComment1}>Post</Button>
                           </CardContent>
                         </div>
                       </ul>
