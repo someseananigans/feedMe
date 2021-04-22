@@ -9,7 +9,8 @@ const SuggestedUsers = (props) => {
     username,
     profile,
     firstName,
-    classes,
+    usersfollowing,
+    classes
   } = props
 
   const {
@@ -19,7 +20,7 @@ const SuggestedUsers = (props) => {
   } = FollowContext()
 
   useEffect(() => {
-    followCheck(user_id)
+    followCheck(usersfollowing, user_id)
   }, [])
 
   return (

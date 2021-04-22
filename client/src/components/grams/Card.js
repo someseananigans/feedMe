@@ -4,11 +4,10 @@ import {
   Card as PostCard, CardHeader, CardContent, CardActions, IconButton,
   Button, TextField, Avatar, Typography, Checkbox, FormControlLabel
 } from '@material-ui/core';
-import { ChatBubbleOutline as ChatIcon, MoreVert as MoreVertIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
+import { ChatBubbleOutline as ChatIcon, MoreHoriz, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
 import Comment from './Comment'
 import { Link } from 'react-router-dom'
 import { Comment as Cmnt, User } from '../../utils'
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,9 +47,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '-10px'
   },
   addComment: {
+    width: 'auto',
     display: 'flex',
-    paddingBottom: '20px !important',
-    paddingTop: 0,
+    padding: 0,
+    paddingBottom: '15px !important',
+    justifyContent: 'center'
   },
   likeCommentField: {
     paddingTop: '5px',
@@ -68,9 +69,11 @@ const useStyles = makeStyles((theme) => ({
   cardHeader: {
     paddingTop: '9px',
     paddingBottom: '9px'
+  },
+  commentField: {
+    width: '80%'
   }
 }));
-
 
 const Card = (props) => {
   const classes = useStyles()
@@ -139,7 +142,7 @@ const Card = (props) => {
           }
           action={
             <IconButton aria-label="settings">
-              <MoreVertIcon />
+              <MoreHoriz />
             </IconButton>
           }
           title={
@@ -207,6 +210,7 @@ const Card = (props) => {
             type="comment"
             value={comment.post_id === postId ? comment.body : ""}
             onChange={handleCommentInput}
+            className={classes.commentField}
           />
           <Button onClick={handleComment}>Post</Button>
 
