@@ -16,8 +16,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    backgroundColor: theme.palette.background.paper,
-    marginTop: 100,
+    backgroundColor: '#fafafa',
+    marginTop: 50,
+    marginBottom: 50,
   },
   gridList: {
     width: '80%',
@@ -33,8 +34,28 @@ const useStyles = makeStyles(theme => ({
   },
   image: {
     height: 'auto',
-    width: 425,
-  }
+    width: '100%',
+  },
+  imageWrapper: {
+    alignSelf: 'center',
+    width: '50%',
+    float: 'left',
+  },
+  noMargPad: {
+    padding: 0,
+    margin: 0
+  },
+  likeCommentField: {
+    paddingTop: '5px',
+    paddingBottom: '5px'
+  },
+  addComment: {
+    width: 'auto',
+    display: 'flex',
+    padding: 0,
+    paddingBottom: '15px !important',
+    justifyContent: 'center'
+  },
 
 }))
 
@@ -57,7 +78,6 @@ const UserProf = ({ id }) => {
 
   const likeCheck = (likedByUsers) => {
     setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
-    console.log(likeAction)
   }
 
   const handleLike = async (postId) => {
@@ -69,7 +89,6 @@ const UserProf = ({ id }) => {
       .catch(err => console.log(err))
     setLikeCount(likeAction === 'like' ? (likeCount + 1) : (likeCount - 1))
     setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
-    console.log(likeAction)
   }
 
   const handleDeletePost = id => {
@@ -87,41 +106,18 @@ const UserProf = ({ id }) => {
     User.profile()
       .then(({ data }) => {
         setCurrentUser({ user: data })
+        User.getUser(id ? id : data._id)
+          .then(({ data }) => {
+            const posts = data.posts.map(post => ({
+              ...post,
+              open: false
+            }))
+            posts.reverse()
+            setPostState({ ...postState, posts, profile: data.profile, username: data.username })
+          })
+          .catch(err => { console.log(err) })
       })
       .catch(err => console.error(err))
-
-    if (!id) {
-      Post.getOwned()
-        .then(({ data }) => {
-          data.reverse()
-          const posts = data.map(post => ({
-            ...post,
-            open: false
-          }))
-          setPostState({ ...postState, posts })
-        })
-        .catch(err => { console.log(err) })
-    } else {
-      User.getUser(id)
-        .then(({ data }) => {
-          const posts = data.posts.map(post => ({
-            ...post,
-            open: false
-          }))
-          setPostState({ ...postState, posts, profile: data.profile, username: data.username })
-        })
-        .catch(err => { console.log(err) })
-    }
-
-    // User.getUser(id)
-    //   .then(({ data }) => {
-    //     const posts = data.posts.map(post => ({
-    //       ...post,
-    //       open: false
-    //     }))
-    //     setPostState({ ...postState, posts, profile: data.profile, username: data.username })
-    //   })
-    //   .catch(err => { console.log(err) })
   }, [])
 
 
@@ -134,6 +130,9 @@ const UserProf = ({ id }) => {
       top: `${top}%`,
       left: `${left}%`,
       transform: `translate(-${top}%, -${left}%)`,
+      padding: 0,
+      border: 'transparent',
+      display: 'flex',
     };
   }
   const [modalStyle] = useState(getModalStyle)
@@ -178,7 +177,6 @@ const UserProf = ({ id }) => {
 
   const handleCommentInput = ({ target }) => {
     setComment({ ...comment, body: target.value, post_id: target.id })
-    console.log(comment)
   }
 
   const handleComment1 = () => {
@@ -202,6 +200,7 @@ const UserProf = ({ id }) => {
           {postState.posts.length ? postState.posts.map(post => (
             <GridListTile key={post._id} cols={1} className={classes.image} onClick={() => handleOpen(post._id)} >
               <img src={post.image} alt={post.body} />
+
               <div>
                 <Modal
                   open={post.open}
@@ -210,12 +209,12 @@ const UserProf = ({ id }) => {
                 >
                   <div style={modalStyle} className={classes.paper}>
 
-                    <div className="images">
+                    <div className={classes.imageWrapper}>
                       <img src={post.image} alt={post.body} className={classes.image} />
                     </div>
                     <div className='comments'>
                       <ul style={{ listStyle: "none" }}>
-                        <li>
+                        <li >
 
                           <CardHeader
                             avatar={
@@ -231,7 +230,7 @@ const UserProf = ({ id }) => {
                           />
                         </li>
                         <hr />
-                        <div style={{ overflow: 'scroll', height: '300px' }}>
+                        <div style={{ overflowY: 'auto', height: '300px' }}>
                           {post.comments.length ? post.comments.map(cmnt => (
 
                             <li key={cmnt._id} >

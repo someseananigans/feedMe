@@ -74,8 +74,9 @@ const UserProf = ({ id }) => {
 
   useEffect(() => {
     User.profile()
-      .then(({ data }) => {
-        setCurrentUser({ user: data })
+      .then(({ profile }) => {
+        setCurrentUser({ user: profile })
+        console.log(profile)
       })
       .catch(err => console.error(err))
 
@@ -87,12 +88,13 @@ const UserProf = ({ id }) => {
             ...post,
             open: false
           }))
-          setPostState({ ...postState, posts })
+          setPostState({ ...postState, posts})
         })
         .catch(err => { console.log(err) })
     } else {
       User.getUser(id)
         .then(({ data }) => {
+          data.reverse()
           const posts = data.posts.map(post => ({
             ...post,
             open: false
@@ -101,16 +103,6 @@ const UserProf = ({ id }) => {
         })
         .catch(err => { console.log(err) })
     }
-
-    // User.getUser(id)
-    //   .then(({ data }) => {
-    //     const posts = data.posts.map(post => ({
-    //       ...post,
-    //       open: false
-    //     }))
-    //     setPostState({ ...postState, posts, profile: data.profile, username: data.username })
-    //   })
-    //   .catch(err => { console.log(err) })
   }, [])
 
 
@@ -212,7 +204,7 @@ const UserProf = ({ id }) => {
                               </Avatar>
                             }
                             title={
-                              <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+                              <Link to={`/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
                                 {postState.username}
                               </Link>
                             }
@@ -220,7 +212,7 @@ const UserProf = ({ id }) => {
                           />
                         </li>
                         <hr />
-                        <div style={{ overflow: 'scroll', height: '300px' }}>
+                        <div style={{ overflowY: 'auto', height: '300px' }}>
                           {post.comments.length ? post.comments.map(cmnt => (
 
                             <li key={cmnt._id} >
