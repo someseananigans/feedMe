@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
-import { Dialog, Fab } from '@material-ui/core'
+import { Dialog, IconButton, Badge } from '@material-ui/core'
 import CreatePost from '../CreatePost'
-import { Add as AddIcon } from '@material-ui/icons'
+import { Add as AddIcon} from '@material-ui/icons'
 
 const PostModal = () => {
   const [open, setOpen] = useState(false);
@@ -26,9 +26,11 @@ const PostModal = () => {
 
   return (
     <div>
-      <Fab size="small" color="secondary" aria-label="add" >
-        <AddIcon onClick={handleClickOpen} />
-      </Fab>
+      <IconButton aria-label="" color="inherit" onClick={handleClickOpen}>
+        <Badge badgeContent={0} color="secondary">
+          <AddIcon />
+        </Badge>
+      </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}
