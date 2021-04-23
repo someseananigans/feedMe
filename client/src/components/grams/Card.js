@@ -110,13 +110,15 @@ const Card = (props) => {
       .then(({ data: postComments }) => {
         setCommentList(postComments)
         setUpdate('Up-to-Date' )
-        // initial like check
-        likeCheck()
       })
       .catch(err => {
         console.error(err)
       })
   }, [update])
+
+  useEffect(() => {
+    likeCheck()
+  }, [])
 
   const handleLike = async () => {
     await User.touchPost({
