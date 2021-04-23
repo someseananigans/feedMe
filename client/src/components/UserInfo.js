@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import User from '../utils/User.js'
 
+// <------------ can be removed ------------->
 
 const UserInfo = ({id}) => {
 
@@ -18,7 +19,7 @@ const UserInfo = ({id}) => {
       })
       .catch(err => { console.log(err) })
 
-  }, [userState, id])
+  }, [])
 
 
 

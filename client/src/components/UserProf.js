@@ -7,7 +7,7 @@ import GridListTile from "@material-ui/core/GridListTile"
 import './ProfPost.css'
 import { Typography, Modal, Avatar, CardHeader, CardContent, CardActions, IconButton, FormControlLabel, Checkbox, TextField, Button } from '@material-ui/core'
 import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
-import DeleteIcon from '@material-ui/icons/Delete'
+
 
 
 
@@ -49,17 +49,6 @@ const UserProf = ({ id }) => {
     profile: '',
   })
 
-
-  const handleDeletePost = id => {
-    Post.delete(id)
-      .then(() => {
-        window.location = '/profile'
-        const posts = [postState.posts]
-        setPostState({ ...postState, posts })
-
-      })
-      .catch(err => console.log(err))
-  }
 
   useEffect(() => {
     User.getUser(id)
@@ -182,8 +171,7 @@ const UserProf = ({ id }) => {
                           {post.comments.length ? post.comments.map(cmnt => (
                             
                             <li key={cmnt._id} >
-                              {/* {console.log(post)} */}
-                              {/* {console.log(cmnt)} */}
+                
                               <CardHeader
                                 avatar={
                                   <Avatar alt={cmnt.user.username} src={cmnt.user.profile}>
@@ -235,7 +223,6 @@ const UserProf = ({ id }) => {
               <div className='overlay'>
                 <Typography>
                   {post.body}
-                  <DeleteIcon onClick={() => handleDeletePost(post._id)} />
                 </Typography>
               </div>
             </GridListTile>

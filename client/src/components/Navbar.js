@@ -14,6 +14,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PostModal from '../components/modals/PostModal'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import User from '../utils/User'
 
 
@@ -83,13 +84,20 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  margin: {
-    marginLeft: 20
+  logOut: {
+    marginLeft: 20,
+    alignSelf: 'center',
   },
   logo: {
     maxHeight: 60,
     maxWidth: 100
-
+  },
+  dropDownItems: {
+    padding: '0 2px',
+    paddingRight: '20px',
+  },
+  dropDown: {
+    padding: '0 !important',
   }
 }));
 
@@ -129,9 +137,9 @@ const Navbar = () => {
     handleMobileMenuClose();
   };
 
-  // const handleMobileMenuOpen = (event) => {
-  //   setMobileMoreAnchorEl(event.currentTarget);
-  // };
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
   
   const handleGoToProfile = () => {
     window.location = '/profile'
@@ -187,23 +195,15 @@ const Navbar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem className={classes.dropDownItems} onClick={handleGoHome} >
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <HomeIcon onClick={handleGoHome} />
+          <Badge badgeContent={0} color="secondary">
+            <HomeIcon/>
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Home</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleGoToProfile}>
+      <MenuItem className={classes.dropDownItems} onClick={handleGoToProfile}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -214,6 +214,18 @@ const Navbar = () => {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      <MenuItem className={classes.dropDownItems}>
+        <PostModal/>
+        <p>Create a Post</p>
+      </MenuItem>
+      <MenuItem className={classes.dropDownItems} onClick={handleGoHome} >
+        <IconButton aria-label="show 4 new mails" color="inherit">
+          <Badge badgeContent={0} color="secondary">
+            <ExitToAppIcon />
+          </Badge>
+        </IconButton>
+        <p>Log Out</p>
+      </MenuItem>
     </Menu>
   );
 
@@ -222,9 +234,6 @@ const Navbar = () => {
       <AppBar position="relative">
         <Toolbar>
           <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/30/5052737030_735d5db1-7053-4625-88d5-87ad4e490ea4.png?cb=1618339814" alt="logo"/>
-          {/* <Typography className={classes.title} variant="h6" noWrap onClick={handleGoHome}>
-            Re-instagram
-          </Typography> */}
           <div className={classes.search}>
             <form onSubmit={(event) => {
               event.preventDefault()
@@ -246,8 +255,8 @@ const Navbar = () => {
             </form>
           </div>
           <div className={classes.grow} />
-          <PostModal />
           <div className={classes.sectionDesktop}>
+            <PostModal />
             <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
               <Badge badgeContent={0} color="secondary">
                 <HomeIcon />
@@ -264,6 +273,7 @@ const Navbar = () => {
             >
               <AccountCircle />
             </IconButton>
+            <Typography onClick={handleLogOut} className={classes.logOut}>Log Out</Typography>
           </div>
 
           <div className={classes.sectionMobile}>
@@ -271,13 +281,12 @@ const Navbar = () => {
               aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
-              onClick={handleGoToProfile}
+              onClick={handleMobileMenuOpen}
               color="inherit"
             >
               <MoreIcon />
             </IconButton>
           </div>
-          <Typography onClick={handleLogOut} className={classes.margin}>Log Out</Typography>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
