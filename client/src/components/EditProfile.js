@@ -101,6 +101,7 @@ const EditProfile = ({ toggleOpen }) => {
       .then(() => {
         console.log('updated')
         toggleOpen()
+        window.location.reload()
       })
       .catch(err => console.log(err))
   }
