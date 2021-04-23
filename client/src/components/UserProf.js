@@ -7,7 +7,7 @@ import GridListTile from "@material-ui/core/GridListTile"
 import './ProfPost.css'
 import { Typography, Modal, Avatar, CardHeader, CardContent, CardActions, IconButton, FormControlLabel, Checkbox, TextField, Button } from '@material-ui/core'
 import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@material-ui/icons/Delete'
 
 
 
@@ -32,8 +32,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2, 4, 3),
   },
   image: {
-    height: 525,
-    width: 425
+    height: 'auto',
+    width: 425,
   }
 
 }))
