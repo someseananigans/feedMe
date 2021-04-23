@@ -45,6 +45,7 @@ const ProfilePosts = (props) => {
   const [postState, setPostState] = useState({
     posts: []
   })
+  const [update, setUpdate] = useState('')
   useEffect(() => {
 
     Post.getOwned()
@@ -57,7 +58,7 @@ const ProfilePosts = (props) => {
       })
       .catch(err => { console.log(err) })
 
-  }, [])
+  }, [update])
 
   const handleDeletePost = id => {
 
@@ -115,6 +116,27 @@ const ProfilePosts = (props) => {
       })
   };
 
+  const [comment, setComment] = useState({
+    body: '',
+    post_id: ''
+  })
+
+  const handleCommentInput = ({ target }) => {
+    setComment({ ...comment, body: target.value, post_id: target.id })
+  }
+
+
+  const handleComment = () => {
+    Cmnt.create({
+      comment: comment.body,
+      post_id: comment.post_id
+    })
+      .then(({ data: cmnt }) => {
+        setComment({ ...comment, body: '', post_id: '' })
+        setUpdate('Need Update')
+      })
+      .catch(err => console.error(err))
+  }
 
 
 
@@ -155,7 +177,6 @@ const ProfilePosts = (props) => {
                         <div style={{ overflow: 'scroll', height: '300px' }}>
                           {post.comments.length ? post.comments.map(comment => (
                             <li key={post._id}>
-
                               <CardHeader
                                 avatar={
                                   <Avatar alt={comment.user.username} src={comment.user.profile}>
@@ -187,10 +208,13 @@ const ProfilePosts = (props) => {
                               <InsertEmoticon />
                             </IconButton>
                             <TextField
+                              id={post._id}
                               label="Add a comment..."
                               type="comment"
+                              onChange={handleCommentInput}
+
                             />
-                            <Button>Post</Button>
+                            <Button onClick={handleComment}>Post</Button>
                           </CardContent>
                         </div>
                       </ul>
