@@ -1,4 +1,4 @@
-import { UserProf, Navbar, UserInfo, ProfileInfo } from '../components'
+import { ProfilePosts, Navbar, ProfileInfo } from '../components'
 
 const User = ({ match }) => {
   return (
@@ -7,7 +7,7 @@ const User = ({ match }) => {
       {/* <UserInfo id={match.params.id} />   
       ^^^ converted ProfileInfo to work interchangeably with UserInfo */}
       <ProfileInfo id={match.params.id}/>
-      <UserProf id={match.params.id} />
+      <ProfilePosts id={match.params.id} />
     </>
   )
 }
