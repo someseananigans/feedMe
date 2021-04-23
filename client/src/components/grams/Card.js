@@ -110,13 +110,15 @@ const Card = (props) => {
       .then(({ data: postComments }) => {
         setCommentList(postComments)
         setUpdate('Up-to-Date' )
-        // initial like check
-        likeCheck()
       })
       .catch(err => {
         console.error(err)
       })
   }, [update])
+
+  useEffect(() => {
+    likeCheck()
+  }, [])
 
   const handleLike = async () => {
     await User.touchPost({
@@ -135,7 +137,7 @@ const Card = (props) => {
       <PostCard className={classes.root} key={postId}>
         <CardHeader className={classes.cardHeader}
           avatar={
-            <Link to={`/user/${userId}`}>
+            <Link to={`/${userId}`}>
             <Avatar aria-label="userAvatar" className={classes.avatar} src={profile}>
             </Avatar>
             </Link>
@@ -146,7 +148,7 @@ const Card = (props) => {
             </IconButton>
           }
           title={
-            <Link to={`/user/${userId}`} className={classes.postUsername}>
+            <Link to={`/${userId}`} className={classes.postUsername}>
               {username}
             </Link>
           }

@@ -15,9 +15,9 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PostModal from '../components/modals/PostModal'
 import React from 'react';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import User from '../utils/User'
 // import { Link } from 'react-router-dom'
 
