@@ -125,9 +125,10 @@ const UserProf = ({ id }) => {
 
   const handleCommentInput = ({ target }) => {
     setComment({ ...comment, body: target.value, post_id: target.id })
+    console.log(comment)
   }
 
-  const handleComment = () => {
+  const handleComment1 = () => {
     Cmnt.create({
       comment: comment.body,
       post_id: comment.post_id
@@ -178,17 +179,17 @@ const UserProf = ({ id }) => {
                         </li>
                         <hr />
                         <div style={{ overflow: 'scroll', height: '300px' }}>
-                          {post.comments.length ? post.comments.map(comment => (
+                          {post.comments.length ? post.comments.map(cmnt => (
                             
-                            <li key={post._id} >
-                              {console.log(post)}
-                              {/* {console.log(comment)} */}
+                            <li key={cmnt._id} >
+                              {/* {console.log(post)} */}
+                              {/* {console.log(cmnt)} */}
                               <CardHeader
                                 avatar={
-                                  <Avatar alt={comment.user.username} src={comment.user.profile}>
+                                  <Avatar alt={cmnt.user.username} src={cmnt.user.profile}>
                                   </Avatar>
                                 }
-                                title={`${comment.user.username} ${comment.comment}`}
+                                title={`${cmnt.user.username} ${cmnt.comment}`}
 
                               />
                             </li>
@@ -221,8 +222,9 @@ const UserProf = ({ id }) => {
                               label="Add a comment..."
                               type="comment"
                               onChange={handleCommentInput}
+                              value={comment.body}
                             />
-                            <Button onClick={handleComment}>Post</Button>
+                            <Button onClick={handleComment1}>Post</Button>
                           </CardContent>
                         </div>
                       </ul>

@@ -1,6 +1,6 @@
 import { useState, useEffect, React } from 'react'
 import { Link } from 'react-router-dom'
-import { Post, User, Comment as Cmnt } from '../utils/'
+import { Post, Comment as Cmnt } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";

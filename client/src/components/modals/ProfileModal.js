@@ -4,7 +4,6 @@ import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -16,6 +15,7 @@ function getModalStyle() {
   };
 }
 
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: ".8rem",
     lineHeight: 1,
     padding: "6px 9px",
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
   }
 }));
 
@@ -42,7 +45,7 @@ const ProfileModal = () => {
 
 
   return (
-    <div>
+    <>
       <Button variant="contained" className={classes.button} type="button" onClick={toggleOpen} >
         Edit Profile
       </Button>
@@ -59,7 +62,7 @@ const ProfileModal = () => {
       </Modal>
 
 
-    </div>
+    </>
   )
 }
 

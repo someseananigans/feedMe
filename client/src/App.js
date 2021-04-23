@@ -5,29 +5,44 @@ import {
 } from 'react-router-dom'
 import { Home, Profile, Login, User, Search } from './pages'
 import { LockedView } from './utils'
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
+
+const theme = createMuiTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 500,
+      md: 731,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+});
 
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route exact path='/'>
+    <MuiThemeProvider theme={theme}>
+      <Router>
+        <Switch>
+          <Route exact path='/'>
+            <LockedView>
+              <Home />
+            </LockedView>
+          </Route>
+          <Route exact path='/auth' component={Login} />
+          <Route exact path='/profile'>
+            <LockedView>
+              <Profile />
+            </LockedView>
+          </Route>
+          <Route exact path='/:id' component={User} />
           <LockedView>
-            <Home />
+            <Route exact path='/search/:username' component={Search} />
           </LockedView>
-        </Route>
-        <Route exact path='/auth' component={Login} />
-        <Route exact path='/profile'>
-          <LockedView>
-            <Profile />
-          </LockedView>
-        </Route>
-        <Route exact path='/user/:id' component={User} />
-        <LockedView>
-          <Route exact path='/search/:username' component={Search} />
-        </LockedView>
-      </Switch>
-    </Router>
+        </Switch>
+      </Router>
+    </MuiThemeProvider>
   )
 }
 

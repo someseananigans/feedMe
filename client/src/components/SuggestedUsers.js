@@ -9,7 +9,8 @@ const SuggestedUsers = (props) => {
     username,
     profile,
     firstName,
-    classes,
+    usersfollowing,
+    classes
   } = props
 
   const {
@@ -19,21 +20,21 @@ const SuggestedUsers = (props) => {
   } = FollowContext()
 
   useEffect(() => {
-    followCheck(user_id)
+    followCheck(usersfollowing, user_id)
   }, [])
 
   return (
     <>
       <CardHeader key={user_id} className={classes.suggestions}
         avatar={
-          <Link to={`/user/${user_id}`} style={{ textDecoration: 'none', color: 'black' }} >
+          <Link to={`/${user_id}`} style={{ textDecoration: 'none', color: 'black' }} >
             <Avatar alt={firstName} src={profile} className={classes.avatar}>
             </Avatar>
           </Link>
 
         }
         title={
-          <Link to={`/user/${user_id}`} style={{ textDecoration: 'none', color: 'black' }} >
+          <Link to={`/${user_id}`} style={{ textDecoration: 'none', color: 'black' }} >
             {username}
           </Link>
         }
