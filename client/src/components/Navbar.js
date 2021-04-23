@@ -1,4 +1,4 @@
-import { useState }from 'react';
+import { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,8 +14,11 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PostModal from '../components/modals/PostModal'
+import React from 'react';
+// import TextField from '@material-ui/core/TextField';
+// import Autocomplete from '@material-ui/lab/Autocomplete';
 // import User from '../utils/User'
-
+// import { Link } from 'react-router-dom'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -152,14 +155,6 @@ const Navbar = () => {
     setSearchState({ ...searchState, search: target.value.toLowerCase() })
   }
 
-  // const handleSearch = () => {
-  //   User.search({
-  //     username: searchState.value
-  //   })
-  //   .then(({ data: users}))
-  //   .catch(err => console.log(err))
-  // }
-
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -217,14 +212,37 @@ const Navbar = () => {
     </Menu>
   );
 
+ 
+
+  const [allUsersState, setAllUsersState] = useState({
+    users: []
+  });
+
+  // const handleAutoSearchChange = () => {
+  //   User.getUsers()
+  //   .then(({ data: users }) => {
+  //     setAllUsersState({...allUsersState, users})
+  //   })
+  //   .catch(err => {
+  //     console.error(err)
+  //   })
+  // }
+
+  // useEffect(() => {
+  //   User.getUsers()
+  //   .then(({ data: users }) => {
+  //     setAllUsersState({...allUsersState, users})
+  //   })
+  //   .catch(err => {
+  //     console.error(err)
+  //   })
+  // }, [])
+
   return (
     <div className={classes.grow}>
       <AppBar position="relative">
         <Toolbar>
           <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/30/5052737030_735d5db1-7053-4625-88d5-87ad4e490ea4.png?cb=1618339814" alt="logo"/>
-          {/* <Typography className={classes.title} variant="h6" noWrap onClick={handleGoHome}>
-            Re-instagram
-          </Typography> */}
           <div className={classes.search}>
             <form onSubmit={(event) => {
               event.preventDefault()
@@ -244,7 +262,18 @@ const Navbar = () => {
               inputProps={{ 'aria-label': 'search' }}
             />
             </form>
+           
           </div>
+          {/* <Autocomplete
+            openOnFocus={false}
+            className={classes.search}
+            options={allUsersState.users}
+            // onChange={handleAutoSearchChange}
+            getOptionLabel={(option) => option.username}
+            style={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Search a username..." variant="outlined" />}
+            renderOption={(option) => <Typography onClick={() => window.location = `/user/${option._id}`} noWrap>{option.username}</Typography>}
+         /> */}
           <div className={classes.grow} />
           <PostModal />
           <div className={classes.sectionDesktop}>
