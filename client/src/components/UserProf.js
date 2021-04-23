@@ -126,7 +126,7 @@ const UserProf = ({ id }) => {
         setComment({ ...comment, body: '', post_id: '' })
       })
       .catch(err => console.error(err))
-  }
+    }
 
 
 
