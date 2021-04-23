@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Avatar, CardHeader, Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { User, FollowContext } from '../utils'
+import { User } from '../utils'
 import SuggestedUsers from './SuggestedUsers'
 
 const useStyles = makeStyles((theme) => ({
@@ -23,7 +23,9 @@ const useStyles = makeStyles((theme) => ({
     color: 'gray',
   },
   suggestions: {
-    paddingRight: 0
+    paddingRight: 0,
+    paddingBottom:0,
+    paddingTop: '8px'
   },
   follow: {
     fontSize: 13,
