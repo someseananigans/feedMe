@@ -115,7 +115,7 @@ function HomeIcon(props) {
 
 
 // Logo URL
-// https://dewey.tailorbrands.com/production/brand_version_mockup_image/30/5052737030_735d5db1-7053-4625-88d5-87ad4e490ea4.png?cb=1618339814
+// https://dewey.tailorbrands.com/production/brand_version_mockup_image/794/5122938794_88d7d3a2-8613-40c2-8402-286cf1e711ac.png?cb=1619203943
 
 const Navbar = () => {
   const classes = useStyles();
@@ -254,7 +254,7 @@ const Navbar = () => {
     <div className={classes.grow}>
       <AppBar position="relative">
         <Toolbar>
-          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/30/5052737030_735d5db1-7053-4625-88d5-87ad4e490ea4.png?cb=1618339814" alt="logo"/>
+          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/794/5122938794_88d7d3a2-8613-40c2-8402-286cf1e711ac.png?cb=1619203943" alt="logo"/>
           <div className={classes.search}>
             <form onSubmit={(event) => {
               event.preventDefault()
