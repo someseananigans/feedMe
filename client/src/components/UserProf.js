@@ -235,7 +235,7 @@ const UserProf = ({ id }) => {
               <div className='overlay'>
                 <Typography>
                   {post.body}
-                  <DeleteIcon onClick={() => handleDeletePost(post._id)} />
+                  {/* <DeleteIcon onClick={() => handleDeletePost(post._id)} /> */}
                 </Typography>
               </div>
             </GridListTile>

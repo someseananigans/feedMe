@@ -15,7 +15,6 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PostModal from '../components/modals/PostModal'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import React from 'react';
 // import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
 // import User from '../utils/User'
@@ -93,7 +92,8 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     maxHeight: 60,
-    maxWidth: 100
+    maxWidth: 100,
+    cursor: 'pointer',
   },
   dropDownItems: {
     padding: '0 2px',
