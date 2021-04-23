@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import User from '../utils/User.js'
 
 
-const ProfileInfo = ({id}) => {
+const ProfileInfo = ({ id }) => {
 
   const [userState, setUserState] = useState({
     user: {
@@ -42,7 +42,7 @@ const ProfileInfo = ({id}) => {
         <CharacterField>
           <ProfileRow>
             <Username>{user.username}</Username>
-            <ProfileModal />
+            {(!id) ? <ProfileModal /> : null}
           </ProfileRow>
           <Ninja>
 
