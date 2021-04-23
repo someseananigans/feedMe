@@ -101,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
   },
   dropDown: {
     padding: '0 !important',
+  },
+  appBar: {
+    backgroundColor: '#4caf50'
   }
 }));
 
@@ -252,9 +255,9 @@ const Navbar = () => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="relative">
+      <AppBar position="relative" className={classes.appBar}>
         <Toolbar>
-          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/794/5122938794_88d7d3a2-8613-40c2-8402-286cf1e711ac.png?cb=1619203943" alt="logo"/>
+          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/730/5123634730_d958ae6a-bc04-4366-b183-35e4a8407a94.png?cb=1619210685" alt="logo"/>
           <div className={classes.search}>
             <form onSubmit={(event) => {
               event.preventDefault()
