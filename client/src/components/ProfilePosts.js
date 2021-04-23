@@ -256,17 +256,17 @@ const ProfilePosts = ({ id }) => {
                                 <strong>{postState.username}</strong>
                               </Link>
                             }
-                            action={
+                            action={id && (
                               <Button
                                 className={followAction === 'follow' ? classes.follow : classes.following}
                                 onClick={(() => handleFollow(post.user))}
                               >
                                 {followAction}
-                              </Button>
+                              </Button>)
                             }
                           />
                         </li>
-                        <hr />
+                        <hr style={{width: '80%'}} />
                         
                         <div style={{ overflowY: 'auto', height: '300px', padding: '0 15px' }}>
                           <li>
