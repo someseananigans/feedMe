@@ -14,7 +14,6 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PostModal from '../components/modals/PostModal'
-import React from 'react';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -93,7 +92,8 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     maxHeight: 60,
-    maxWidth: 100
+    maxWidth: 100,
+    cursor: 'pointer',
   },
   dropDownItems: {
     padding: '0 2px',

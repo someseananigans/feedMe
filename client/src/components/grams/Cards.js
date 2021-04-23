@@ -38,6 +38,8 @@ const Cards = () => {
   useEffect(() => {
     Post.getAll()
       .then(({ data: grams }) => {
+        // directly mutilates data
+        grams.reverse()
         setPostState(grams)
       })
       .catch(err => {

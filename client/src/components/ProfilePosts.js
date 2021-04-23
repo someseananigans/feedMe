@@ -50,6 +50,7 @@ const ProfilePosts = (props) => {
 
     Post.getOwned()
       .then(({ data }) => {
+        data.reverse()
         const posts = data.map(post => ({
           ...post,
           open: false
