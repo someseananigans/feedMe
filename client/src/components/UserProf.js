@@ -1,6 +1,6 @@
 import { useState, useEffect, React } from 'react'
 import { Link } from 'react-router-dom'
-import { Post, User, Comment as Cmnt  } from '../utils/'
+import { Post, User, Comment as Cmnt } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from "@material-ui/core/GridList"
 import GridListTile from "@material-ui/core/GridListTile"
@@ -9,7 +9,7 @@ import { Typography, Modal, Avatar, CardHeader, CardContent, CardActions, IconBu
 import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
 
 
-
+// <---------------------- Remove???
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 const UserProf = ({ id }) => {
 
   const classes = useStyles()
- 
+
 
   const [postState, setPostState] = useState({
     posts: [],
@@ -49,17 +49,68 @@ const UserProf = ({ id }) => {
     profile: '',
   })
 
+  const [likeAction, setLikeAction] = useState(false)
+  const [likeCount, setLikeCount] = useState(0)
+  const [currentUser, setCurrentUser] = useState({
+    user: {}
+  })
+
+  const likeCheck = (likedByUsers) => {
+    setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
+    console.log(likeAction)
+  }
+
+  const handleLike = async (postId) => {
+    await User.touchPost({
+      type: likeAction,
+      post_id: postId
+    })
+      .then()
+      .catch(err => console.log(err))
+    setLikeCount(likeAction === 'like' ? (likeCount + 1) : (likeCount - 1))
+    setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
+    console.log(likeAction)
+  }
 
   useEffect(() => {
-    User.getUser(id)
+    User.profile()
       .then(({ data }) => {
-        const posts = data.posts.map(post => ({
-          ...post,
-          open: false
-        }))
-        setPostState({ ...postState, posts, profile: data.profile, username: data.username })
+        setCurrentUser({ user: data })
       })
-      .catch(err => { console.log(err) })
+      .catch(err => console.error(err))
+
+    if (!id) {
+      Post.getOwned()
+        .then(({ data }) => {
+          data.reverse()
+          const posts = data.map(post => ({
+            ...post,
+            open: false
+          }))
+          setPostState({ ...postState, posts })
+        })
+        .catch(err => { console.log(err) })
+    } else {
+      User.getUser(id)
+        .then(({ data }) => {
+          const posts = data.posts.map(post => ({
+            ...post,
+            open: false
+          }))
+          setPostState({ ...postState, posts, profile: data.profile, username: data.username })
+        })
+        .catch(err => { console.log(err) })
+    }
+
+    // User.getUser(id)
+    //   .then(({ data }) => {
+    //     const posts = data.posts.map(post => ({
+    //       ...post,
+    //       open: false
+    //     }))
+    //     setPostState({ ...postState, posts, profile: data.profile, username: data.username })
+    //   })
+    //   .catch(err => { console.log(err) })
   }, [])
 
 
@@ -82,6 +133,8 @@ const UserProf = ({ id }) => {
     posts.forEach(post => {
       if (post._id === id) {
         post.open = true
+        likeCheck(post.liked_by)
+        setLikeCount(post.liked_by.length ? post.liked_by.length : 0)
       }
     })
     setPostState({ ...postState, posts })
@@ -169,7 +222,7 @@ const UserProf = ({ id }) => {
                         <hr />
                         <div style={{ overflow: 'scroll', height: '300px' }}>
                           {post.comments.length ? post.comments.map(cmnt => (
-                            
+
                             <li key={cmnt._id} >
                 
                               <CardHeader
@@ -193,6 +246,9 @@ const UserProf = ({ id }) => {
                                   control={<Checkbox icon={<FavoriteBorder />}
                                     checkedIcon={<Favorite />}
                                     name="checkedH"
+                                    onClick={(() => handleLike(post._id))}
+                                    checked={likeAction === 'unlike' ? true : false}
+
                                   />}
                                 />
                               </IconButton>
@@ -200,6 +256,7 @@ const UserProf = ({ id }) => {
                                 <ChatIcon className={classes.noMargPad} />
                               </IconButton>
                             </CardActions>
+                            <strong>{likeCount !== 1 ? `${likeCount} likes` : '1 like'}</strong>
                           </CardContent>
                           <CardContent className={classes.addComment}>
                             <IconButton aria-label="comment">
