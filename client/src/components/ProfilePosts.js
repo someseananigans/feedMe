@@ -1,6 +1,6 @@
 import { useState, useEffect, React } from 'react'
 import { Link } from 'react-router-dom'
-import { Post, User, Comment as Cmnt } from '../utils/'
+import { Post, User, Comment as Cmnt, FollowContext } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from "@material-ui/core/GridList"
 import GridListTile from "@material-ui/core/GridListTile"
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     position: 'absolute',
     width: '800px',
-    height: '600px',
+    height: '550px',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -40,6 +40,9 @@ const useStyles = makeStyles(theme => ({
     alignSelf: 'center',
     width: '50%',
     float: 'left',
+    maxHeight: '100%',
+    marginBottom: '-1px',
+    overflow: 'hidden'
   },
   noMargPad: {
     padding: 0,
@@ -47,7 +50,13 @@ const useStyles = makeStyles(theme => ({
   },
   likeCommentField: {
     paddingTop: '5px',
-    paddingBottom: '5px'
+    paddingBottom: '5px',
+    paddingLeft: '20px'
+  },
+  likeComment: {
+    padding: 0,
+    margin: 0,
+    marginLeft: '-10px'
   },
   addComment: {
     width: 'auto',
@@ -56,10 +65,27 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: '15px !important',
     justifyContent: 'center'
   },
+  commentField: {
+    width: '80%'
+  },
+  follow: {
+    fontSize: 13,
+    color: 'blue'
+  },
+  following: {
+    fontSize: 13,
+    color: 'black'
+  },
 
 }))
 
-const UserProf = ({ id }) => {
+const ProfilePosts = ({ id }) => {
+
+  const {
+    handleFollow, // follow or unfollow
+    followAction, // follow or following (updated by followCheck) 
+    followCheck, // within Suggested Users, checks to see if user has followed
+  } = FollowContext()
 
   const classes = useStyles()
 
@@ -145,6 +171,10 @@ const UserProf = ({ id }) => {
         post.open = true
         likeCheck(post.liked_by)
         setLikeCount(post.liked_by.length ? post.liked_by.length : 0)
+        followCheck(currentUser.user.following, post.user)
+        console.log(currentUser.user.following)
+        console.log(post.user)
+        console.log(followAction)
       }
     })
     setPostState({ ...postState, posts })
@@ -213,7 +243,7 @@ const UserProf = ({ id }) => {
                       <img src={post.image} alt={post.body} className={classes.image} />
                     </div>
                     <div className='comments'>
-                      <ul style={{ listStyle: "none" }}>
+                      <ul style={{ listStyle: "none", paddingInlineStart: 0 }}>
                         <li >
 
                           <CardHeader
@@ -222,26 +252,56 @@ const UserProf = ({ id }) => {
                               </Avatar>
                             }
                             title={
-                              <Link to={`/user/${post.user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
-                                {postState.username}
+                              <Link to={`/${post.user}`} style={{ textDecoration: 'none', color: 'black' }} >
+                                <strong>{postState.username}</strong>
                               </Link>
                             }
-                            subheader={post.body}
+                            action={
+                              <Button
+                                className={followAction === 'follow' ? classes.follow : classes.following}
+                                onClick={(() => handleFollow(post.user))}
+                              >
+                                {followAction}
+                              </Button>
+                            }
                           />
                         </li>
                         <hr />
-                        <div style={{ overflowY: 'auto', height: '300px' }}>
+                        
+                        <div style={{ overflowY: 'auto', height: '300px', padding: '0 15px' }}>
+                          <li>
+                            <CardHeader
+                              style={{ padding: '5px' }}
+                              avatar={
+                                <Avatar style={{ height: '25px', width: '25px' }} alt={postState.username} src={postState.profile}>
+                                </Avatar>
+                              }
+                              title={
+                                <>
+                                  <strong>{postState.username} </strong>
+                                  <span> {post.body}</span>
+                                </>
+                              }
+
+                            />
+                          </li>
                           {post.comments.length ? post.comments.map(cmnt => (
 
                             <li key={cmnt._id} >
                               {/* {console.log(post)} */}
                               {/* {console.log(cmnt)} */}
                               <CardHeader
+                                style={{ padding: '5px' }}
                                 avatar={
-                                  <Avatar alt={cmnt.user.username} src={cmnt.user.profile}>
+                                  <Avatar style={{height: '25px', width: '25px'}} alt={cmnt.user.username} src={cmnt.user.profile}>
                                   </Avatar>
                                 }
-                                title={`${cmnt.user.username} ${cmnt.comment}`}
+                                title={
+                                  <>
+                                  <strong>{cmnt.user.username} </strong>
+                                  <span> {cmnt.comment}</span>
+                                  </>
+                                  }
 
                               />
                             </li>
@@ -279,6 +339,7 @@ const UserProf = ({ id }) => {
                               type="comment"
                               onChange={handleCommentInput}
                               value={comment.body}
+                              className={classes.commentField}
                             />
                             <Button onClick={handleComment1}>Post</Button>
                           </CardContent>
@@ -304,4 +365,4 @@ const UserProf = ({ id }) => {
   )
 }
 
-export default UserProf
+export default ProfilePosts
