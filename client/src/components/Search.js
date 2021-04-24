@@ -57,7 +57,7 @@ const Search = (props) => {
             </Avatar>
               } 
               title={
-              <Link to={`/user/${user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
+              <Link to={`/${user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
                 {user.username}
               </Link>
               }
