@@ -1,11 +1,25 @@
-import { Avatar } from '@material-ui/core'
+import { Avatar, Button } from '@material-ui/core'
 import ProfileModal from './modals/ProfileModal'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import User from '../utils/User.js'
+import { FollowContext } from '../utils'
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const useStyles = makeStyles((theme) => ({
+follow: {
+  fontSize: 13,
+    color: 'blue'
+},
+following: {
+  fontSize: 13,
+    color: 'black'
+},
+}));
 
 const ProfileInfo = ({ id }) => {
+const classes = useStyles()
 
   const [userState, setUserState] = useState({
     user: {
@@ -30,6 +44,17 @@ const ProfileInfo = ({ id }) => {
     }
   }, [])
 
+  const {
+    handleFollow, // follow or unfollow
+    followAction, // follow or following (updated by followCheck) 
+    followCheck, // within Suggested Users, checks to see if user has followed
+  } = FollowContext()
+
+  useEffect(() => {
+    followCheck(userState.user.following, userState.user._id)
+  }, [])
+
+
   const { user } = userState
 
   return (
@@ -41,7 +66,16 @@ const ProfileInfo = ({ id }) => {
         <CharacterField>
           <ProfileRow>
             <Username>{user.username}</Username>
-            {(!id) ? <ProfileModal /> : null}
+            {
+            (!id) ? <ProfileModal /> : 
+            <Button
+              variant="contained"
+              className={followAction === 'follow' ? classes.follow : classes.following}
+              onClick={(() => handleFollow(userState.user._id))}
+            >
+              {followAction}
+            </Button>
+            }
           </ProfileRow>
           <Ninja>
 
