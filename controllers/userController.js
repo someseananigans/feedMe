@@ -62,7 +62,7 @@ router.get('/user', passport.authenticate('jwt'), (req, res) => {
 
 router.post('/user/register', (req, res) => {
   let status = {
-    name: 'test',
+    name: '',
     email: '',
     username: '',
     password: ''
@@ -70,7 +70,7 @@ router.post('/user/register', (req, res) => {
   const { name, email, username, password } = req.body
 
   // checks for non empty inputs
-  name.length <= 1 && (status.name = 'Please Enter Your Full Name')
+  name.length < 1 && (status.name = 'Please Enter Your Full Name')
   username.length < 1 && (status.username = 'Please Enter a Username')
   password.length < 1 && (status.password = 'Please Enter a Pasword')
   email.length < 1 && (status.email = 'Email is Required')
@@ -102,8 +102,8 @@ router.post('/user/register', (req, res) => {
   User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, (err, user) => {
     if (err) {
       // checks if email/username already exists
-      registeredUsers.email.indexOf(email) !== -1 && (status.email = "A user with the given email is already registered")
-      registeredUsers.username.indexOf(username) !== -1 && (status.username = "A user with the given email is already registered")
+      registeredUsers.email.indexOf(email) !== -1 && (status.email = "Email is Already in Use")
+      registeredUsers.username.indexOf(username) !== -1 && (status.username = "Username is Already in Use")
       res.json({
         status: status,
         err
