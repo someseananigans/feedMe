@@ -198,9 +198,7 @@ const ProfilePosts = ({ id }) => {
         likeCheck(post.liked_by)
         setLikeCount(post.liked_by.length ? post.liked_by.length : 0)
         followCheck(currentUser.user.following, post.user)
-        console.log(currentUser.user.following)
-        console.log(post.user)
-        console.log(followAction)
+
       }
     })
     setPostState({ ...postState, posts })
@@ -255,12 +253,10 @@ const ProfilePosts = ({ id }) => {
           {postState.posts.length ? postState.posts.map(post => (
             <Grid item key={post._id} className={classes.gridItem} onClick={() => handleOpen(post._id)} >
               <img src={post.image} alt={post.body} className={classes.imageHome} />
-
               <div>
                 <Modal
                   open={post.open}
                   onClose={handleClose}
-
                 >
                   <div style={modalStyle} className={classes.paper}>
 
@@ -291,8 +287,8 @@ const ProfilePosts = ({ id }) => {
                             }
                           />
                         </li>
-                        <hr style={{width: '80%'}} />
-                        
+                        <hr style={{ width: '80%' }} />
+
                         <div style={{ overflowY: 'auto', height: '300px', padding: '0 15px' }}>
                           <li>
                             <CardHeader
@@ -313,20 +309,18 @@ const ProfilePosts = ({ id }) => {
                           {post.comments.length ? post.comments.map(cmnt => (
 
                             <li key={cmnt._id} >
-                              {/* {console.log(post)} */}
-                              {/* {console.log(cmnt)} */}
                               <CardHeader
                                 style={{ padding: '5px' }}
                                 avatar={
-                                  <Avatar style={{height: '25px', width: '25px'}} alt={cmnt.user.username} src={cmnt.user.profile}>
+                                  <Avatar style={{ height: '25px', width: '25px' }} alt={cmnt.user.username} src={cmnt.user.profile}>
                                   </Avatar>
                                 }
                                 title={
                                   <>
-                                  <strong>{cmnt.user.username} </strong>
-                                  <span> {cmnt.comment}</span>
+                                    <strong>{cmnt.user.username} </strong>
+                                    <span> {cmnt.comment}</span>
                                   </>
-                                  }
+                                }
 
                               />
                             </li>
@@ -377,7 +371,10 @@ const ProfilePosts = ({ id }) => {
               <div className='overlay'>
                 <Typography>
                   {post.body}
-                  {/* <DeleteIcon onClick={() => handleDeletePost(post._id)} /> */}
+                  {currentUser.user._id === post.user ? (
+
+                    <DeleteIcon onClick={() => handleDeletePost(post._id)} />
+                  ) : null}
                 </Typography>
               </div>
             </Grid>
