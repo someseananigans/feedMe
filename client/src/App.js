@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom'
+import { Home, Profile, Login, User, Search } from './pages'
+import { LockedView } from './utils'
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
+
+const theme = createMuiTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 500,
+      md: 731,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+});
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <MuiThemeProvider theme={theme}>
+      <Router>
+        <Switch>
+          <Route exact path='/'>
+            <LockedView>
+              <Home />
+            </LockedView>
+          </Route>
+          <Route exact path='/auth' component={Login} />
+          <Route exact path='/profile'>
+            <LockedView>
+              <Profile />
+            </LockedView>
+          </Route>
+          <Route exact path='/:id' component={User} />
+          <LockedView>
+            <Route exact path='/search/:username' component={Search} />
+          </LockedView>
+        </Switch>
+      </Router>
+    </MuiThemeProvider>
+  )
 }
 
 export default App;
