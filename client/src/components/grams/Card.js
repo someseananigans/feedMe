@@ -129,7 +129,6 @@ const Card = (props) => {
       .catch(err => console.log(err))
     setLikeCount(likeAction === 'like' ? (likeCount + 1) : (likeCount - 1))
     setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
-    console.log(likeAction)
   }
 
   return (
@@ -137,7 +136,7 @@ const Card = (props) => {
       <PostCard className={classes.root} key={postId}>
         <CardHeader className={classes.cardHeader}
           avatar={
-            <Link to={`/${userId}`}>
+            <Link to={ currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}>
             <Avatar aria-label="userAvatar" className={classes.avatar} src={profile}>
             </Avatar>
             </Link>
@@ -148,7 +147,7 @@ const Card = (props) => {
             </IconButton>
           }
           title={
-            <Link to={`/${userId}`} className={classes.postUsername}>
+            <Link to={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)} className={classes.postUsername}>
               {username}
             </Link>
           }
