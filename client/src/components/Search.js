@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
         // height: 400,
         // overflow: 'scroll'
       },
+      justifyContent: 'center'
     },
     suggestions: {
       marginLeft: 20,
