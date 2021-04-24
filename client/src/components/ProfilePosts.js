@@ -2,7 +2,7 @@ import { useState, useEffect, React } from 'react'
 import { Link } from 'react-router-dom'
 import { Post, User, Comment as Cmnt, FollowContext } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
-import GridList from "@material-ui/core/GridList"
+import Grid from "@material-ui/core/Grid"
 import GridListTile from "@material-ui/core/GridListTile"
 import './ProfPost.css'
 import { Typography, Modal, Avatar, CardHeader, CardContent, CardActions, IconButton, FormControlLabel, Checkbox, TextField, Button } from '@material-ui/core'
@@ -21,7 +21,11 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 50,
   },
   gridList: {
-    width: '80%',
+    width: '95%',
+    justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
   },
   paper: {
     position: 'absolute',
@@ -35,6 +39,28 @@ const useStyles = makeStyles(theme => ({
   image: {
     height: 'auto',
     width: '100%',
+  },
+  gridItem: {
+    height: '300px',
+    width: '300px',
+    position: 'relative',
+    objectFit: 'cover',
+    margin: '20px',
+    [theme.breakpoints.down('sm')]: {
+      height: '200px',
+      width: '200px',
+      margin: '5px'
+    }
+  },
+  imageHome: {
+    height: '300px',
+    width: '300px',
+    position: 'relative',
+    objectFit: 'cover',
+    [theme.breakpoints.down('sm')]: {
+      height: '200px',
+      width: '200px',
+    }
   },
   imageWrapper: {
     alignSelf: 'center',
@@ -221,15 +247,14 @@ const ProfilePosts = ({ id }) => {
   }
 
 
-
   return (
     <>
 
       <div className={classes.root}>
-        <GridList cellHeight={300} className={classes.gridList} cols={3}>
+        <Grid container cellHeight={300} className={classes.gridList}>
           {postState.posts.length ? postState.posts.map(post => (
-            <GridListTile key={post._id} cols={1} className={classes.image} onClick={() => handleOpen(post._id)} >
-              <img src={post.image} alt={post.body} />
+            <Grid item key={post._id} className={classes.gridItem} onClick={() => handleOpen(post._id)} >
+              <img src={post.image} alt={post.body} className={classes.imageHome} />
 
               <div>
                 <Modal
@@ -355,11 +380,11 @@ const ProfilePosts = ({ id }) => {
                   {/* <DeleteIcon onClick={() => handleDeletePost(post._id)} /> */}
                 </Typography>
               </div>
-            </GridListTile>
+            </Grid>
           ))
             : null
           }
-        </GridList>
+        </Grid>
       </div>
     </>
   )
