@@ -20,6 +20,7 @@ export default makeStyles((theme) => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
+    position: 'relative'
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -27,4 +28,25 @@ export default makeStyles((theme) => ({
   googleButton: {
     marginBottom: theme.spacing(2),
   },
+  parent: {
+    position: 'relative',
+    maxWidth: '100%',
+    flexBasis: '100%',
+    padding: '8px'
+  },
+  child: {
+    position: 'absolute',
+    width: '100%',
+    left: '425px',
+    bottom: '35px',
+    justifyContent: 'left',
+    [theme.breakpoints.down('xs')]: {
+      left: '150px',
+    }
+  },
+  loginSnack: {
+    top: '120px',
+    position: 'absolute',
+    width: '100%'
+  }
 }));
