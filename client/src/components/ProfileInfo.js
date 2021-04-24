@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
 follow: {
   fontSize: 13,
-    color: 'blue'
+    color: 'black'
 },
 following: {
   fontSize: 13,
@@ -43,6 +43,8 @@ const classes = useStyles()
         })
     }
   }, [])
+  
+  const { user } = userState
 
   const {
     handleFollow, // follow or unfollow
@@ -51,11 +53,11 @@ const classes = useStyles()
   } = FollowContext()
 
   useEffect(() => {
-    followCheck(userState.user.following, userState.user._id)
+    followCheck(user.following, user._id)
   }, [])
 
 
-  const { user } = userState
+  console.log(user)
 
   return (
     <>
@@ -71,7 +73,7 @@ const classes = useStyles()
             <Button
               variant="contained"
               className={followAction === 'follow' ? classes.follow : classes.following}
-              onClick={(() => handleFollow(userState.user._id))}
+              onClick={(() => handleFollow(user._id))}
             >
               {followAction}
             </Button>
