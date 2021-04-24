@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
 follow: {
   fontSize: 13,
-    color: 'blue'
+    color: 'black'
 },
 following: {
   fontSize: 13,
