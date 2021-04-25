@@ -1,5 +1,6 @@
 import { Avatar, Button } from '@material-ui/core'
 import ProfileModal from './modals/ProfileModal'
+import Modal from './modals/Modal'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import User from '../utils/User.js'
@@ -8,18 +9,18 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => ({
-follow: {
-  fontSize: 13,
+  follow: {
+    fontSize: 13,
     color: 'black'
-},
-following: {
-  fontSize: 13,
+  },
+  following: {
+    fontSize: 13,
     color: 'black'
-},
+  },
 }));
 
 const ProfileInfo = ({ id }) => {
-const classes = useStyles()
+  const classes = useStyles()
 
   const [userState, setUserState] = useState({
     user: {
@@ -43,7 +44,7 @@ const classes = useStyles()
         })
     }
   }, [])
-  
+
   const { user } = userState
 
   const {
@@ -69,14 +70,14 @@ const classes = useStyles()
           <ProfileRow>
             <Username>{user.username}</Username>
             {
-            (!id) ? <ProfileModal /> : 
-            <Button
-              variant="contained"
-              className={followAction === 'follow' ? classes.follow : classes.following}
-              onClick={(() => handleFollow(user._id))}
-            >
-              {followAction}
-            </Button>
+              (!id) ? <Modal comp='EditProfile' /> :
+                <Button
+                  variant="contained"
+                  className={followAction === 'follow' ? classes.follow : classes.following}
+                  onClick={(() => handleFollow(user._id))}
+                >
+                  {followAction}
+                </Button>
             }
           </ProfileRow>
           <Ninja>
