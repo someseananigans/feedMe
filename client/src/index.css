@@ -1,6 +1,7 @@
 body {
   margin: 0;
   background-color: #fafafa;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .fixed {
@@ -47,7 +48,7 @@ body {
 }
 
 .MuiDialog-paperWidthSm {
-  max-width: 600px !important;
+  max-width: 715px !important;
   /* min-width: 90% !important; */
 }
 
