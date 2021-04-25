@@ -1,6 +1,7 @@
 body {
   margin: 0;
   background-color: #fafafa;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .fixed {
@@ -45,3 +46,15 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+
+.MuiDialog-paperWidthSm {
+  max-width: 715px !important;
+  /* min-width: 90% !important; */
+}
+
+/* @media screen and (max-width: 650px) {
+  .MuiDialog-paperWidthSm {
+    max-width: 500px !important;
+    min-width: 10% !important;
+  }
+} */

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   suggestions: {
     paddingRight: 0,
-    paddingBottom:0,
+    paddingBottom: 0,
     paddingTop: '8px'
   },
   follow: {
@@ -79,12 +79,11 @@ const Suggested = () => {
                 filteredUsers.push(users[i])
               }
             }
-            // console.log(filteredUsers)
             setUser({ ...userState, users: filteredUsers })
           })
       })
   }, [])
-      
+
   return (
     <div className={classes.root}>
       <Paper>
@@ -92,21 +91,21 @@ const Suggested = () => {
           avatar={
             <Link to="/profile" >
               <Avatar alt={currentUser.user.username} src={currentUser.user.profile} className={classes.bigAvatar}>
-                </Avatar>
+              </Avatar>
             </Link>
           }
           title={
             <>
-            <Link to="/profile" className={classes.username} >
-              {currentUser.user.username}
-            </Link>
-            <p className={classes.name}>{currentUser.user.name}</p>
+              <Link to="/profile" className={classes.username} >
+                {currentUser.user.username}
+              </Link>
+              <p className={classes.name}>{currentUser.user.name}</p>
             </>
           }
         />
         <Typography className={classes.suggestBox}>Suggestions for you</Typography>
         {userState.users.length ? userState.users.map(user =>
-        
+
           <SuggestedUsers
             user_id={user._id}
             username={user.username}
