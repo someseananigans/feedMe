@@ -51,7 +51,6 @@ router.get('/users/:id', (req, res) => {
         }
       })
 
-
     .then(user => res.json(user))
     .catch(err => console.log(err))
 })
@@ -82,7 +81,7 @@ router.post('/user/register', (req, res) => {
     email: [],
     username: []
   }
-
+  // 
   User.find({})
     .then(users => {
       users.forEach(user => {
@@ -97,7 +96,6 @@ router.post('/user/register', (req, res) => {
   if (req.body.username) {
     lowerCaseUsername = req.body.username.toLowerCase()
   }
-
 
   User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, (err, user) => {
     if (err) {
@@ -183,5 +181,10 @@ router.put('/post/interaction', passport.authenticate('jwt'), async (req, res) =
     return
   }
 })
+
+
+// <------------------ SearchFeed ---------------------->
+
+// router.get('/user/following')
 
 module.exports = router

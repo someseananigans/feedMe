@@ -30,6 +30,8 @@ const ProfileInfo = ({ id }) => {
     }
   })
 
+  const [update, setUpdate] = useState('updated')
+
   useEffect(() => {
     if (id) {
       User.getUser(id)
@@ -46,10 +48,10 @@ const ProfileInfo = ({ id }) => {
       User.profile()
         .then(({ data: user }) => {
           setUserState({ ...userState, user })
+          setUpdate('updated')
         })
     }
-
-  }, [])
+  }, [update])
 
   const { user } = userState
 
@@ -72,7 +74,7 @@ const ProfileInfo = ({ id }) => {
           <ProfileRow>
             <Username>{user.username}</Username>
             {
-              (!id) ? <Modal comp='EditProfile' /> :
+              (!id) ? <Modal comp='EditProfile' setUpdate={setUpdate} /> :
                 <Button
                   variant="contained"
                   className={followAction === 'follow' ? classes.follow : classes.following}
