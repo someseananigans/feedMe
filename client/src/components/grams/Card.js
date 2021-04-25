@@ -92,12 +92,12 @@ const Card = (props) => {
     likedByNumber,
     postId,
     likedByUsers,
-    update,
-    setUpdate,
     currentUser,
     comment,
     handleCommentInput,
-    handleComment
+    handleComment,
+    update,
+    setUpdate
   } = props
 
   const [commentList, setCommentList] = useState([])
@@ -177,8 +177,8 @@ const Card = (props) => {
               />
             </IconButton>
             <Modal
-              comp="ViewMore"
               classes={classes}
+              comp="ViewMore"
               handleLike={handleLike}
               likeAction={likeAction}
               likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
@@ -190,9 +190,13 @@ const Card = (props) => {
               commentList={commentList}
               timePassed={(human((Date.now() - created_on) / 1000))}
               postId={postId}
+              userId={userId}
               handleComment={handleComment}
               handleCommentInput={handleCommentInput}
               comment={comment}
+              currentUser={currentUser}
+              update={update}
+              setUpdate={setUpdate}
             />
           </CardActions>
 
