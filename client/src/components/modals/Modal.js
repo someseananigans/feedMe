@@ -91,7 +91,7 @@ const PostModal = (props) => {
         {props.comp === "ViewMore" && <ViewMore props={props} />}
         {props.comp === "ViewMore2" && <ViewMore props={props} />}
         {props.comp === "ViewMoreProfile" && <ViewMore props={props} />}
-        {props.comp === "EditProfile" && <EditProfile />}
+        {props.comp === "EditProfile" && <EditProfile toggleOpen={toggleOpen} />}
 
       </Dialog>
     </>
