@@ -71,12 +71,12 @@ const Cards = () => {
             created_on={post.created_On}
             likedByNumber={post.liked_by.length ? post.liked_by.length : 0}
             likedByUsers={post.liked_by}
-            currentUser={currentUser}
-            update={update}
-            setUpdate={setUpdate}
+            currentUser={currentUser} setUpdate={setUpdate}
             comment={comment}
             handleComment={handleComment}
             handleCommentInput={handleCommentInput}
+            update={update}
+            setUpdate={setUpdate}
           />
         ) : null
       }
