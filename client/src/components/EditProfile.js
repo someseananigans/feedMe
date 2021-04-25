@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const EditProfile = ({ toggleOpen }) => {
+const EditProfile = ({ toggleOpen, props }) => {
   const classes = useStyles()
 
   const [userInfo, setUserInfo] = useState({
@@ -114,8 +114,9 @@ const EditProfile = ({ toggleOpen }) => {
     })
       .then(() => {
         console.log('updated')
+        props.setUpdate('needs update')
         toggleOpen()
-        window.location.reload()
+        // window.location.reload()
       })
       .catch(err => console.log(err))
   }

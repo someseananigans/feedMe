@@ -1,5 +1,4 @@
 import { Avatar, Button } from '@material-ui/core'
-import ProfileModal from './modals/ProfileModal'
 import Modal from './modals/Modal'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
@@ -31,6 +30,8 @@ const ProfileInfo = ({ id }) => {
     }
   })
 
+  const [update, setUpdate] = useState('updated')
+
   useEffect(() => {
     if (id) {
       User.getUser(id)
@@ -47,10 +48,10 @@ const ProfileInfo = ({ id }) => {
       User.profile()
         .then(({ data: user }) => {
           setUserState({ ...userState, user })
+          setUpdate('updated')
         })
     }
-
-  }, [])
+  }, [update])
 
   const { user } = userState
 
@@ -73,7 +74,7 @@ const ProfileInfo = ({ id }) => {
           <ProfileRow>
             <Username>{user.username}</Username>
             {
-              (!id) ? <Modal comp='EditProfile' /> :
+              (!id) ? <Modal comp='EditProfile' setUpdate={setUpdate} /> :
                 <Button
                   variant="contained"
                   className={followAction === 'follow' ? classes.follow : classes.following}
@@ -88,11 +89,11 @@ const ProfileInfo = ({ id }) => {
             <StatRow>
               <Stats>
                 <Data>{user.posts.length}</Data>
-                <Category>{user.posts.length == 1 ? 'post' : 'posts'}</Category>
+                <Category>{user.posts.length === 1 ? 'post' : 'posts'}</Category>
               </Stats>
               <Stats>
                 <Data>{user.followers.length}</Data>
-                <Category>{user.followers.length == 1 ? 'follower' : 'followers'}</Category>
+                <Category>{user.followers.length === 1 ? 'follower' : 'followers'}</Category>
               </Stats>
               <Stats>
                 <Data>{user.following.length}</Data>
@@ -120,11 +121,11 @@ const ProfileInfo = ({ id }) => {
           <StatRow>
             <Stats>
               <Data>{user.posts.length}</Data>
-              <Category>{user.posts.length == 1 ? 'post' : 'posts'}</Category>
+              <Category>{user.posts.length === 1 ? 'post' : 'posts'}</Category>
             </Stats>
             <Stats>
               <Data>{user.followers.length}</Data>
-              <Category>{user.followers.length == 1 ? 'follower' : 'followers'}</Category>
+              <Category>{user.followers.length === 1 ? 'follower' : 'followers'}</Category>
             </Stats>
             <Stats>
               <Data>{user.following.length}</Data>

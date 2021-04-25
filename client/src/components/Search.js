@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { FollowContext, User } from '../utils'
+import { User } from '../utils'
 import SearchResult from './SearchResult'
 
 
@@ -64,12 +64,11 @@ const Search = (props) => {
           <Typography className={classes.suggestions}>Search Results</Typography>
           {users.length > 0 && users.map(user => (
             currentUser.userId !== user._id && (
-            <SearchResult
-              usersFollowing={currentUser.following}
-              currentUser={currentUser.userId}
-              user={user}
-              classes={classes}
-            />
+              <SearchResult
+                usersFollowing={currentUser.following}
+                user={user}
+                classes={classes}
+              />
             )
           ))
           }
