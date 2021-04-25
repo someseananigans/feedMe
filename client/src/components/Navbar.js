@@ -297,14 +297,7 @@ const Navbar = () => {
             <Modal
               comp='createPost'
             />
-            <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
-              <Badge badgeContent={0} color="secondary">
-                <HomeIcon />
-              </Badge>
-            </IconButton>
-
             <IconButton
-              edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
@@ -313,7 +306,13 @@ const Navbar = () => {
             >
               <AccountCircle />
             </IconButton>
-            <Typography onClick={handleLogOut} className={classes.logOut}>Log Out</Typography>
+            <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
+              <Badge badgeContent={0} color="secondary">
+                <HomeIcon />
+              </Badge>
+            </IconButton>
+
+            <Typography onClick={handleLogOut} className={classes.logOut} style={{ cursor: 'pointer' }}>Log Out</Typography>
           </div>
 
           <div className={classes.sectionMobile}>
