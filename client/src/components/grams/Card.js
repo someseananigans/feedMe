@@ -8,6 +8,8 @@ import { ChatBubbleOutline as ChatIcon, MoreHoriz, InsertEmoticon, Favorite, Fav
 import Comment from './Comment'
 import { Link } from 'react-router-dom'
 import { Comment as Cmnt, User } from '../../utils'
+import human from 'human-time'
+import Modal from '../modals/Modal'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,9 +62,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     height: '32px',
     width: '32px',
-  }, 
+  },
   postUsername: {
-    textDecoration: 'none', 
+    textDecoration: 'none',
     color: 'black',
     fontWeight: 500
   },
@@ -72,6 +74,8 @@ const useStyles = makeStyles((theme) => ({
   },
   commentField: {
     width: '80%'
+  }, time: {
+    fontSize: '12px'
   }
 }));
 
@@ -83,23 +87,23 @@ const Card = (props) => {
     username,
     image,
     userId,
-    // hours,
+    created_on,
     caption,
     likedByNumber,
     postId,
     likedByUsers,
-    update,
-    setUpdate,
     currentUser,
     comment,
     handleCommentInput,
-    handleComment
+    handleComment,
+    update,
+    setUpdate
   } = props
 
   const [commentList, setCommentList] = useState([])
   const [likeAction, setLikeAction] = useState(false)
   const [likeCount, setLikeCount] = useState(likedByNumber)
-  
+
   const likeCheck = () => {
     setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
   }
@@ -109,7 +113,7 @@ const Card = (props) => {
     Cmnt.getFromPost(postId)
       .then(({ data: postComments }) => {
         setCommentList(postComments)
-        setUpdate('Up-to-Date' )
+        setUpdate('Up-to-Date')
       })
       .catch(err => {
         console.error(err)
@@ -136,9 +140,9 @@ const Card = (props) => {
       <PostCard className={classes.root} key={postId}>
         <CardHeader className={classes.cardHeader}
           avatar={
-            <Link to={ currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}>
-            <Avatar aria-label="userAvatar" className={classes.avatar} src={profile}>
-            </Avatar>
+            <Link to={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}>
+              <Avatar aria-label="userAvatar" className={classes.avatar} src={profile}>
+              </Avatar>
             </Link>
           }
           action={
@@ -172,9 +176,28 @@ const Card = (props) => {
                 />}
               />
             </IconButton>
-            <IconButton aria-label="comment">
-              <ChatIcon className={classes.noMargPad} />
-            </IconButton>
+            <Modal
+              classes={classes}
+              comp="ViewMore"
+              handleLike={handleLike}
+              likeAction={likeAction}
+              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+              username={username}
+              caption={caption}
+              usernameLink={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}
+              profile={profile}
+              image={image}
+              commentList={commentList}
+              timePassed={(human((Date.now() - created_on) / 1000))}
+              postId={postId}
+              userId={userId}
+              handleComment={handleComment}
+              handleCommentInput={handleCommentInput}
+              comment={comment}
+              currentUser={currentUser}
+              update={update}
+              setUpdate={setUpdate}
+            />
           </CardActions>
 
           <strong>{likeCount !== 1 ? `${likeCount} likes` : '1 like'}</strong>
@@ -186,8 +209,31 @@ const Card = (props) => {
               {caption}
             </div>
           </Typography>
+
           <Typography variant="body2" color="textSecondary" component="p">
-            {commentList.length > 1 ? `View all ${commentList.length} comments` : null}
+            {/* {commentList.length > 1 ? `View all ${commentList.length} comments` : null} */}
+            <Modal
+              classes={classes}
+              comp="ViewMore2"
+              handleLike={handleLike}
+              likeAction={likeAction}
+              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+              username={username}
+              caption={caption}
+              usernameLink={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}
+              profile={profile}
+              image={image}
+              commentList={commentList}
+              timePassed={(human((Date.now() - created_on) / 1000))}
+              postId={postId}
+              userId={userId}
+              handleComment={handleComment}
+              handleCommentInput={handleCommentInput}
+              comment={comment}
+              currentUser={currentUser}
+              update={update}
+              setUpdate={setUpdate}
+            />
             {commentList.map((com, index) => {
               if (commentList.length <= index + 3) {
                 return (
@@ -199,6 +245,11 @@ const Card = (props) => {
                 )
               } else return null
             })}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            <div className={classes.time}>
+              {human((Date.now() - created_on) / 1000)}
+            </div>
           </Typography>
         </CardContent>
         <CardContent className={classes.addComment}>
@@ -213,6 +264,15 @@ const Card = (props) => {
             onChange={handleCommentInput}
             className={classes.commentField}
           />
+          {/* Alternate input field choice */}
+          {/* <InputBase
+            id={postId}
+            type="comment"
+            value={comment.post_id === postId ? comment.body : ""}
+            className={classes.commentField}
+            placeholder="test"
+            onChange={handleCommentInput}
+          /> */}
           <Button onClick={handleComment}>Post</Button>
 
         </CardContent>

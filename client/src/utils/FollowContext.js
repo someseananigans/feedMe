@@ -6,10 +6,10 @@ import { User } from '../utils'
 const FollowContext = () => {
 
   const [following, setFollowing] = useState({
-    users:[]
+    users: []
   })
 
-  const[followAction, setFollowAction] = useState('follow')
+  const [followAction, setFollowAction] = useState('follow')
 
   const handleFollow = (focusedUser) => {
     User.touchUser({
@@ -25,6 +25,7 @@ const FollowContext = () => {
 
   const followCheck = (usersFollow, focusedUser) => {
     setFollowAction(usersFollow.indexOf(focusedUser) !== -1 ? 'following' : 'follow')
+    console.log(followAction)
   }
 
   return {
@@ -32,7 +33,7 @@ const FollowContext = () => {
     setFollowing,
     handleFollow,
     followAction,
-    setFollowAction, 
+    setFollowAction,
     followCheck
   }
 

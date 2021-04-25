@@ -13,7 +13,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import PostModal from '../components/modals/PostModal'
+import Modal from '../components/modals/Modal'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
-      
+
     },
     fontStyle: 'italic'
   },
@@ -147,7 +147,7 @@ const Navbar = () => {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-  
+
   const handleGoToProfile = () => {
     window.location = '/profile'
   }
@@ -197,7 +197,7 @@ const Navbar = () => {
       <MenuItem className={classes.dropDownItems} onClick={handleGoHome} >
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={0} color="secondary">
-            <HomeIcon/>
+            <HomeIcon />
           </Badge>
         </IconButton>
         <p>Home</p>
@@ -214,8 +214,10 @@ const Navbar = () => {
         <p>Profile</p>
       </MenuItem>
       <MenuItem className={classes.dropDownItems}>
-        <PostModal/>
-        <p>Create a Post</p>
+        <Modal
+          comp='createPostText'
+        />
+        {/* <p>Create a Post</p> */}
       </MenuItem>
       <MenuItem className={classes.dropDownItems} onClick={handleGoHome} >
         <IconButton aria-label="show 4 new mails" color="inherit">
@@ -228,7 +230,7 @@ const Navbar = () => {
     </Menu>
   );
 
- 
+
 
   const [allUsersState, setAllUsersState] = useState({
     users: []
@@ -258,27 +260,27 @@ const Navbar = () => {
     <div className={classes.grow}>
       <AppBar position="relative" className={classes.appBar}>
         <Toolbar>
-          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/730/5123634730_d958ae6a-bc04-4366-b183-35e4a8407a94.png?cb=1619210685" alt="logo"/>
+          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/730/5123634730_d958ae6a-bc04-4366-b183-35e4a8407a94.png?cb=1619210685" alt="logo" />
           <div className={classes.search}>
             <form onSubmit={(event) => {
               event.preventDefault()
-              window.location= `/search/${searchState.search}`
-              }}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              onChange={handleSearchChange}
-              value={searchState.search}
-              placeholder="Search for a user…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
+              window.location = `/search/${searchState.search}`
+            }}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                onChange={handleSearchChange}
+                value={searchState.search}
+                placeholder="Search for a user…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
             </form>
-           
+
           </div>
           {/* <Autocomplete
             openOnFocus={false}
@@ -292,15 +294,10 @@ const Navbar = () => {
          /> */}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <PostModal />
-            <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
-              <Badge badgeContent={0} color="secondary">
-                <HomeIcon />
-              </Badge>
-            </IconButton>
-
+            <Modal
+              comp='createPost'
+            />
             <IconButton
-              edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
@@ -309,7 +306,13 @@ const Navbar = () => {
             >
               <AccountCircle />
             </IconButton>
-            <Typography onClick={handleLogOut} className={classes.logOut}>Log Out</Typography>
+            <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
+              <Badge badgeContent={0} color="secondary">
+                <HomeIcon />
+              </Badge>
+            </IconButton>
+
+            <Typography onClick={handleLogOut} className={classes.logOut} style={{ cursor: 'pointer' }}>Log Out</Typography>
           </div>
 
           <div className={classes.sectionMobile}>

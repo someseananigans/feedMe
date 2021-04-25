@@ -4,6 +4,8 @@ import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
+// <---- delete?
+
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -57,7 +59,7 @@ const ProfileModal = () => {
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <div style={modalStyle} className={classes.paper}>
-          <EditProfile toggleOpen={toggleOpen}/>
+          <EditProfile toggleOpen={toggleOpen} />
         </div>
       </Modal>
 

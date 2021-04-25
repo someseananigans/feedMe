@@ -95,10 +95,25 @@ const Auth = () => {
     })
       .then(({ data }) => {
         setAlert(data.status)
-        console.log(snackAlert)
+        console.log(data)
         // alert('User registered!')
         // setLoginState({ ...loginState, firstName: '', lastName: '', name: '', username: '', email: '', password: '', repeatPassword: ''})
         // window.location = '/auth'
+        if (data.message.includes("Success")) {
+          User.login({
+            username: loginState.username,
+            password: loginState.password
+          })
+            .then(({ data }) => {
+              if (data) {
+                localStorage.setItem('user', data)
+                window.location = '/'
+              } else {
+                setOpen(true)
+              }
+            })
+            .catch(err => console.log(err))
+        }
       })
       .catch(err => console.log(err))
 

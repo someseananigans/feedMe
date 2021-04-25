@@ -5,9 +5,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import Grid from "@material-ui/core/Grid"
 import GridListTile from "@material-ui/core/GridListTile"
 import './ProfPost.css'
-import { Typography, Modal, Avatar, CardHeader, CardContent, CardActions, IconButton, FormControlLabel, Checkbox, TextField, Button } from '@material-ui/core'
+import { Typography, Avatar, CardHeader, CardContent, CardActions, IconButton, FormControlLabel, Modal as Modal1, Checkbox, TextField, Button } from '@material-ui/core'
 import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
-import DeleteIcon from '@material-ui/icons/Delete'
+import human from 'human-time'
+import Modal from './modals/Modal'
 
 
 
@@ -173,21 +174,23 @@ const ProfilePosts = ({ id }) => {
   }, [])
 
 
+  // // part of original modal
+  // const getModalStyle = () => {
+  //   const top = 50
+  //   const left = 50
 
-  const getModalStyle = () => {
-    const top = 50
-    const left = 50
+  //   return {
+  //     top: `${top}%`,
+  //     left: `${left}%`,
+  //     transform: `translate(-${top}%, -${left}%)`,
+  //     padding: 0,
+  //     border: 'transparent',
+  //     display: 'flex',
+  //   };
+  // }
+  // const [modalStyle] = useState(getModalStyle)
 
-    return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`,
-      padding: 0,
-      border: 'transparent',
-      display: 'flex',
-    };
-  }
-  const [modalStyle] = useState(getModalStyle)
+
   // const [open, setOpen] = useState(false)
 
   const handleOpen = id => {
@@ -206,39 +209,44 @@ const ProfilePosts = ({ id }) => {
   };
 
 
+  // // part of original Modal
+  // const handleForceClose = async function () {
+  //   const res = await new Promise((resolve, reject) => {
+  //     const posts = postState.posts.map(post => ({
+  //       ...post,
+  //       open: false
+  //     }))
+  //     resolve(posts)
+  //   })
+  //   return res
+  // }
 
-  const handleForceClose = async function () {
-    const res = await new Promise((resolve, reject) => {
-      const posts = postState.posts.map(post => ({
-        ...post,
-        open: false
-      }))
-      resolve(posts)
-    })
-    return res
-  }
-  const handleClose = () => {
-    handleForceClose()
-      .then(posts => {
-        setPostState({ ...postState, posts })
-      })
-  };
+  // const handleClose = () => {
+  //   handleForceClose()
+  //     .then(posts => {
+  //       setPostState({ ...postState, posts })
+  //     })
+  // };
 
   const [comment, setComment] = useState({
     body: '',
     post_id: ''
   })
 
+  const [update, setUpdate] = useState('')
+
+
   const handleCommentInput = ({ target }) => {
     setComment({ ...comment, body: target.value, post_id: target.id })
   }
 
-  const handleComment1 = () => {
+  const handleComment = () => {
     Cmnt.create({
       comment: comment.body,
       post_id: comment.post_id
     })
       .then(({ data: cmnt }) => {
+        setUpdate('Need Update')
         setComment({ ...comment, body: '', post_id: '' })
       })
       .catch(err => console.error(err))
@@ -254,7 +262,28 @@ const ProfilePosts = ({ id }) => {
             <Grid item key={post._id} className={classes.gridItem} onClick={() => handleOpen(post._id)} >
               <img src={post.image} alt={post.body} className={classes.imageHome} />
               <div>
-                <Modal
+                {/* <Modal1
+                  classes={classes}
+                  open={post.open}
+                  comp="ViewMoreProfile"
+                  handleLike={handleLike}
+                  likeAction={likeAction}
+                  likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+                  username={postState.username}
+                  caption={post.body}
+                  usernameLink={currentUser.user._id === post.user ? ('/profile') : (`/${post.user}`)}
+                  profile={postState.profile}
+                  image={post.image}
+                  commentList={post.comments}
+                  timePassed={(human((Date.now() - post.created_On) / 1000))}
+                  postId={post._id}
+                  userId={post.user}
+                  handleComment={handleComment}
+                  handleCommentInput={handleCommentInput}
+                  comment={comment}
+                  currentUser={currentUser}
+                /> */}
+                {/* <Modal1
                   open={post.open}
                   onClose={handleClose}
                 >
@@ -360,15 +389,15 @@ const ProfilePosts = ({ id }) => {
                               value={comment.body}
                               className={classes.commentField}
                             />
-                            <Button onClick={handleComment1}>Post</Button>
+                            <Button onClick={handleComment}>Post</Button>
                           </CardContent>
                         </div>
                       </ul>
                     </div>
                   </div>
-                </Modal>
+                </Modal1> */}
               </div>
-              <div className='overlay'>
+              {/* <div className='overlay'>
                 <Typography>
                   {post.body}
                   {currentUser.user._id === post.user ? (
@@ -376,7 +405,31 @@ const ProfilePosts = ({ id }) => {
                     <DeleteIcon onClick={() => handleDeletePost(post._id)} />
                   ) : null}
                 </Typography>
-              </div>
+              </div> */}
+              <Modal
+                classes={classes}
+                open={post.open}
+                comp="ViewMoreProfile"
+                handleLike={handleLike}
+                likeAction={likeAction}
+                likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+                username={postState.username}
+                caption={post.body}
+                usernameLink={currentUser.user._id === post.user ? ('/profile') : (`/${post.user}`)}
+                profile={postState.profile}
+                image={post.image}
+                commentList={post.comments}
+                timePassed={(human((Date.now() - post.created_On) / 1000))}
+                postId={post._id}
+                userId={post.user}
+                handleComment={handleComment}
+                handleCommentInput={handleCommentInput}
+                comment={comment}
+                currentUser={currentUser}
+                handleDeletePost={handleDeletePost}
+                setUpdate={setUpdate}
+                update={update}
+              />
             </Grid>
           ))
             : null
