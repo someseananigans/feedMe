@@ -9,6 +9,7 @@ import Comment from './Comment'
 import { Link } from 'react-router-dom'
 import { Comment as Cmnt, User } from '../../utils'
 import human from 'human-time'
+import Modal from '../modals/Modal'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -175,9 +176,24 @@ const Card = (props) => {
                 />}
               />
             </IconButton>
-            <IconButton aria-label="comment">
-              <ChatIcon className={classes.noMargPad} />
-            </IconButton>
+            <Modal
+              comp="ViewMore"
+              classes={classes}
+              handleLike={handleLike}
+              likeAction={likeAction}
+              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+              username={username}
+              caption={caption}
+              usernameLink={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}
+              profile={profile}
+              image={image}
+              commentList={commentList}
+              timePassed={(human((Date.now() - created_on) / 1000))}
+              postId={postId}
+              handleComment={handleComment}
+              handleCommentInput={handleCommentInput}
+              comment={comment}
+            />
           </CardActions>
 
           <strong>{likeCount !== 1 ? `${likeCount} likes` : '1 like'}</strong>
