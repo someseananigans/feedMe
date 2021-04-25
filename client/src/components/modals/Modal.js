@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { Dialog, IconButton, Badge } from '@material-ui/core'
 import CreatePost from '../CreatePost'
-import { Add as AddIcon} from '@material-ui/icons'
+import ViewMore from '../grams/ViewMore'
+import { Add as AddIcon, ChatBubbleOutline as ChatIcon } from '@material-ui/icons'
 
-const PostModal = () => {
+const PostModal = (props) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -26,11 +27,16 @@ const PostModal = () => {
 
   return (
     <div>
-      <IconButton aria-label="" color="inherit" onClick={handleClickOpen}>
-        <Badge badgeContent={0} color="secondary">
-          <AddIcon />
-        </Badge>
-      </IconButton>
+      {props.comp == "createPost" ?
+        (<IconButton aria-label="" color="inherit" onClick={handleClickOpen}>
+          <Badge badgeContent={0} color="secondary">
+            <AddIcon />
+          </Badge>
+        </IconButton>) :
+        (<IconButton aria-label="comment" onClick={handleClickOpen}>
+          <ChatIcon className={props.classes.noMargPad} />
+        </IconButton>)
+      }
       <Dialog
         open={open}
         onClose={handleClose}
@@ -38,7 +44,9 @@ const PostModal = () => {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <CreatePost />
+
+        {props.comp == "createPost" ? <CreatePost /> : <ViewMore props={props} />}
+
       </Dialog>
     </div>
   );
