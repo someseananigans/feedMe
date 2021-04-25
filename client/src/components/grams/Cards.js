@@ -39,7 +39,7 @@ const Cards = () => {
     Post.getAll()
       .then(({ data: grams }) => {
         // directly mutilates data
-        grams.reverse()
+        grams.length > 1 && grams.reverse()
         setPostState(grams)
       })
       .catch(err => {
@@ -68,6 +68,7 @@ const Cards = () => {
             profile={post.user.profile}
             image={post.image}
             caption={post.body}
+            created_on={post.created_On}
             likedByNumber={post.liked_by.length ? post.liked_by.length : 0}
             likedByUsers={post.liked_by}
             currentUser={currentUser}
