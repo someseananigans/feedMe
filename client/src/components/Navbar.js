@@ -1,18 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, SvgIcon } from '@material-ui/core'
+import { Search as SearchIcon, AccountCircle, MoreVert as MoreIcon } from '@material-ui/icons'
 import Modal from '../components/modals/Modal'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import TextField from '@material-ui/core/TextField';
@@ -240,9 +229,9 @@ const Navbar = () => {
 
 
 
-  const [allUsersState, setAllUsersState] = useState({
-    users: []
-  });
+  // const [allUsersState, setAllUsersState] = useState({
+  //   users: []
+  // });
 
   // const handleAutoSearchChange = () => {
   //   User.getUsers()
