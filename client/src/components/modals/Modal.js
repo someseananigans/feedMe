@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
-import { Dialog, IconButton, Badge, Button } from '@material-ui/core'
+import { Dialog, Typography, IconButton, Badge, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import CreatePost from '../CreatePost'
 import EditProfile from '../EditProfile'
 import ViewMore from '../grams/ViewMore'
-import { Add as AddIcon, ChatBubbleOutline as ChatIcon } from '@material-ui/icons'
+import { Add as AddIcon, ChatBubbleOutline as ChatIcon, Delete as DeleteIcon } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -61,6 +61,16 @@ const PostModal = (props) => {
         (<IconButton aria-label="comment" onClick={toggleOpen}>
           <ChatIcon className={props.classes.noMargPad} />
         </IconButton>)}
+      {props.comp == "ViewMoreProfile" &&
+        (<div className='overlay' onClick={toggleOpen}>
+          <Typography>
+            {props.caption}
+            {props.currentUser.user._id === props.userId ? (
+
+              <DeleteIcon onClick={() => props.handleDeletePost(props.postId)} />
+            ) : null}
+          </Typography>
+        </div>)}
       {props.comp == "EditProfile" &&
         (<Button variant="contained" className={classes.button} type="button" onClick={toggleOpen} >
           Edit Profile
@@ -77,6 +87,7 @@ const PostModal = (props) => {
         {props.comp == "createPost" && <CreatePost />}
         {props.comp == "createPostText" && <CreatePost />}
         {props.comp == "ViewMore" && <ViewMore props={props} />}
+        {props.comp == "ViewMoreProfile" && <ViewMore props={props} />}
         {props.comp == "EditProfile" && <EditProfile />}
 
       </Dialog>
