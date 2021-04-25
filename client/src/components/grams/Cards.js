@@ -71,7 +71,7 @@ const Cards = () => {
             created_on={post.created_On}
             likedByNumber={post.liked_by.length ? post.liked_by.length : 0}
             likedByUsers={post.liked_by}
-            currentUser={currentUser} setUpdate={setUpdate}
+            currentUser={currentUser}
             comment={comment}
             handleComment={handleComment}
             handleCommentInput={handleCommentInput}
