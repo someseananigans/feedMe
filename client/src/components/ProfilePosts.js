@@ -116,7 +116,6 @@ const ProfilePosts = ({ id }) => {
 
   const classes = useStyles()
 
-
   const [postState, setPostState] = useState({
     posts: [],
     username: '',
@@ -128,6 +127,9 @@ const ProfilePosts = ({ id }) => {
   const [currentUser, setCurrentUser] = useState({
     user: {}
   })
+
+  const [update, setUpdate] = useState('')
+
 
   const likeCheck = (likedByUsers) => {
     setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
@@ -171,7 +173,7 @@ const ProfilePosts = ({ id }) => {
           .catch(err => { console.log(err) })
       })
       .catch(err => console.error(err))
-  }, [])
+  }, [update])
 
 
   // // part of original modal
@@ -193,20 +195,19 @@ const ProfilePosts = ({ id }) => {
 
   // const [open, setOpen] = useState(false)
 
-  const handleOpen = id => {
-    const posts = [...postState.posts]
-    posts.forEach(post => {
-      if (post._id === id) {
-        post.open = true
-        likeCheck(post.liked_by)
-        setLikeCount(post.liked_by.length ? post.liked_by.length : 0)
-        followCheck(currentUser.user.following, post.user)
-
-      }
-    })
-    setPostState({ ...postState, posts })
-    // setOpen(true);
-  };
+  // const handleOpen = (post) => {
+  // const posts = [...postState.posts]
+  // posts.forEach(post => {
+  //   if (post._id === id) {
+  //     post.open = true
+  // likeCheck(post.liked_by)
+  // setLikeCount(post.liked_by.length ? post.liked_by.length : 0)
+  // followCheck(currentUser.user.following, post.user)
+  //   }
+  // })
+  // setPostState({ ...postState, posts })
+  // setOpen(true);
+  // };
 
 
   // // part of original Modal
@@ -233,8 +234,6 @@ const ProfilePosts = ({ id }) => {
     post_id: ''
   })
 
-  const [update, setUpdate] = useState('')
-
 
   const handleCommentInput = ({ target }) => {
     setComment({ ...comment, body: target.value, post_id: target.id })
@@ -259,7 +258,7 @@ const ProfilePosts = ({ id }) => {
       <div className={classes.root}>
         <Grid container cellHeight={300} className={classes.gridList}>
           {postState.posts.length ? postState.posts.map(post => (
-            <Grid item key={post._id} className={classes.gridItem} onClick={() => handleOpen(post._id)} >
+            <Grid item key={post._id} className={classes.gridItem} >
               <img src={post.image} alt={post.body} className={classes.imageHome} />
               <div>
                 {/* <Modal1
@@ -410,7 +409,7 @@ const ProfilePosts = ({ id }) => {
                 classes={classes}
                 open={post.open}
                 comp="ViewMoreProfile"
-                handleLike={handleLike}
+                handleLike={(() => handleLike(post._id))}
                 likeAction={likeAction}
                 likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
                 username={postState.username}
@@ -429,6 +428,9 @@ const ProfilePosts = ({ id }) => {
                 handleDeletePost={handleDeletePost}
                 setUpdate={setUpdate}
                 update={update}
+                likeCheck={likeCheck}
+                setLikeCount={setLikeCount}
+                postLikedBy={post.liked_by}
               />
             </Grid>
           ))
