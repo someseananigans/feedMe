@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Avatar, CardHeader, Button } from '@material-ui/core';
 import { FollowContext } from '../utils'
 import { Link } from 'react-router-dom'
@@ -10,7 +10,6 @@ const SearchResult = (props) => {
 
   const {
     usersFollowing,
-    currentUser,
     user,
     classes
   } = props
