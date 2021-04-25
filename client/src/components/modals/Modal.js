@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
+  },
+  gramModal: {
+    // minWidth: '90%',
+    // maxWidth: '90%'
   }
 }));
 
@@ -38,7 +42,7 @@ const PostModal = (props) => {
 
   return (
     <>
-      {props.comp == "createPost" &&
+      {props.comp == "createPostText" &&
         (<>
           <IconButton aria-label="" color="inherit" onClick={toggleOpen}>
             <Badge badgeContent={0} color="secondary">
@@ -47,6 +51,12 @@ const PostModal = (props) => {
           </IconButton>
           <p onClick={toggleOpen}>Create a Post</p>
         </>)}
+      {props.comp == "createPost" &&
+        (<IconButton aria-label="" color="inherit" onClick={toggleOpen}>
+          <Badge badgeContent={0} color="secondary">
+            <AddIcon />
+          </Badge>
+        </IconButton>)}
       {props.comp == "ViewMore" &&
         (<IconButton aria-label="comment" onClick={toggleOpen}>
           <ChatIcon className={props.classes.noMargPad} />
@@ -56,6 +66,7 @@ const PostModal = (props) => {
           Edit Profile
         </Button>)}
       <Dialog
+        className={classes.gramModal}
         open={open}
         onClose={toggleOpen}
         scroll="body"
@@ -64,6 +75,7 @@ const PostModal = (props) => {
       >
 
         {props.comp == "createPost" && <CreatePost />}
+        {props.comp == "createPostText" && <CreatePost />}
         {props.comp == "ViewMore" && <ViewMore props={props} />}
         {props.comp == "EditProfile" && <EditProfile />}
 
