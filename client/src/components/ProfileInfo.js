@@ -26,7 +26,8 @@ const ProfileInfo = ({ id }) => {
     user: {
       posts: [],
       following: [],
-      followers: []
+      followers: [],
+      _id: ''
     }
   })
 
@@ -35,6 +36,11 @@ const ProfileInfo = ({ id }) => {
       User.getUser(id)
         .then(({ data: user }) => {
           setUserState({ ...userState, user })
+          User.profile()
+            .then(({ data: currentUser }) => {
+              followCheck(currentUser.following, user._id)
+            })
+            .catch(err => console.log(err))
         })
         .catch(err => { console.log(err) })
     } else {
@@ -43,6 +49,7 @@ const ProfileInfo = ({ id }) => {
           setUserState({ ...userState, user })
         })
     }
+
   }, [])
 
   const { user } = userState
@@ -52,10 +59,6 @@ const ProfileInfo = ({ id }) => {
     followAction, // follow or following (updated by followCheck) 
     followCheck, // within Suggested Users, checks to see if user has followed
   } = FollowContext()
-
-  useEffect(() => {
-    followCheck(user.following, user._id)
-  }, [])
 
 
   console.log(user)
