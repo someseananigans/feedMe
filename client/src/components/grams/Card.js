@@ -211,7 +211,29 @@ const Card = (props) => {
           </Typography>
 
           <Typography variant="body2" color="textSecondary" component="p">
-            {commentList.length > 1 ? `View all ${commentList.length} comments` : null}
+            {/* {commentList.length > 1 ? `View all ${commentList.length} comments` : null} */}
+            <Modal
+              classes={classes}
+              comp="ViewMore2"
+              handleLike={handleLike}
+              likeAction={likeAction}
+              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+              username={username}
+              caption={caption}
+              usernameLink={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}
+              profile={profile}
+              image={image}
+              commentList={commentList}
+              timePassed={(human((Date.now() - created_on) / 1000))}
+              postId={postId}
+              userId={userId}
+              handleComment={handleComment}
+              handleCommentInput={handleCommentInput}
+              comment={comment}
+              currentUser={currentUser}
+              update={update}
+              setUpdate={setUpdate}
+            />
             {commentList.map((com, index) => {
               if (commentList.length <= index + 3) {
                 return (

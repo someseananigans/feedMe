@@ -61,6 +61,8 @@ const PostModal = (props) => {
         (<IconButton aria-label="comment" onClick={toggleOpen}>
           <ChatIcon className={props.classes.noMargPad} />
         </IconButton>)}
+      {props.comp == "ViewMore2" &&
+        (<span onClick={toggleOpen}>{props.commentList.length > 1 ? `View all ${props.commentList.length} comments` : null}</span>)}
       {props.comp == "ViewMoreProfile" &&
         (<div className='overlay' onClick={toggleOpen}>
           <Typography>
@@ -87,6 +89,7 @@ const PostModal = (props) => {
         {props.comp == "createPost" && <CreatePost />}
         {props.comp == "createPostText" && <CreatePost />}
         {props.comp == "ViewMore" && <ViewMore props={props} />}
+        {props.comp == "ViewMore2" && <ViewMore props={props} />}
         {props.comp == "ViewMoreProfile" && <ViewMore props={props} />}
         {props.comp == "EditProfile" && <EditProfile />}
 
