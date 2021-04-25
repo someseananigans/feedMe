@@ -215,7 +215,7 @@ const Navbar = () => {
       </MenuItem>
       <MenuItem className={classes.dropDownItems}>
         <Modal
-          comp='createPost'
+          comp='createPostText'
         />
         {/* <p>Create a Post</p> */}
       </MenuItem>
