@@ -59,11 +59,11 @@ const useStyles = makeStyles((theme) => ({
 const Suggested = () => {
   const classes = useStyles();
 
-  const [userState, setUserState] = useState({
+  const [userState, setUser] = useState({
     users: []
   })
 
-  const [currentUserState, setCurrentUserState] = useState({
+  const [currentUser, setCurrentUser] = useState({
     user: {}
   })
 
@@ -72,7 +72,7 @@ const Suggested = () => {
       .then(({ data: users }) => {
         User.profile()
           .then(({ data: user }) => {
-            setCurrentUserState({ ...currentUserState, user })
+            setCurrentUser({ ...currentUser, user })
             let filteredUsers = []
             for (let i = 0; i < users.length; i++) {
               if (users[i]._id !== user._id) {
@@ -80,7 +80,7 @@ const Suggested = () => {
               }
             }
             // console.log(filteredUsers)
-            setUserState({ ...userState, users: filteredUsers })
+            setUser({ ...userState, users: filteredUsers })
           })
       })
   }, [])
@@ -91,28 +91,29 @@ const Suggested = () => {
         <CardHeader
           avatar={
             <Link to="/profile" >
-              <Avatar alt={currentUserState.user.username} src={currentUserState.user.profile} className={classes.bigAvatar}>
+              <Avatar alt={currentUser.user.username} src={currentUser.user.profile} className={classes.bigAvatar}>
                 </Avatar>
             </Link>
           }
           title={
             <>
             <Link to="/profile" className={classes.username} >
-              {currentUserState.user.username}
+              {currentUser.user.username}
             </Link>
-            <p className={classes.name}>{currentUserState.user.name}</p>
+            <p className={classes.name}>{currentUser.user.name}</p>
             </>
           }
         />
         <Typography className={classes.suggestBox}>Suggestions for you</Typography>
         {userState.users.length ? userState.users.map(user =>
+        
           <SuggestedUsers
             user_id={user._id}
             username={user.username}
             profile={user.profile}
             firstName={user.firstName}
             classes={classes}
-            usersfollowing={currentUserState.user.following}
+            usersfollowing={currentUser.user.following}
           />
 
         ) : null

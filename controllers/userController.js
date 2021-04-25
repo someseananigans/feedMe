@@ -13,12 +13,12 @@ router.get('/users', (req, res) => {
 const getMatches = async function (users, username) {
   const res = await new Promise((resolve, reject) => {
     let searchResults = []
-    for (let i = 0; i < users.length; i++){
+    for (let i = 0; i < users.length; i++) {
       if (users[i].username.includes(username)) {
         searchResults.push(users[i])
       }
     }
-    searchResults.sort((a,b) => (a.createdAt-b.createdAt))
+    searchResults.sort((a, b) => (a.createdAt - b.createdAt))
     resolve(searchResults)
   })
   return res
@@ -26,34 +26,34 @@ const getMatches = async function (users, username) {
 
 router.get('/users/search/:username', passport.authenticate('jwt'), (req, res) => {
   User.find({})
-  .then(users => getMatches(users, req.params.username))
-  .then(users => res.json(users))
-  .catch(err => console.log(err))
+    .then(users => getMatches(users, req.params.username))
+    .then(users => res.json(users))
+    .catch(err => console.log(err))
 })
 
 router.get('/users/:id', (req, res) => {
   User.findById(req.params.id)
-  .populate(
-    {
-      path:'posts', 
-      model: 'Post',
-      populate: {
-        path: 'user',
-        model: 'User',
-      },
-      populate: {
-        path: 'comments',
-        model: 'Comment',
+    .populate(
+      {
+        path: 'posts',
+        model: 'Post',
         populate: {
           path: 'user',
-          model: 'User'
+          model: 'User',
+        },
+        populate: {
+          path: 'comments',
+          model: 'Comment',
+          populate: {
+            path: 'user',
+            model: 'User'
+          }
         }
-      }
-    })
-  
-  
-  .then(user => res.json(user))
-  .catch(err => console.log(err))
+      })
+
+
+    .then(user => res.json(user))
+    .catch(err => console.log(err))
 })
 
 router.get('/user', passport.authenticate('jwt'), (req, res) => {
@@ -61,11 +61,60 @@ router.get('/user', passport.authenticate('jwt'), (req, res) => {
 })
 
 router.post('/user/register', (req, res) => {
-  let lowerCaseUsername = req.body.username.toLowerCase()
-  const { name, email } = req.body
-  User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, err => {
-    if (err) { console.log(err) }
-    res.sendStatus(200)
+  let status = {
+    name: '',
+    email: '',
+    username: '',
+    password: ''
+  }
+  const { name, email, username, password } = req.body
+
+  // checks for non empty inputs
+  name.length < 1 && (status.name = 'Please Enter Your Full Name')
+  username.length < 1 && (status.username = 'Please Enter a Username')
+  password.length < 1 && (status.password = 'Please Enter a Pasword')
+  email.length < 1 && (status.email = 'Email is Required')
+  // checks for valid email
+  const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)
+  !emailValid && (status.email = 'Please Enter a Valid Email')
+
+  let registeredUsers = {
+    email: [],
+    username: []
+  }
+
+  User.find({})
+    .then(users => {
+      users.forEach(user => {
+        registeredUsers.email.push(user.email)
+        registeredUsers.username.push(user.username)
+      });
+    })
+    .catch(err => console.log(err))
+
+  // sets username to be lowercase (all usernames are lowercase)
+  let lowerCaseUsername
+  if (req.body.username) {
+    lowerCaseUsername = req.body.username.toLowerCase()
+  }
+
+
+  User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, (err, user) => {
+    if (err) {
+      // checks if email/username already exists
+      registeredUsers.email.indexOf(email) !== -1 && (status.email = "Email is Already in Use")
+      registeredUsers.username.indexOf(username) !== -1 && (status.username = "Username is Already in Use")
+      res.json({
+        status: status,
+        err
+      })
+      return
+    }
+    res.json({
+      data: user,
+      status: 200,
+      message: 'Successfully Registered User'
+    })
   })
 })
 
