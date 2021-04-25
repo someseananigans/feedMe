@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import {
-  Card as PostCard, Dialog, CardHeader, CardContent, CardActions, IconButton,
+  Card as PostCard, CardHeader, CardContent, CardActions, IconButton,
   Button, TextField, Avatar, Typography, Checkbox, FormControlLabel
 } from '@material-ui/core';
-import { ChatBubbleOutline as ChatIcon, MoreHoriz, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
+import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
 import { User, Comment as Cmnt } from '../../utils'
 import { makeStyles } from '@material-ui/core/styles';
 import Comment from './Comment'
@@ -145,7 +145,6 @@ const ViewMore = ({ props }) => {
     usernameLink,
     profile,
     image,
-    commentList,
     timePassed,
     postId,
     handleComment,
@@ -154,7 +153,10 @@ const ViewMore = ({ props }) => {
     userId,
     currentUser,
     update,
-    setUpdate
+    setUpdate,
+    likeCheck,
+    setLikeCount,
+    postLikedBy
   } = props
 
   const {
@@ -165,6 +167,13 @@ const ViewMore = ({ props }) => {
 
   const [cmntList, setCmntList] = useState([])
 
+  useEffect(() => {
+    if (postLikedBy) {
+      likeCheck(postLikedBy)
+      setLikeCount(postLikedBy.length ? postLikedBy.length : 0)
+      setUpdate('needs Update')
+    }
+  }, [])
 
   useEffect(() => {
     User.profile()
@@ -256,21 +265,6 @@ const ViewMore = ({ props }) => {
             </Typography>
 
             <Typography className={styles.commentSpace} variant="body2" color="textSecondary" component="p">
-              {/* {commentList.map((com, index) => {
-
-                return (
-                  <div className={styles.commentLine} >
-                    <Avatar aria-label="userAvatar" className={styles.commentAvatars} src={com.user.profile}>
-                    </Avatar>
-                    <Comment
-                      key={com._id}
-                      accountName={com.user}
-                      comment={com.comment}
-                    />
-                  </div>
-                )
-
-              })} */}
               {cmntList.map((com, index) => {
 
                 return (

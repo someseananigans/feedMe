@@ -42,7 +42,7 @@ const PostModal = (props) => {
 
   return (
     <>
-      {props.comp == "createPostText" &&
+      {props.comp === "createPostText" &&
         (<>
           <IconButton aria-label="" color="inherit" onClick={toggleOpen}>
             <Badge badgeContent={0} color="secondary">
@@ -51,19 +51,19 @@ const PostModal = (props) => {
           </IconButton>
           <p onClick={toggleOpen}>Create a Post</p>
         </>)}
-      {props.comp == "createPost" &&
+      {props.comp === "createPost" &&
         (<IconButton aria-label="" color="inherit" onClick={toggleOpen}>
           <Badge badgeContent={0} color="secondary">
             <AddIcon />
           </Badge>
         </IconButton>)}
-      {props.comp == "ViewMore" &&
+      {props.comp === "ViewMore" &&
         (<IconButton aria-label="comment" onClick={toggleOpen}>
           <ChatIcon className={props.classes.noMargPad} />
         </IconButton>)}
-      {props.comp == "ViewMore2" &&
+      {props.comp === "ViewMore2" &&
         (<span onClick={toggleOpen}>{props.commentList.length > 1 ? `View all ${props.commentList.length} comments` : null}</span>)}
-      {props.comp == "ViewMoreProfile" &&
+      {props.comp === "ViewMoreProfile" &&
         (<div className='overlay' onClick={toggleOpen}>
           <Typography>
             {props.caption}
@@ -73,7 +73,7 @@ const PostModal = (props) => {
             ) : null}
           </Typography>
         </div>)}
-      {props.comp == "EditProfile" &&
+      {props.comp === "EditProfile" &&
         (<Button variant="contained" className={classes.button} type="button" onClick={toggleOpen} >
           Edit Profile
         </Button>)}
@@ -86,12 +86,12 @@ const PostModal = (props) => {
         aria-describedby="scroll-dialog-description"
       >
 
-        {props.comp == "createPost" && <CreatePost />}
-        {props.comp == "createPostText" && <CreatePost />}
-        {props.comp == "ViewMore" && <ViewMore props={props} />}
-        {props.comp == "ViewMore2" && <ViewMore props={props} />}
-        {props.comp == "ViewMoreProfile" && <ViewMore props={props} />}
-        {props.comp == "EditProfile" && <EditProfile />}
+        {props.comp === "createPost" && <CreatePost />}
+        {props.comp === "createPostText" && <CreatePost />}
+        {props.comp === "ViewMore" && <ViewMore props={props} />}
+        {props.comp === "ViewMore2" && <ViewMore props={props} />}
+        {props.comp === "ViewMoreProfile" && <ViewMore props={props} />}
+        {props.comp === "EditProfile" && <EditProfile />}
 
       </Dialog>
     </>

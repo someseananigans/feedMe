@@ -4,7 +4,7 @@ import {
   Card as PostCard, CardHeader, CardContent, CardActions, IconButton,
   Button, TextField, Avatar, Typography, Checkbox, FormControlLabel
 } from '@material-ui/core';
-import { ChatBubbleOutline as ChatIcon, MoreHoriz, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
+import { MoreHoriz, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
 import Comment from './Comment'
 import { Link } from 'react-router-dom'
 import { Comment as Cmnt, User } from '../../utils'
@@ -187,7 +187,6 @@ const Card = (props) => {
               usernameLink={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}
               profile={profile}
               image={image}
-              commentList={commentList}
               timePassed={(human((Date.now() - created_on) / 1000))}
               postId={postId}
               userId={userId}
