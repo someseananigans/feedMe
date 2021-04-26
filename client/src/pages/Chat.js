@@ -1,12 +1,12 @@
 import { Navbar, Dm } from '../components'
 
 
-const Chat = ({ room }) => {
+const Chat = ({ match }) => {
   return (
     <>
       <Navbar />
       <Dm roomCode={match.params.room} />
-    </Dm>
+    </>
   )
 }
 
