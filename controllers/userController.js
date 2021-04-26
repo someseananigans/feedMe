@@ -97,23 +97,30 @@ router.post('/user/register', (req, res) => {
     lowerCaseUsername = req.body.username.toLowerCase()
   }
 
-  User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, (err, user) => {
-    if (err) {
-      // checks if email/username already exists
-      registeredUsers.email.indexOf(email) !== -1 && (status.email = "Email is Already in Use")
-      registeredUsers.username.indexOf(username) !== -1 && (status.username = "Username is Already in Use")
+  if (status.name || status.username || status.password || status.email) {
+    User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, (err, user) => {
+      if (err) {
+        // checks if email/username already exists
+        registeredUsers.email.indexOf(email) !== -1 && (status.email = "Email is Already in Use")
+        registeredUsers.username.indexOf(username) !== -1 && (status.username = "Username is Already in Use")
+        res.json({
+          status: status,
+          err
+        })
+        return
+      }
       res.json({
-        status: status,
-        err
+        data: user,
+        status: 200,
+        message: 'Successfully Registered User'
       })
-      return
-    }
-    res.json({
-      data: user,
-      status: 200,
-      message: 'Successfully Registered User'
     })
-  })
+  } else {
+    res.json({
+      status: status,
+      message: 'Registration Unsuccessful'
+    })
+  }
 })
 
 router.post('/user/login', (req, res) => {
