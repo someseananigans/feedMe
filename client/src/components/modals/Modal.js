@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Dialog, Typography, IconButton, Badge, Button } from '@material-ui/core'
+import { Dialog, Typography, IconButton, Badge, Button, DialogContent, DialogActions } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import CreatePost from '../CreatePost'
 import EditProfile from '../EditProfile'
@@ -67,10 +67,7 @@ const PostModal = (props) => {
         (<div className='overlay' onClick={toggleOpen}>
           <Typography>
             {props.caption}
-            {props.currentUser.user._id === props.userId ? (
 
-              <DeleteIcon onClick={() => props.handleDeletePost(props.postId)} />
-            ) : null}
           </Typography>
         </div>)}
       {props.comp === "EditProfile" &&

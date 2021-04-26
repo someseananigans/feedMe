@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
   suggestions: {
     marginLeft: 20,
     color: 'gray',
+    paddingTop: 10,
   },
   follow: {
     fontSize: 13,
@@ -29,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 13,
     color: 'black'
   },
+  followBtn: {
+    display: 'flex',
+    alignItems: 'center'
+  }
 }));
 
 
@@ -62,12 +67,14 @@ const Search = (props) => {
       <div className={classes.root}>
         <Paper>
           <Typography className={classes.suggestions}>Search Results</Typography>
+          <hr />
           {users.length > 0 && users.map(user => (
             currentUser.userId !== user._id && (
               <SearchResult
                 usersFollowing={currentUser.following}
                 user={user}
                 classes={classes}
+                className={classes.followBtn}
               />
             )
           ))

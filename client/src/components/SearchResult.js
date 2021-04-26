@@ -44,6 +44,7 @@ const SearchResult = (props) => {
           <Button
             className={followAction === 'follow' ? classes.follow : classes.following}
             onClick={(() => handleFollow(user._id))}
+            style={{ marginTop: 10 }}
           >
             {followAction}
           </Button>
