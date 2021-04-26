@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import {
   Card as PostCard, CardHeader, CardContent, CardActions, IconButton,
-  Button, TextField, Avatar, Typography, Checkbox, FormControlLabel
+  Button, TextField, Avatar, Typography, Checkbox, FormControlLabel, DialogContent, DialogActions, Dialog
 } from '@material-ui/core';
-import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
+import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder, Delete as DeleteIcon } from '@material-ui/icons'
 import { User, Comment as Cmnt } from '../../utils'
 import { makeStyles } from '@material-ui/core/styles';
 import Comment from './Comment'
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     overflowY: 'auto',
     height: '330px',
     [theme.breakpoints.down('sm')]: {
-      maxHeight: '300px'
+      maxHeight: '330px'
     }
   },
   follow: {
@@ -221,13 +221,39 @@ const ViewMore = ({ props }) => {
               </Link>
             }
             action={
-              currentUser.user._id !== userId &&
-              (<Button
-                className={followAction === 'follow' ? styles.follow : styles.following}
-                onClick={(() => handleFollow(userId))}
-              >
-                {followAction}
-              </Button>)
+              currentUser.user._id !== userId ?
+                (<Button
+                  className={followAction === 'follow' ? styles.follow : styles.following}
+                  onClick={(() => handleFollow(userId))}
+                >
+                  {followAction}
+                </Button>
+                ) : (
+                  <>
+                    <DeleteIcon onClick={props.toggleDeleteDialog} style={{ marginRight: 7, marginTop: 11 }} />
+
+                    <Dialog
+                      onClose={props.toggleDeleteDialog}
+                      maxWidth="xs"
+                      open={props.confirmOpen}
+                    >
+                      <DialogContent>
+                        <h3>Do You Wish to Delete this Post?</h3>
+                        <img src={props.image} alt="" style={{ width: '100%', overflowY: 'auto' }} />
+                      </DialogContent>
+                      <DialogActions>
+                        <Button autoFocus onClick={(() => props.handleConfirm('No', props.postId))} color="primary">
+                          No
+                    </Button>
+                        <Button onClick={(() => props.handleConfirm('Yes', props.postId))} color="primary">
+                          Yes
+                    </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </>
+                )
+
+
             }
             title={
               <Link to={usernameLink} className={styles.postUsername}>
@@ -237,23 +263,8 @@ const ViewMore = ({ props }) => {
           />
 
           <CardContent className={styles.likeCommentSpace}>
-            <CardActions disableSpacing className={styles.likeComment}>
-              <IconButton aria-label="like" color="default" className={styles.noMargPad}>
-                <FormControlLabel className={styles.noMargPad}
-                  control={<Checkbox icon={<FavoriteBorder />}
-                    checkedIcon={<Favorite />}
-                    name="checkedH"
-                    onClick={handleLike}
-                    checked={likeAction === 'unlike' ? true : false}
-                  />}
-                />
-              </IconButton>
-              <IconButton aria-label="comment" onClick={handleFocus}>
-                <ChatIcon className={styles.noMargPad} />
-              </IconButton>
-            </CardActions>
 
-            <strong>{likeDisplay}</strong>
+
             <Typography className={styles.commentLine} variant="body2" color="textSecondary" component="p">
               <Avatar aria-label="userAvatar" className={styles.commentAvatars} src={profile}></Avatar>
               <div className={styles.un}>
@@ -281,6 +292,22 @@ const ViewMore = ({ props }) => {
 
               })}
             </Typography>
+            <CardActions disableSpacing className={styles.likeComment}>
+              <IconButton aria-label="like" color="default" className={styles.noMargPad}>
+                <FormControlLabel className={styles.noMargPad}
+                  control={<Checkbox icon={<FavoriteBorder />}
+                    checkedIcon={<Favorite />}
+                    name="checkedH"
+                    onClick={handleLike}
+                    checked={likeAction === 'unlike' ? true : false}
+                  />}
+                />
+              </IconButton>
+              <IconButton aria-label="comment" onClick={handleFocus}>
+                <ChatIcon className={styles.noMargPad} />
+              </IconButton>
+            </CardActions>
+            <strong>{likeDisplay}</strong>
             <Typography variant="body2" color="textSecondary" component="p">
               <div className={styles.time}>
                 {timePassed}
