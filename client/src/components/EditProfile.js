@@ -26,10 +26,18 @@ const useStyles = makeStyles((theme) => ({
     width: "40px",
     height: "40px"
   },
-  centerContent: {
+  left: {
     justifyContent: "center",
     display: "flex",
-    alignSelf: "center"
+    alignSelf: "center",
+
+  },
+  right: {
+    justifyContent: "center",
+    display: "flex",
+    alignSelf: "center",
+    width: '90%'
+
   },
   inputMargin: {
     marginBottom: "8px",
@@ -45,15 +53,21 @@ const useStyles = makeStyles((theme) => ({
   classes: {
     background: "white",
   },
-  padding: {
-    padding: "25px"
+  container: {
+    padding: "25px",
+    display: 'flex',
+    flexDirection: 'column',
+    width: '430px',
+    [theme.breakpoints.down('xs')]: {
+      width: '300px'
+    }
   }
 }));
 
 
 
 
-const EditProfile = ({ toggleOpen }) => {
+const EditProfile = ({ toggleOpen, props }) => {
   const classes = useStyles()
 
   const [userInfo, setUserInfo] = useState({
@@ -100,8 +114,9 @@ const EditProfile = ({ toggleOpen }) => {
     })
       .then(() => {
         console.log('updated')
+        props.setUpdate('needs update')
         toggleOpen()
-        window.location.reload()
+        // window.location.reload()
       })
       .catch(err => console.log(err))
   }
@@ -123,8 +138,8 @@ const EditProfile = ({ toggleOpen }) => {
   return (
     <>
       <Card variant="outlined" className={classes.background}>
-        <Grid container className={classes.padding}>
-          <Grid xs={4} className={classes.centerContent}>
+        <Grid container className={classes.container}>
+          <div className={classes.left}>
             <div className={classes.imageParent}>
               <img src={userInfo.profile} alt="profile_photo" className={classes.circle} />
 
@@ -142,9 +157,9 @@ const EditProfile = ({ toggleOpen }) => {
                 </Fab>
               </label>
             </div>
-          </Grid>
+          </div>
 
-          <Grid xs={8} className={classes.centerContent}>
+          <div className={classes.right}>
             <Grid container className={classes.column}>
               <TextField name="name" type="text" label="Name" variant="outlined" value={userInfo.name} className={classes.inputMargin} onChange={handleInputChange} />
               <TextField name="email" type="email" label="Email" variant="outlined" value={userInfo.email} className={classes.inputMargin} onChange={handleInputChange} />
@@ -152,7 +167,7 @@ const EditProfile = ({ toggleOpen }) => {
               <TextField name="bio" type="text" label="bio" variant="outlined" value={userInfo.bio} className={classes.inputMargin} onChange={handleInputChange} />
               <Button onClick={handleSave} className={classes.inputMargin} >Save</Button>
             </Grid>
-          </Grid>
+          </div>
         </Grid>
       </Card>
     </>

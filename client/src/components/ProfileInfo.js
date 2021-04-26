@@ -1,37 +1,68 @@
-import { Avatar } from '@material-ui/core'
-import ProfileModal from './modals/ProfileModal'
+import { Avatar, Button } from '@material-ui/core'
+import Modal from './modals/Modal'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
 import User from '../utils/User.js'
+import { FollowContext } from '../utils'
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const useStyles = makeStyles((theme) => ({
+  follow: {
+    fontSize: 13,
+    color: 'black'
+  },
+  following: {
+    fontSize: 13,
+    color: 'black'
+  },
+}));
 
 const ProfileInfo = ({ id }) => {
+  const classes = useStyles()
 
   const [userState, setUserState] = useState({
     user: {
       posts: [],
       following: [],
-      followers: []
+      followers: [],
+      _id: ''
     }
   })
+
+  const [update, setUpdate] = useState('updated')
 
   useEffect(() => {
     if (id) {
       User.getUser(id)
         .then(({ data: user }) => {
           setUserState({ ...userState, user })
+          User.profile()
+            .then(({ data: currentUser }) => {
+              followCheck(currentUser.following, user._id)
+            })
+            .catch(err => console.log(err))
         })
         .catch(err => { console.log(err) })
     } else {
       User.profile()
         .then(({ data: user }) => {
           setUserState({ ...userState, user })
+          setUpdate('updated')
         })
-      console.log(userState.user)
     }
-  }, [])
+  }, [update])
 
   const { user } = userState
+
+  const {
+    handleFollow, // follow or unfollow
+    followAction, // follow or following (updated by followCheck) 
+    followCheck, // within Suggested Users, checks to see if user has followed
+  } = FollowContext()
+
+
+  console.log(user)
 
   return (
     <>
@@ -42,18 +73,27 @@ const ProfileInfo = ({ id }) => {
         <CharacterField>
           <ProfileRow>
             <Username>{user.username}</Username>
-            {(!id) ? <ProfileModal /> : null}
+            {
+              (!id) ? <Modal comp='EditProfile' setUpdate={setUpdate} /> :
+                <Button
+                  variant="contained"
+                  className={followAction === 'follow' ? classes.follow : classes.following}
+                  onClick={(() => handleFollow(user._id))}
+                >
+                  {followAction}
+                </Button>
+            }
           </ProfileRow>
           <Ninja>
 
             <StatRow>
               <Stats>
                 <Data>{user.posts.length}</Data>
-                <Category>{user.posts.length == 1 ? 'post' : 'posts'}</Category>
+                <Category>{user.posts.length === 1 ? 'post' : 'posts'}</Category>
               </Stats>
               <Stats>
                 <Data>{user.followers.length}</Data>
-                <Category>{user.followers.length == 1 ? 'follower' : 'followers'}</Category>
+                <Category>{user.followers.length === 1 ? 'follower' : 'followers'}</Category>
               </Stats>
               <Stats>
                 <Data>{user.following.length}</Data>
@@ -81,11 +121,11 @@ const ProfileInfo = ({ id }) => {
           <StatRow>
             <Stats>
               <Data>{user.posts.length}</Data>
-              <Category>{user.posts.length == 1 ? 'post' : 'posts'}</Category>
+              <Category>{user.posts.length === 1 ? 'post' : 'posts'}</Category>
             </Stats>
             <Stats>
               <Data>{user.followers.length}</Data>
-              <Category>{user.followers.length == 1 ? 'follower' : 'followers'}</Category>
+              <Category>{user.followers.length === 1 ? 'follower' : 'followers'}</Category>
             </Stats>
             <Stats>
               <Data>{user.following.length}</Data>

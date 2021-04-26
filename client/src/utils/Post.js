@@ -23,6 +23,11 @@ const Post = {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
   }),
+  // get all posts from following by most recent 
+  getFollowing: () => axios.get('/api/post/following', {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('user')}`
+    }
+  })
 }
-
 export default Post

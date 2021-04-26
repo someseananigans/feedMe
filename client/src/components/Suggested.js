@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   suggestions: {
     paddingRight: 0,
-    paddingBottom:0,
+    paddingBottom: 0,
     paddingTop: '8px'
   },
   follow: {
@@ -59,11 +59,11 @@ const useStyles = makeStyles((theme) => ({
 const Suggested = () => {
   const classes = useStyles();
 
-  const [userState, setUserState] = useState({
+  const [userState, setUser] = useState({
     users: []
   })
 
-  const [currentUserState, setCurrentUserState] = useState({
+  const [currentUser, setCurrentUser] = useState({
     user: {}
   })
 
@@ -72,47 +72,47 @@ const Suggested = () => {
       .then(({ data: users }) => {
         User.profile()
           .then(({ data: user }) => {
-            setCurrentUserState({ ...currentUserState, user })
+            setCurrentUser({ ...currentUser, user })
             let filteredUsers = []
             for (let i = 0; i < users.length; i++) {
               if (users[i]._id !== user._id) {
                 filteredUsers.push(users[i])
               }
             }
-            // console.log(filteredUsers)
-            setUserState({ ...userState, users: filteredUsers })
+            setUser({ ...userState, users: filteredUsers })
           })
       })
   }, [])
-      
+
   return (
     <div className={classes.root}>
       <Paper>
         <CardHeader
           avatar={
             <Link to="/profile" >
-              <Avatar alt={currentUserState.user.username} src={currentUserState.user.profile} className={classes.bigAvatar}>
-                </Avatar>
+              <Avatar alt={currentUser.user.username} src={currentUser.user.profile} className={classes.bigAvatar}>
+              </Avatar>
             </Link>
           }
           title={
             <>
-            <Link to="/profile" className={classes.username} >
-              {currentUserState.user.username}
-            </Link>
-            <p className={classes.name}>{currentUserState.user.name}</p>
+              <Link to="/profile" className={classes.username} >
+                {currentUser.user.username}
+              </Link>
+              <p className={classes.name}>{currentUser.user.name}</p>
             </>
           }
         />
         <Typography className={classes.suggestBox}>Suggestions for you</Typography>
         {userState.users.length ? userState.users.map(user =>
+
           <SuggestedUsers
             user_id={user._id}
             username={user.username}
             profile={user.profile}
             firstName={user.firstName}
             classes={classes}
-            usersfollowing={currentUserState.user.following}
+            usersfollowing={currentUser.user.following}
           />
 
         ) : null

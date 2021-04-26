@@ -12,7 +12,10 @@ const User = new Schema({
     unique: true,
     required: true
   },
-  profile: String,
+  profile: {
+    type: String,
+    default: 'https://firebasestorage.googleapis.com/v0/b/reinsta-884d1.appspot.com/o/images%2Fpexels-ann-h-1762851.jpg?alt=media&token=35072ee2-e6c7-4406-93db-92ad796a05d7'
+  },
   bio: String,
   posts: [{
     type: Schema.Types.ObjectId,
@@ -29,6 +32,10 @@ const User = new Schema({
   followers: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
+  }],
+  chatRooms: [{
+    type: Schema.Types.ObjectId,
+    ref: 'ChatRoom'
   }]
 })
 

@@ -1,19 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import PostModal from '../components/modals/PostModal'
+import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, SvgIcon } from '@material-ui/core'
+import { Search as SearchIcon, AccountCircle, MoreVert as MoreIcon } from '@material-ui/icons'
+import Modal from '../components/modals/Modal'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -25,16 +14,25 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  appBar: {
+    backgroundColor: '#00bcd4',
+    boxShadow: 'none',
+    padding: '0 24px',
+    borderBottom: '1px solid gray'
   },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-      
-    },
-    fontStyle: 'italic'
+  navWrap: {
+    maxWidth: '975px',
+    alignSelf: 'center',
+    width: '100%'
+  },
+  imageWrap: {
+    display: 'flex',
+    flex: '1 9999 0%'
+  },
+  logo: {
+    maxHeight: 60,
+    maxWidth: 100,
+    cursor: 'pointer',
   },
   search: {
     position: 'relative',
@@ -49,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(3),
       width: 'auto',
+    },
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
     },
 
   },
@@ -75,26 +76,26 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   sectionDesktop: {
+    flex: '1 0 0%',
+    justifyContent: 'flex-end',
     display: 'none',
     [theme.breakpoints.up('md')]: {
       display: 'flex',
-    },
+    }
   },
   sectionMobile: {
+    flex: '1 0 0%',
+    justifyContent: 'flex-end',
     display: 'flex',
     [theme.breakpoints.up('md')]: {
       display: 'none',
-    },
+    }
   },
   logOut: {
     marginLeft: 20,
     alignSelf: 'center',
   },
-  logo: {
-    maxHeight: 60,
-    maxWidth: 100,
-    cursor: 'pointer',
-  },
+
   dropDownItems: {
     padding: '0 2px',
     paddingRight: '20px',
@@ -102,10 +103,6 @@ const useStyles = makeStyles((theme) => ({
   dropDown: {
     padding: '0 !important',
   },
-  appBar: {
-    backgroundColor: '#00bcd4',
-    boxShadow: 'none'
-  }
 }));
 
 function HomeIcon(props) {
@@ -147,7 +144,7 @@ const Navbar = () => {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-  
+
   const handleGoToProfile = () => {
     window.location = '/profile'
   }
@@ -197,7 +194,7 @@ const Navbar = () => {
       <MenuItem className={classes.dropDownItems} onClick={handleGoHome} >
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={0} color="secondary">
-            <HomeIcon/>
+            <HomeIcon />
           </Badge>
         </IconButton>
         <p>Home</p>
@@ -214,8 +211,10 @@ const Navbar = () => {
         <p>Profile</p>
       </MenuItem>
       <MenuItem className={classes.dropDownItems}>
-        <PostModal/>
-        <p>Create a Post</p>
+        <Modal
+          comp='createPostText'
+        />
+        {/* <p>Create a Post</p> */}
       </MenuItem>
       <MenuItem className={classes.dropDownItems} onClick={handleGoHome} >
         <IconButton aria-label="show 4 new mails" color="inherit">
@@ -228,11 +227,11 @@ const Navbar = () => {
     </Menu>
   );
 
- 
 
-  const [allUsersState, setAllUsersState] = useState({
-    users: []
-  });
+
+  // const [allUsersState, setAllUsersState] = useState({
+  //   users: []
+  // });
 
   // const handleAutoSearchChange = () => {
   //   User.getUsers()
@@ -257,28 +256,31 @@ const Navbar = () => {
   return (
     <div className={classes.grow}>
       <AppBar position="relative" className={classes.appBar}>
-        <Toolbar>
-          <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/730/5123634730_d958ae6a-bc04-4366-b183-35e4a8407a94.png?cb=1619210685" alt="logo"/>
+        <Toolbar className={classes.navWrap}>
+          <div className={classes.imageWrap}>
+
+            <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/730/5123634730_d958ae6a-bc04-4366-b183-35e4a8407a94.png?cb=1619210685" alt="logo" />
+          </div>
           <div className={classes.search}>
             <form onSubmit={(event) => {
               event.preventDefault()
-              window.location= `/search/${searchState.search}`
-              }}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              onChange={handleSearchChange}
-              value={searchState.search}
-              placeholder="Search for a user…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
+              window.location = `/search/${searchState.search}`
+            }}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                onChange={handleSearchChange}
+                value={searchState.search}
+                placeholder="Search for a user…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
             </form>
-           
+
           </div>
           {/* <Autocomplete
             openOnFocus={false}
@@ -290,17 +292,12 @@ const Navbar = () => {
             renderInput={(params) => <TextField {...params} label="Search a username..." variant="outlined" />}
             renderOption={(option) => <Typography onClick={() => window.location = `/user/${option._id}`} noWrap>{option.username}</Typography>}
          /> */}
-          <div className={classes.grow} />
+          {/* <div className={classes.grow} /> */}
           <div className={classes.sectionDesktop}>
-            <PostModal />
-            <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
-              <Badge badgeContent={0} color="secondary">
-                <HomeIcon />
-              </Badge>
-            </IconButton>
-
+            <Modal
+              comp='createPost'
+            />
             <IconButton
-              edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
@@ -309,7 +306,13 @@ const Navbar = () => {
             >
               <AccountCircle />
             </IconButton>
-            <Typography onClick={handleLogOut} className={classes.logOut}>Log Out</Typography>
+            <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
+              <Badge badgeContent={0} color="secondary">
+                <HomeIcon />
+              </Badge>
+            </IconButton>
+
+            <Typography onClick={handleLogOut} className={classes.logOut} style={{ cursor: 'pointer' }}>Log Out</Typography>
           </div>
 
           <div className={classes.sectionMobile}>
