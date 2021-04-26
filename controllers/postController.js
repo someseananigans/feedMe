@@ -105,6 +105,7 @@ router.get('/post/following', passport.authenticate('jwt'), async (req, res) => 
   let followedPosts = []
   let postIds = []
   let feed = []
+  let allFollowPosts = []
 
   for (followedUser of followingUsers) {
 
@@ -117,11 +118,19 @@ router.get('/post/following', passport.authenticate('jwt'), async (req, res) => 
       }
     })
     followedPosts.push(userData.posts)
+    console.log('hit')
   }
 
-  followedPosts = followedPosts[0]
-  followedPosts.sort((a, b) => (b.created_On - a.created_On))
-  res.json(followedPosts)
+  for (point of followedPosts) {
+    for (posts of point) {
+      allFollowPosts.push(posts)
+    }
+  }
+
+  // followedPosts = followedPosts[0]
+  allFollowPosts.sort((a, b) => (b.created_On - a.created_On))
+  console.log(allFollowPosts)
+  res.json(allFollowPosts)
 
 
 })
