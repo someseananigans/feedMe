@@ -116,7 +116,6 @@ router.get('/post/following', passport.authenticate('jwt'), async (req, res) => 
         model: 'User'
       }
     })
-    console.log(userData.posts)
     followedPosts.push(userData.posts)
   }
 
