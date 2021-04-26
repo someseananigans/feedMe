@@ -183,8 +183,4 @@ router.put('/post/interaction', passport.authenticate('jwt'), async (req, res) =
 })
 
 
-// <------------------ SearchFeed ---------------------->
-
-// router.get('/user/following')
-
 module.exports = router

@@ -60,12 +60,12 @@ router.get('/user/posts', passport.authenticate('jwt'), (req, res) => {
           path: 'user',
           model: 'User',
         })
-        .then (comments => res.json(comments))
+        .then(comments => res.json(comments))
         .catch(err => console.log(err))
-    
+
     })
-      
-      
+
+
     .catch(err => console.log(err))
 })
 
@@ -96,5 +96,36 @@ router.delete('/post/:post_id', passport.authenticate('jwt'), (req, res) => {
     .then(() => res.sendStatus(200))
     .catch(err => console.log(err))
 })
+
+// <------------------ SearchFeed ---------------------->
+
+// get all posts from following by most recent
+router.get('/post/following', passport.authenticate('jwt'), async (req, res) => {
+  let followingUsers = req.user.following
+  let followedPosts = []
+  let postIds = []
+  let feed = []
+
+  for (followedUser of followingUsers) {
+
+    const userData = await User.findById(followedUser).populate({
+      path: 'posts',
+      model: 'Post',
+      populate: {
+        path: 'user',
+        model: 'User'
+      }
+    })
+    console.log(userData.posts)
+    followedPosts.push(userData.posts)
+  }
+
+  followedPosts = followedPosts[0]
+  followedPosts.sort((a, b) => (b.created_On - a.created_On))
+  res.json(followedPosts)
+
+
+})
+
 
 module.exports = router
