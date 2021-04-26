@@ -40,9 +40,9 @@ function App() {
           <LockedView>
             <Route exact path='/search/:username' component={Search} />
           </LockedView>
-          <LockedView>
+          {/* <LockedView>
             <Route exact path='/chat/:room' component={Chat} />
-          </LockedView>
+          </LockedView> */}
         </Switch>
       </Router>
     </MuiThemeProvider>
