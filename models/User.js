@@ -32,6 +32,10 @@ const User = new Schema({
   followers: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
+  }],
+  chatRooms: [{
+    type: Schema.Types.ObjectId,
+    ref: 'ChatRoom'
   }]
 })
 
