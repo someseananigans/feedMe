@@ -146,10 +146,29 @@ const ProfilePosts = ({ id }) => {
     setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
   }
 
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [confirm, setConfirm] = useState(false)
+
+  const toggleDeleteDialog = () => {
+    setConfirmOpen(!confirmOpen)
+  }
+
+  const handleConfirm = (response, id) => {
+    switch (response) {
+      case 'No':
+        toggleDeleteDialog()
+        break;
+      case 'Yes':
+        handleDeletePost(id)
+        toggleDeleteDialog()
+        break;
+    }
+  }
+
   const handleDeletePost = id => {
     Post.delete(id)
       .then(() => {
-        window.location = '/profile'
+        setUpdate('delete update')
         const posts = [postState.posts]
         setPostState({ ...postState, posts })
 
@@ -431,6 +450,9 @@ const ProfilePosts = ({ id }) => {
                 likeCheck={likeCheck}
                 setLikeCount={setLikeCount}
                 postLikedBy={post.liked_by}
+                toggleDeleteDialog={toggleDeleteDialog}
+                confirmOpen={confirmOpen}
+                handleConfirm={handleConfirm}
               />
             </Grid>
           ))
