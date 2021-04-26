@@ -15,7 +15,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     marginBottom: 20,
     height: "100%",
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    border: '1px solid #80808042',
+    borderRadius: 0,
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: 0,
+      border: 'none',
+      borderTop: '.5px solid #80808042'
+    }
   },
   media: {
     width: "100%",
