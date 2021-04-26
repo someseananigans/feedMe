@@ -1,10 +1,16 @@
 import { React, useState } from 'react';
 import { Post } from '../utils'
 import { storage } from '../utils/firebase'
-import { Card, CardContent, Button, TextField, DialogTitle, Fab } from '@material-ui/core';
+import { Card, CardContent, Button, TextField, DialogTitle, Fab, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { AddPhotoAlternate as AddPhoto, Close as CloseIcon } from '@material-ui/icons'
+import MuiAlert from '@material-ui/lab/Alert';
+
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles({
   root: {
@@ -43,6 +49,15 @@ const useStyles = makeStyles({
   },
   toFrame: {
     width: "90%"
+  },
+  parent: {
+    position: 'relative',
+    maxWidth: '100%',
+  },
+  child: {
+    position: 'absolute',
+    width: '300%',
+    top: '20px'
   }
 })
 
@@ -64,16 +79,20 @@ const CreatePost = (props) => {
 
   const handleCreatePost = event => {
     event.preventDefault()
-    Post.create({
-      body: postState.body,
-      image: postState.image,
-    })
-      .then(({ data: post }) => {
-        console.log(post)
-        setPostState({ ...postState, body: '', image: '' })
-        window.location.reload()
+    if (postState.image) {
+      Post.create({
+        body: postState.body,
+        image: postState.image,
       })
-      .catch(err => console.error(err))
+        .then(({ data: post }) => {
+          console.log(post)
+          setPostState({ ...postState, body: '', image: '' })
+          window.location.reload()
+        })
+        .catch(err => console.error(err))
+    } else {
+      setOpen(true)
+    }
   }
 
   const handleFileChange = event => {
@@ -137,6 +156,15 @@ const CreatePost = (props) => {
       </div>
     )
   }
+  const [open, setOpen] = useState(false);
+
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false)
+  };
 
   return (
     <>
@@ -156,7 +184,14 @@ const CreatePost = (props) => {
 
             <TextField className={classes.toFrame} label="Write a Caption" name="body" onChange={handleInputChange} value={postState.body} />
             <br />
-            <Button variant="contained" onClick={handleCreatePost}>Publish</Button>
+            <div className={classes.parent} >
+              <Snackbar className={classes.child} open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                  'Posts Require an Image'
+                </Alert>
+              </Snackbar>
+              <Button variant="contained" onClick={handleCreatePost}>Publish</Button>
+            </div>
           </form>
         </CardContent>
       </Card>
