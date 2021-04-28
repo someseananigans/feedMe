@@ -3,7 +3,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import { Home, Profile, Login, User, Search } from './pages'
+import { Home, Profile, Login, User, Search, Chat } from './pages'
 import { LockedView } from './utils'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 
@@ -40,6 +40,9 @@ function App() {
           <LockedView>
             <Route exact path='/search/:username' component={Search} />
           </LockedView>
+          {/* <LockedView>
+            <Route exact path='/chat/:room' component={Chat} />
+          </LockedView> */}
         </Switch>
       </Router>
     </MuiThemeProvider>

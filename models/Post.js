@@ -20,7 +20,7 @@ const Post = new Schema({
   },
   created_On: {
     type: Number,
-    default: Date.now()
+    default: Date.now
   }
 })
 
