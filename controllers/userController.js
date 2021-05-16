@@ -98,6 +98,11 @@ router.post('/user/register', (req, res) => {
   }
 
   if (status.name || status.username || status.password || status.email) {
+    res.json({
+      status: status,
+      message: 'Registration Unsuccessful'
+    })
+  } else {
     User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, (err, user) => {
       if (err) {
         // checks if email/username already exists
@@ -115,19 +120,22 @@ router.post('/user/register', (req, res) => {
         message: 'Successfully Registered User'
       })
     })
-  } else {
-    res.json({
-      status: status,
-      message: 'Registration Unsuccessful'
-    })
   }
 })
 
 router.post('/user/login', (req, res) => {
   User.authenticate()(req.body.username, req.body.password, (err, user) => {
     if (err) { console.log(err) }
+    else if (!user) {
+      res.json({
+        err: 'Username or Password was Incorrect',
+      })
+    } else {
+      res.json({
+        user: user ? jwt.sign({ id: user._id }, process.env.SECRET) : null
+      })
+    }
 
-    res.json(user ? jwt.sign({ id: user._id }, process.env.SECRET) : null)
   })
 })
 
