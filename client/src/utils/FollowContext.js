@@ -17,7 +17,6 @@ const FollowContext = () => {
       follow_user_id: focusedUser
     })
       .then(data => {
-        console.log(data)
         setFollowAction(followAction === 'follow' ? 'following' : 'follow')
       })
       .catch(err => console.log(err))
@@ -25,7 +24,6 @@ const FollowContext = () => {
 
   const followCheck = (usersFollow, focusedUser) => {
     setFollowAction(usersFollow.indexOf(focusedUser) !== -1 ? 'following' : 'follow')
-    console.log(followAction)
   }
 
   return {
