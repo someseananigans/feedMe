@@ -1,10 +1,11 @@
-import Card from './Card.js'
 import { React, useState, useEffect } from 'react'
-import { Box, Tabs, Tab, Paper } from '@material-ui/core';
 
+// Components
+import { Box, Tabs, Tab, Paper, LinearProgress } from '@material-ui/core';
+import Card from './Card'
+
+// Utils
 import { Comment as Cmnt, Post, User } from '../../utils'
-
-
 
 
 const Cards = () => {
@@ -12,33 +13,65 @@ const Cards = () => {
   const [followingPosts, setFollowingPosts] = useState([])
   const [value, setValue] = useState(0);
   const [view, setView] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [currentUser, setCurrentUser] = useState({
     user: {}
   })
-  const [comment, setComment] = useState({
-    body: '',
-    post_id: ''
-  })
-  const [update, setUpdate] = useState('')
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    handleView()
+  };
 
-  const handleCommentInput = ({ target }) => {
-    setComment({ ...comment, body: target.value, post_id: target.id })
+  const handleView = () => {
+    setView(!view)
   }
 
+  const RenderRecent = ({ show }) => {
+    return (
+      <Box xs={12} xl={12} lg={12} md={12} style={{ display: show }}>
+        { postState.length && postState.map(post =>
+          <Card
+            postId={post._id}
+            userId={post.user._id}
+            username={post.user.username}
+            profile={post.user.profile}
+            image={post.image}
+            caption={post.body}
+            created_on={post.created_On}
+            likedByNumber={post.liked_by.length ? post.liked_by.length : 0}
+            likedByUsers={post.liked_by}
+            currentUser={currentUser}
+          />
+        )
+        }
+      </Box>
+    )
+  }
 
-  const handleComment = () => {
-    Cmnt.create({
-      comment: comment.body,
-      post_id: comment.post_id
-    })
-      .then(({ data: cmnt }) => {
-        setComment({ ...comment, body: '', post_id: '' })
-        setUpdate('Need Update')
-      })
-      .catch(err => console.error(err))
+  const RenderFollow = () => {
+    return (
+      <Box xs={12} xl={12} lg={12} md={12} >
+        { followingPosts.length && followingPosts.map(gram =>
+          <Card
+            postId={gram._id}
+            userId={gram.user._id}
+            username={gram.user.username}
+            profile={gram.user.profile}
+            image={gram.image}
+            caption={gram.body}
+            created_on={gram.created_On}
+            likedByNumber={gram.liked_by.length ? gram.liked_by.length : 0}
+            likedByUsers={gram.liked_by}
+            currentUser={currentUser}
+          />
+        )
+        }
+      </Box>
+    )
   }
 
   useEffect(() => {
+    setLoading(true)
     Post.getAll()
       .then(({ data: grams }) => {
         // directly mutilates data
@@ -51,6 +84,9 @@ const Cards = () => {
         setFollowingPosts(fgrams)
       })
       .catch(err => console.error(err))
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000);
   }, [])
 
   useEffect(() => {
@@ -61,20 +97,9 @@ const Cards = () => {
       .catch(err => console.error(err))
   }, [])
 
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    handleView()
-  };
-
-  const handleView = () => {
-    setView(!view)
-  }
-
   return (
     <>
       <Box xs={12} xl={12} lg={12} md={12} >
-
         <Paper style={{ marginBottom: '20px' }}>
           <Tabs
             value={value}
@@ -88,55 +113,8 @@ const Cards = () => {
           </Tabs>
         </Paper>
       </Box>
-      {view ? (
-        <Box xs={12} xl={12} lg={12} md={12} >
-          { postState.length
-            ? postState.map(post =>
-              <Card
-                postId={post._id}
-                userId={post.user._id}
-                username={post.user.username}
-                profile={post.user.profile}
-                image={post.image}
-                caption={post.body}
-                created_on={post.created_On}
-                likedByNumber={post.liked_by.length ? post.liked_by.length : 0}
-                likedByUsers={post.liked_by}
-                currentUser={currentUser}
-                comment={comment}
-                handleComment={handleComment}
-                handleCommentInput={handleCommentInput}
-                update={update}
-                setUpdate={setUpdate}
-              />
-            ) : null
-          }
-        </Box>
-      ) : (
-        <Box xs={12} xl={12} lg={12} md={12} >
-          { followingPosts.length
-            ? followingPosts.map(gram =>
-              <Card
-                postId={gram._id}
-                userId={gram.user._id}
-                username={gram.user.username}
-                profile={gram.user.profile}
-                image={gram.image}
-                caption={gram.body}
-                created_on={gram.created_On}
-                likedByNumber={gram.liked_by.length ? gram.liked_by.length : 0}
-                likedByUsers={gram.liked_by}
-                currentUser={currentUser}
-                comment={comment}
-                handleComment={handleComment}
-                handleCommentInput={handleCommentInput}
-                update={update}
-                setUpdate={setUpdate}
-              />
-            ) : null
-          }
-        </Box>
-      )}
+      {loading && <LinearProgress />}
+      {view ? (<RenderRecent show={loading && 'none'} />) : (<RenderFollow />)}
 
     </>
   )
