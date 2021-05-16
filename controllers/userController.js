@@ -3,10 +3,15 @@ const { User, Post, Comment } = require('../models')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
-// only for testing purposes
 router.get('/users', (req, res) => {
   User.find({})
     .then(users => res.json(users))
+    .catch(err => console.log(err))
+})
+
+router.get('/userlist/:count', (req, res) => {
+  User.find({})
+    .then(users => res.json(users.slice(0, req.params.count)))
     .catch(err => console.log(err))
 })
 
