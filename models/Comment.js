@@ -9,6 +9,10 @@ const Comment = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
+  },
+  created_On: {
+    type: Number,
+    default: Date.now()
   }
 })
 
