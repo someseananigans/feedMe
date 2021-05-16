@@ -10,7 +10,8 @@ import { Comment as Cmnt, Post, User } from '../../utils'
 const Cards = () => {
   const [postState, setPostState] = useState([])
   const [followingPosts, setFollowingPosts] = useState([])
-  const [view, viewState] = useState(true)
+  const [value, setValue] = useState(0);
+  const [view, setView] = useState(true)
   const [currentUser, setCurrentUser] = useState({
     user: {}
   })
@@ -24,10 +25,6 @@ const Cards = () => {
     setComment({ ...comment, body: target.value, post_id: target.id })
   }
 
-  const handleView = () => {
-    viewState(!view)
-    console.log("view")
-  }
 
   const handleComment = () => {
     Cmnt.create({
@@ -46,14 +43,12 @@ const Cards = () => {
       .then(({ data: grams }) => {
         // directly mutilates data
         grams.length > 1 && grams.reverse()
-        console.log(grams)
         setPostState(grams)
       })
       .catch(err => console.error(err))
     Post.getFollowing()
       .then(({ data: fgrams }) => {
         setFollowingPosts(fgrams)
-        console.log(fgrams)
       })
       .catch(err => console.error(err))
   }, [])
@@ -66,12 +61,15 @@ const Cards = () => {
       .catch(err => console.error(err))
   }, [])
 
-  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     handleView()
   };
+
+  const handleView = () => {
+    setView(!view)
+  }
 
   return (
     <>
