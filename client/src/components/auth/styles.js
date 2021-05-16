@@ -7,6 +7,7 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     padding: theme.spacing(2),
+    transition: 'all 0.2s ease-in-out'
   },
   root: {
     '& .MuiTextField-root': {
@@ -28,25 +29,24 @@ export default makeStyles((theme) => ({
   googleButton: {
     marginBottom: theme.spacing(2),
   },
-  parent: {
+  input: {
     position: 'relative',
     maxWidth: '100%',
     flexBasis: '100%',
     padding: '8px'
   },
   child: {
-    position: 'absolute',
-    width: '100%',
-    left: '425px',
-    bottom: '35px',
-    justifyContent: 'left',
-    [theme.breakpoints.down('xs')]: {
-      left: '150px',
-    }
+    position: 'relative',
+    width: '285px',
+    margin: '5px',
+    left: 0,
+    transform: 'none'
   },
-  loginSnack: {
-    top: '120px',
-    position: 'absolute',
-    width: '100%'
+  snack: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    zIndex: 99,
+    marginTop: '30px'
   }
 }));
