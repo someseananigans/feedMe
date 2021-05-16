@@ -68,8 +68,10 @@ const Suggested = () => {
   })
 
   useEffect(() => {
+
     User.getUsers()
       .then(({ data: users }) => {
+
         User.profile()
           .then(({ data: user }) => {
             setCurrentUser({ ...currentUser, user })
