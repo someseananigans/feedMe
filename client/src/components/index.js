@@ -1,9 +1,12 @@
-export { default as Navbar } from "./Navbar"
 export { default as Auth } from "./auth/Auth"
+export { default as Navbar } from "./Navbar"
 export { default as CreatePost } from "./CreatePost"
 export { default as Suggested } from './Suggested'
-export { default as ProfileModal } from './modals/ProfileModal'
 export { default as EditProfile } from './EditProfile'
 export { default as ProfilePosts } from './ProfilePosts'
 export { default as ProfileInfo } from './ProfileInfo'
-export { default as Search } from './Search.js'
+export { default as Search } from './Search'
+export { default as Modal } from './modals/Modal'
+export { default as ProfileModal } from './modals/ProfileModal'
+export { default as Card } from './grams/Card'
+export { default as Cards } from './grams/Cards'

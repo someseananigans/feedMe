@@ -163,9 +163,10 @@ const ViewMore = ({ props }) => {
     handleFollow, // follow or unfollow
     followAction, // follow or following (updated by followCheck) 
     followCheck, // within Suggested Users, checks to see if user has followed
+    cmntList, setCmntList
   } = FollowContext()
 
-  const [cmntList, setCmntList] = useState([])
+  // const [cmntList, setCmntList] = useState([])
 
   useEffect(() => {
     if (postLikedBy) {

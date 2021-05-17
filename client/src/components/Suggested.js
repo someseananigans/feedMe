@@ -58,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Suggested = () => {
   const classes = useStyles();
-
   const [userState, setUser] = useState({
     users: []
   })
@@ -68,8 +67,10 @@ const Suggested = () => {
   })
 
   useEffect(() => {
-    User.getUsers()
+
+    User.getNUsers(6)
       .then(({ data: users }) => {
+
         User.profile()
           .then(({ data: user }) => {
             setCurrentUser({ ...currentUser, user })
@@ -105,7 +106,6 @@ const Suggested = () => {
         />
         <Typography className={classes.suggestBox}>Suggestions for you</Typography>
         {userState.users.length ? userState.users.map(user =>
-
           <SuggestedUsers
             user_id={user._id}
             username={user.username}
