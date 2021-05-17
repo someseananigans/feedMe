@@ -6,7 +6,8 @@ const Chat = ({ room }) => {
     <>
       <Navbar />
       <Dm roomCode={match.params.room} />
-    </Dm>
+    </>
+    
   )
 }
 
