@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom'
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, SvgIcon } from '@material-ui/core'
-import { Search as SearchIcon, AccountCircle, MoreVert as MoreIcon } from '@material-ui/icons'
-import Modal from '../components/modals/Modal'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { Search as SearchIcon, AccountCircle, MoreVert as MoreIcon, ExitToApp as ExitToAppIcon } from '@material-ui/icons'
+import { Modal } from '../components'
+// import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
 // import User from '../utils/User'
@@ -120,6 +121,7 @@ function HomeIcon(props) {
 
 const Navbar = () => {
   const classes = useStyles();
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -146,15 +148,15 @@ const Navbar = () => {
   };
 
   const handleGoToProfile = () => {
-    window.location = '/profile'
+    history.push('/profile')
   }
   const handleGoHome = () => {
-    window.location = '/'
+    history.push('/')
   }
 
   const handleLogOut = () => {
     localStorage.removeItem('user')
-    window.location = '/auth'
+    history.push('/auth')
   }
 
   const [searchState, setSearchState] = useState({

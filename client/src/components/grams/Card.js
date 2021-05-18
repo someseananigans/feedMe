@@ -1,15 +1,37 @@
-import { React, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+
+// Library
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Card as PostCard, CardHeader, CardContent, CardActions, IconButton,
-  Button, TextField, Avatar, Typography, Checkbox, FormControlLabel
-} from '@material-ui/core';
-import { MoreHoriz, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
-import Comment from './Comment'
-import { Link } from 'react-router-dom'
-import { Comment as Cmnt, User } from '../../utils'
 import human from 'human-time'
-import Modal from '../modals/Modal'
+
+// Utils
+import { Comment as Cmnt, User, FollowContext } from '../../utils'
+
+// Components
+import Comment from './Comment'
+// import Modal from '../modals/Modal'
+import { Modal } from '../'
+import { Link } from 'react-router-dom'
+import {
+  Card as PostCard,
+  CardHeader,
+  CardContent,
+  CardActions,
+  IconButton,
+  Button,
+  TextField,
+  Avatar,
+  Typography,
+  Checkbox,
+  FormControlLabel
+} from '@material-ui/core';
+import {
+  MoreHoriz,
+  InsertEmoticon,
+  Favorite,
+  FavoriteBorder
+} from '@material-ui/icons'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,20 +122,48 @@ const Card = (props) => {
     postId,
     likedByUsers,
     currentUser,
-    comment,
-    handleCommentInput,
-    handleComment,
-    update,
-    setUpdate
+    // comment,
+    // handleCommentInput,
+    // handleComment,
+    // update,
+    // setUpdate
   } = props
 
-  const [commentList, setCommentList] = useState([])
-  const [likeAction, setLikeAction] = useState(false)
-  const [likeCount, setLikeCount] = useState(likedByNumber)
+  const {
+    following, setFollowing,
+    handleFollow,
+    followAction, setFollowAction,
+    followCheck,
+    likeAction, setLikeAction,
+    likeCount, setLikeCount,
+    likeCheck,
+    handleLike,
+    comment, setComment,
+    commentList, setCommentList,
+    handleComment,
+    handleCommentInput,
+    update, setUpdate
+  } = FollowContext()
 
-  const likeCheck = () => {
-    setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
-  }
+  // const [commentList, setCommentList] = useState([])
+  // const [likeAction, setLikeAction] = useState(false)
+  // const [likeCount, setLikeCount] = useState(likedByNumber)
+
+  // const likeCheck = () => {
+  //   setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
+  // }
+
+
+  // const handleLike = async () => {
+  //   await User.touchPost({
+  //     type: likeAction,
+  //     post_id: postId
+  //   })
+  //     .then()
+  //     .catch(err => console.log(err))
+  //   setLikeCount(likeAction === 'like' ? (likeCount + 1) : (likeCount - 1))
+  //   setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
+  // }
 
   // renders on page load and re-renders when update is triggered
   useEffect(() => {
@@ -125,22 +175,13 @@ const Card = (props) => {
       .catch(err => {
         console.error(err)
       })
+    setLikeCount(likedByNumber)
   }, [update])
 
   useEffect(() => {
-    likeCheck()
+    likeCheck(likedByUsers, currentUser)
   }, [])
 
-  const handleLike = async () => {
-    await User.touchPost({
-      type: likeAction,
-      post_id: postId
-    })
-      .then()
-      .catch(err => console.log(err))
-    setLikeCount(likeAction === 'like' ? (likeCount + 1) : (likeCount - 1))
-    setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
-  }
 
   return (
     <div>
@@ -178,7 +219,7 @@ const Card = (props) => {
                 control={<Checkbox icon={<FavoriteBorder />}
                   checkedIcon={<Favorite />}
                   name="checkedH"
-                  onClick={handleLike}
+                  onClick={(() => handleLike(postId))}
                   checked={likeAction === 'unlike' ? true : false}
                 />}
               />
@@ -186,7 +227,7 @@ const Card = (props) => {
             <Modal
               classes={classes}
               comp="ViewMore"
-              handleLike={handleLike}
+              handleLike={(() => handleLike(postId))}
               likeAction={likeAction}
               likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
               username={username}
@@ -221,7 +262,7 @@ const Card = (props) => {
             <Modal
               classes={classes}
               comp="ViewMore2"
-              handleLike={handleLike}
+              handleLike={(() => handleLike(postId))}
               likeAction={likeAction}
               likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
               username={username}

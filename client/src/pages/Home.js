@@ -1,6 +1,6 @@
-import { Navbar, Suggested } from '../components'
+import { Navbar, Suggested, Cards } from '../components'
 import '../index.css'
-import Cards from '../components/grams/Cards'
+// import Cards from '../components/grams/Cards'
 
 
 const Home = () => {
