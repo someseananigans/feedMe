@@ -29,11 +29,11 @@ Home                                         |  Profile
 Feel free to contact us with any questions via github or email:
 
 GitHub:  
-[@someseananigans](https://github.com/someseananigans)
-[@josephmnielsen](https://github.com/josephmnielsen)
-[@Ohskie3](https://github.com/Ohskie3)
+- [@someseananigans](https://github.com/someseananigans)
+- [@josephmnielsen](https://github.com/josephmnielsen)
+- [@Ohskie3](https://github.com/Ohskie3)
 
 Email: 
-[nsean321@gmail.com](nsean321@gmail.com)
-[josephmnielsen@gmail.com](josephmnielsen@gmail.com)
-[kyleohlwiler@gmail.com](kyleohlwiler@gmail.com)
+- [nsean321@gmail.com](nsean321@gmail.com)
+- [josephmnielsen@gmail.com](josephmnielsen@gmail.com)
+- [kyleohlwiler@gmail.com](kyleohlwiler@gmail.com)
