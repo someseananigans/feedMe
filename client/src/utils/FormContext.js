@@ -66,7 +66,7 @@ const FormContext = () => {
           })
             .then(({ data }) => {
               if (data) {
-                localStorage.setItem('user', data)
+                localStorage.setItem('user', data.user)
                 // *** incorporate a logging in page transition ***
                 history.push('/')
               }
