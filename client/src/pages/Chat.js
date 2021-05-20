@@ -1,7 +1,7 @@
 import { Navbar } from '../components'
 
 
-const Chat = ({ room }) => {
+const Chat = ({ match }) => {
   return (
     <>
       <Navbar />
