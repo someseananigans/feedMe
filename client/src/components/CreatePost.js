@@ -3,9 +3,11 @@ import { Post } from '../utils'
 import { storage } from '../utils/firebase'
 import { Card, CardContent, Button, TextField, DialogTitle, Fab, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import imageCompressiong from 'browser-image-compression'
 
 import { AddPhotoAlternate as AddPhoto, Close as CloseIcon } from '@material-ui/icons'
 import MuiAlert from '@material-ui/lab/Alert';
+import imageCompression from 'browser-image-compression';
 
 
 function Alert(props) {
@@ -77,6 +79,8 @@ const CreatePost = (props) => {
     setDisplay(true)
   }
 
+
+
   const handleCreatePost = event => {
     event.preventDefault()
     if (postState.image) {
@@ -95,10 +99,8 @@ const CreatePost = (props) => {
     }
   }
 
-  const handleFileChange = event => {
-    event.preventDefault()
-    // **** can put conditional on file.size to put a limit on the size of a file
-    const file = event.target.files[0]
+  const uploadtoFirebase = (compressedFile) => {
+    const file = compressedFile
     const imgName = "Gram" + Date.now()
     const uploadTask = storage.ref(`images/${imgName}`).put(file)
     uploadTask.on(
@@ -117,6 +119,25 @@ const CreatePost = (props) => {
           })
       }
     )
+  }
+
+  const handleFileChange = async event => {
+    event.preventDefault()
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 720,
+      useWebWorker: true
+    }
+    const upload = event.target.files[0]
+    console.log(`originalFile size ${upload.size / 1024 / 1024} MB`);
+
+    try {
+      const compressedFile = await imageCompression(upload, options)
+      console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
+      await uploadtoFirebase(compressedFile)
+    } catch (err) { console.log(err) }
+
   }
 
   const cardReset = event => {
