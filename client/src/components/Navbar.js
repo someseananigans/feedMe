@@ -261,7 +261,7 @@ const Navbar = () => {
         <Toolbar className={classes.navWrap}>
           <div className={classes.imageWrap}>
 
-            <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/730/5123634730_d958ae6a-bc04-4366-b183-35e4a8407a94.png?cb=1619210685" alt="logo" />
+            <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/626/5308215626_d945acf3-4dcd-4b1f-bc88-d8f66e48d54e.png?cb=1621536314" alt="logo" />
           </div>
           <div className={classes.search}>
             <form onSubmit={(event) => {
