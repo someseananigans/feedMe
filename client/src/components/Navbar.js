@@ -344,7 +344,7 @@ const Navbar = () => {
                         onClick={() => { history.push(`/${user._id}`) }}>
                         <Avatar
                           className={classes.itemAvatar}
-                          src={user.profile ? user.profile : 'https://firebasestorage.googleapis.com/v0/b/reinsta-884d1.appspot.com/o/images%2FGram1621567414811?alt=media&token=81b10f2f-99f6-4308-91d6-8515359b588b'} />
+                          src={user.profile} />
                         <div>
                           <p style={{ margin: 0, }}>{user.username}</p>
                           <p style={{ margin: 0, fontWeight: 100 }}>{user.name}</p>
@@ -365,7 +365,7 @@ const Navbar = () => {
               className={classes.avatar}
               onClick={handleGoToProfile}
               alt="profileImg"
-              src={currentUser.profile ? currentUser.profile : 'https://firebasestorage.googleapis.com/v0/b/reinsta-884d1.appspot.com/o/images%2FGram1621567414811?alt=media&token=81b10f2f-99f6-4308-91d6-8515359b588b'} />
+              src={currentUser.profile} />
             <IconButton color="inherit" onClick={handleGoHome}>
               <Badge badgeContent={0} color="secondary">
                 <HomeIcon />
