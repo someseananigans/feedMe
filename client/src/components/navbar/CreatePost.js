@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
-import { Post } from '../utils'
-import { storage } from '../utils/firebase'
+import { Post } from '../../utils'
+import { storage } from '../../utils/firebase'
 import { Card, CardContent, Button, TextField, DialogTitle, Fab, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { AddPhotoAlternate as AddPhoto, Close as CloseIcon } from '@material-ui/icons'

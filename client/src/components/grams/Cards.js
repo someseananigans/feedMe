@@ -5,7 +5,7 @@ import { Box, Tabs, Tab, Paper, LinearProgress } from '@material-ui/core';
 import Card from './Card'
 
 // Utils
-import { Comment as Cmnt, Post, User } from '../../utils'
+import { Post, User } from '../../utils'
 
 
 const Cards = () => {

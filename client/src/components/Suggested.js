@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Avatar, CardHeader, Typography, Paper } from '@material-ui/core';
+import { Avatar, CardHeader, Typography, Paper, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { User } from '../utils'
-import SuggestedUsers from './SuggestedUsers'
+import { FollowContext } from '../utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +55,55 @@ const useStyles = makeStyles((theme) => ({
     margin: 0
   }
 }));
+
+const SuggestedUsers = (props) => {
+  const {
+    user_id,
+    username,
+    profile,
+    firstName,
+    usersfollowing,
+    classes
+  } = props
+
+  const {
+    handleFollow, // follow or unfollow
+    followAction, // follow or following (updated by followCheck) 
+    followCheck, // within Suggested Users, checks to see if user has followed
+  } = FollowContext()
+
+  useEffect(() => {
+    followCheck(usersfollowing, user_id)
+  }, [])
+
+  return (
+    <>
+      <CardHeader key={user_id} className={classes.suggestions}
+        avatar={
+          <Link to={`/${user_id}`} style={{ textDecoration: 'none', color: 'black' }} >
+            <Avatar alt={firstName} src={profile} className={classes.avatar}>
+            </Avatar>
+          </Link>
+
+        }
+        title={
+          <Link to={`/${user_id}`} style={{ textDecoration: 'none', color: 'black' }} >
+            {username}
+          </Link>
+        }
+        action={
+          <Button
+            className={followAction === 'follow' ? classes.follow : classes.following}
+            onClick={(() => handleFollow(user_id))}
+          >
+            {followAction}
+          </Button>
+        }
+        classes={{ action: classes.buttonParent }}
+      />
+    </>
+  )
+}
 
 const Suggested = () => {
   const classes = useStyles();

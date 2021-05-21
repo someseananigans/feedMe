@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom'
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, SvgIcon, Avatar, ClickAwayListener } from '@material-ui/core'
 import { Search as SearchIcon, AccountCircle, MoreVert as MoreIcon, ExitToApp as ExitToAppIcon } from '@material-ui/icons'
-import { Modal } from '../components'
-import { User } from '../utils'
+import { Modal } from '../'
+import { User } from '../../utils'
 // import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 // Library
 import { makeStyles } from '@material-ui/core/styles';
 import human from 'human-time'
 
 // Utils
-import { Comment as Cmnt, User, FollowContext } from '../../utils'
+import { Comment as Cmnt, FollowContext } from '../../utils'
 
 // Components
 import Comment from './Comment'
@@ -121,24 +121,15 @@ const Card = (props) => {
     likedByNumber,
     postId,
     likedByUsers,
-    currentUser,
-    // comment,
-    // handleCommentInput,
-    // handleComment,
-    // update,
-    // setUpdate
+    currentUser
   } = props
 
   const {
-    following, setFollowing,
-    handleFollow,
-    followAction, setFollowAction,
-    followCheck,
-    likeAction, setLikeAction,
+    likeAction,
     likeCount, setLikeCount,
     likeCheck,
     handleLike,
-    comment, setComment,
+    comment,
     commentList, setCommentList,
     handleComment,
     handleCommentInput,

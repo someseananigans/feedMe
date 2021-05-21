@@ -1,12 +1,8 @@
 import { useState, useEffect, React } from 'react'
-import { Link } from 'react-router-dom'
-import { Post, User, Comment as Cmnt, FollowContext } from '../utils/'
+import { Post, User, Comment as Cmnt } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
-import Grid from "@material-ui/core/Grid"
-import GridListTile from "@material-ui/core/GridListTile"
 import './ProfPost.css'
-import { Typography, Avatar, CardHeader, CardContent, CardActions, IconButton, FormControlLabel, Modal as Modal1, Checkbox, TextField, Button } from '@material-ui/core'
-import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
+import { Grid } from '@material-ui/core'
 import human from 'human-time'
 import Modal from './modals/Modal'
 
@@ -103,16 +99,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: 13,
     color: 'black'
   },
-
 }))
 
 const ProfilePosts = ({ id }) => {
-
-  const {
-    handleFollow, // follow or unfollow
-    followAction, // follow or following (updated by followCheck) 
-    followCheck, // within Suggested Users, checks to see if user has followed
-  } = FollowContext()
 
   const classes = useStyles()
 
@@ -195,59 +184,6 @@ const ProfilePosts = ({ id }) => {
   }, [update])
 
 
-  // // part of original modal
-  // const getModalStyle = () => {
-  //   const top = 50
-  //   const left = 50
-
-  //   return {
-  //     top: `${top}%`,
-  //     left: `${left}%`,
-  //     transform: `translate(-${top}%, -${left}%)`,
-  //     padding: 0,
-  //     border: 'transparent',
-  //     display: 'flex',
-  //   };
-  // }
-  // const [modalStyle] = useState(getModalStyle)
-
-
-  // const [open, setOpen] = useState(false)
-
-  // const handleOpen = (post) => {
-  // const posts = [...postState.posts]
-  // posts.forEach(post => {
-  //   if (post._id === id) {
-  //     post.open = true
-  // likeCheck(post.liked_by)
-  // setLikeCount(post.liked_by.length ? post.liked_by.length : 0)
-  // followCheck(currentUser.user.following, post.user)
-  //   }
-  // })
-  // setPostState({ ...postState, posts })
-  // setOpen(true);
-  // };
-
-
-  // // part of original Modal
-  // const handleForceClose = async function () {
-  //   const res = await new Promise((resolve, reject) => {
-  //     const posts = postState.posts.map(post => ({
-  //       ...post,
-  //       open: false
-  //     }))
-  //     resolve(posts)
-  //   })
-  //   return res
-  // }
-
-  // const handleClose = () => {
-  //   handleForceClose()
-  //     .then(posts => {
-  //       setPostState({ ...postState, posts })
-  //     })
-  // };
-
   const [comment, setComment] = useState({
     body: '',
     post_id: ''
@@ -279,151 +215,7 @@ const ProfilePosts = ({ id }) => {
           {postState.posts.length ? postState.posts.map(post => (
             <Grid item key={post._id} className={classes.gridItem} >
               <img src={post.image} alt={post.body} className={classes.imageHome} />
-              <div>
-                {/* <Modal1
-                  classes={classes}
-                  open={post.open}
-                  comp="ViewMoreProfile"
-                  handleLike={handleLike}
-                  likeAction={likeAction}
-                  likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
-                  username={postState.username}
-                  caption={post.body}
-                  usernameLink={currentUser.user._id === post.user ? ('/profile') : (`/${post.user}`)}
-                  profile={postState.profile}
-                  image={post.image}
-                  commentList={post.comments}
-                  timePassed={(human((Date.now() - post.created_On) / 1000))}
-                  postId={post._id}
-                  userId={post.user}
-                  handleComment={handleComment}
-                  handleCommentInput={handleCommentInput}
-                  comment={comment}
-                  currentUser={currentUser}
-                /> */}
-                {/* <Modal1
-                  open={post.open}
-                  onClose={handleClose}
-                >
-                  <div style={modalStyle} className={classes.paper}>
 
-                    <div className={classes.imageWrapper}>
-                      <img src={post.image} alt={post.body} className={classes.image} />
-                    </div>
-                    <div className='comments'>
-                      <ul style={{ listStyle: "none", paddingInlineStart: 0 }}>
-                        <li >
-
-                          <CardHeader
-                            avatar={
-                              <Avatar alt={postState.username} src={postState.profile}>
-                              </Avatar>
-                            }
-                            title={
-                              <Link to={`/${post.user}`} style={{ textDecoration: 'none', color: 'black' }} >
-                                <strong>{postState.username}</strong>
-                              </Link>
-                            }
-                            action={id && (
-                              <Button
-                                className={followAction === 'follow' ? classes.follow : classes.following}
-                                onClick={(() => handleFollow(post.user))}
-                              >
-                                {followAction}
-                              </Button>)
-                            }
-                          />
-                        </li>
-                        <hr style={{ width: '80%' }} />
-
-                        <div style={{ overflowY: 'auto', height: '300px', padding: '0 15px' }}>
-                          <li>
-                            <CardHeader
-                              style={{ padding: '5px' }}
-                              avatar={
-                                <Avatar style={{ height: '25px', width: '25px' }} alt={postState.username} src={postState.profile}>
-                                </Avatar>
-                              }
-                              title={
-                                <>
-                                  <strong>{postState.username} </strong>
-                                  <span> {post.body}</span>
-                                </>
-                              }
-
-                            />
-                          </li>
-                          {post.comments.length ? post.comments.map(cmnt => (
-
-                            <li key={cmnt._id} >
-                              <CardHeader
-                                style={{ padding: '5px' }}
-                                avatar={
-                                  <Avatar style={{ height: '25px', width: '25px' }} alt={cmnt.user.username} src={cmnt.user.profile}>
-                                  </Avatar>
-                                }
-                                title={
-                                  <>
-                                    <strong>{cmnt.user.username} </strong>
-                                    <span> {cmnt.comment}</span>
-                                  </>
-                                }
-
-                              />
-                            </li>
-                          )) : null}
-                        </div>
-                        <div>
-
-
-                          <CardContent className={classes.likeCommentField}>
-                            <CardActions disableSpacing className={classes.likeComment}>
-                              <IconButton aria-label="like" color="default" className={classes.noMargPad}>
-                                <FormControlLabel className={classes.noMargPad}
-                                  control={<Checkbox icon={<FavoriteBorder />}
-                                    checkedIcon={<Favorite />}
-                                    name="checkedH"
-                                    onClick={(() => handleLike(post._id))}
-                                    checked={likeAction === 'unlike' ? true : false}
-
-                                  />}
-                                />
-                              </IconButton>
-                              <IconButton aria-label="comment">
-                                <ChatIcon className={classes.noMargPad} />
-                              </IconButton>
-                            </CardActions>
-                            <strong>{likeCount !== 1 ? `${likeCount} likes` : '1 like'}</strong>
-                          </CardContent>
-                          <CardContent className={classes.addComment}>
-                            <IconButton aria-label="comment">
-                              <InsertEmoticon />
-                            </IconButton>
-                            <TextField
-                              id={post._id}
-                              label="Add a comment..."
-                              type="comment"
-                              onChange={handleCommentInput}
-                              value={comment.body}
-                              className={classes.commentField}
-                            />
-                            <Button onClick={handleComment}>Post</Button>
-                          </CardContent>
-                        </div>
-                      </ul>
-                    </div>
-                  </div>
-                </Modal1> */}
-              </div>
-              {/* <div className='overlay'>
-                <Typography>
-                  {post.body}
-                  {currentUser.user._id === post.user ? (
-
-                    <DeleteIcon onClick={() => handleDeletePost(post._id)} />
-                  ) : null}
-                </Typography>
-              </div> */}
               <Modal
                 classes={classes}
                 open={post.open}
