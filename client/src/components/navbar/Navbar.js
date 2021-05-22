@@ -5,11 +5,7 @@ import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Me
 import { Search as SearchIcon, AccountCircle, MoreVert as MoreIcon, ExitToApp as ExitToAppIcon } from '@material-ui/icons'
 import { Modal } from '../'
 import { User } from '../../utils'
-// import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-// import TextField from '@material-ui/core/TextField';
-// import Autocomplete from '@material-ui/lab/Autocomplete';
-// import User from '../utils/User'
-// import { Link } from 'react-router-dom'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -172,12 +168,6 @@ const Navbar = () => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  // const [open, setOpen] = React.useState(false);
-
-
-  // const handleProfileMenuOpen = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -213,7 +203,6 @@ const Navbar = () => {
     User.search(target.value.toLowerCase())
       .then(({ data: users }) => {
         setAllUsers(users)
-        console.log(users)
       })
       .catch(err => {
         console.error(err)
@@ -230,7 +219,6 @@ const Navbar = () => {
     User.profile()
       .then(({ data: user }) => {
         setCurrentUser(user)
-        console.log(user)
       })
       .catch(err => {
         console.error(err)
