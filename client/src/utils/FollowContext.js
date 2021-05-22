@@ -33,7 +33,7 @@ const FollowContext = () => {
   const [likeCount, setLikeCount] = useState(0)
 
   const likeCheck = (likedByUsers, currentUser) => {
-    setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
+    setLikeAction(likedByUsers.indexOf(currentUser._id) !== -1 ? 'unlike' : 'like')
   }
 
   const handleLike = async (postId) => {
