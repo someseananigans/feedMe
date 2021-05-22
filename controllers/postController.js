@@ -128,11 +128,10 @@ router.delete('/post/:post_id', passport.authenticate('jwt'), (req, res) => {
 router.get('/post/following', passport.authenticate('jwt'), async (req, res) => {
   let followingUsers = req.user.following
   let followedPosts = []
-  let postIds = []
   let feed = []
 
-  for (followedUser of followingUsers) {
 
+  for (followedUser of followingUsers) {
     const userData = await User.findById(followedUser).populate({
       path: 'posts',
       model: 'Post',
@@ -141,13 +140,17 @@ router.get('/post/following', passport.authenticate('jwt'), async (req, res) => 
         model: 'User'
       }
     })
-    console.log(userData.posts)
     followedPosts.push(userData.posts)
   }
 
-  followedPosts = followedPosts[0]
-  followedPosts.sort((a, b) => (b.created_On - a.created_On))
-  res.json(followedPosts)
+  for (posts of followedPosts) {
+    for (post of posts) {
+      feed.push(post)
+    }
+  }
+
+  feed.sort((a, b) => (b.created_On - a.created_On))
+  res.json(feed)
 
 
 })
