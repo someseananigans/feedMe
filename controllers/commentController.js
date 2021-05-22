@@ -30,13 +30,20 @@ router.post('/comment/:post_id', passport.authenticate('jwt'), (req, res) => {
   })
     .then(cmnt => {
       Post.findByIdAndUpdate(req.params.post_id, { $push: { comments: cmnt._id } })
-        .populate(
-          {
-            path: 'user',
-            model: 'User'
+        .then(() => {
+          const comment = {
+            created_On: cmnt.created_On,
+            _id: cmnt._id,
+            comment: cmnt.comment,
+            post: cmnt.post,
+            user: {
+              username: req.user.username,
+              profile: req.user.profile
+            },
+
           }
-        )
-        .then(() => res.json(cmnt))
+          res.json(comment)
+        })
         .catch(err => console.log(err))
     })
     .catch(err => console.log(err))
