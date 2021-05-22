@@ -4,10 +4,9 @@ import {
   Button, TextField, Avatar, Typography, Checkbox, FormControlLabel, DialogContent, DialogActions, Dialog
 } from '@material-ui/core';
 import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder, Delete as DeleteIcon } from '@material-ui/icons'
-import { User, Comment as Cmnt, Post } from '../../utils'
+import { User, Comment as Cmnt, Post, FollowContext } from '../../utils'
 import { makeStyles } from '@material-ui/core/styles';
 import Comment from './Comment'
-import { FollowContext } from '../../utils'
 
 import { Link } from 'react-router-dom'
 
@@ -49,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '0 16px',
   },
   UserSpace: {
-    borderBottom: '1px solid gray',
+    borderBottom: '1px solid #d8d8d8',
     padding: '9px 11px'
   },
   commentAvatars: {
@@ -142,13 +141,12 @@ const ViewMore = ({ props }) => {
     profile,
     timePassed,
     postId,
-    currentUser,
     likeDisplay,
     comment,
     handleComment, handleCommentInput,
     cmntList, setCmntList,
     likeCheck, likeAction,
-    likeCount, setLikeCount, handleLike,
+    setLikeCount, handleLike,
     update, setUpdate
   } = props
 
@@ -156,49 +154,94 @@ const ViewMore = ({ props }) => {
     handleFollow, // follow or unfollow
     followAction, // follow or following (updated by followCheck) 
     followCheck, // within Suggested Users, checks to see if user has followed
-    // comment,
-    // handleComment, handleCommentInput,
-    // cmntList, setCmntList,
-    // likeCheck, likeAction,
-    // likeCount, setLikeCount, handleLike,
-    // update, setUpdate
   } = FollowContext()
 
+  const [currentUser, setCurrentUser] = useState({
+    // user: {}
+  })
 
   const [postState, setPostState] = useState({
     user: {
-      _id: ''
-    }
+      _id: '',
+    },
+    liked_by: []
   })
 
   useEffect(() => {
+    if (props.comp == 'ViewMoreProfile') { setCmntList([]) }
     Post.getOne(postId)
       .then(({ data: post }) => {
         setPostState(post)
-        console.log(post)
-        console.log(currentUser)
-
-        likeCheck(post.liked_by, currentUser)
         setLikeCount(post.liked_by.length)
-        setUpdate('needs Update')
+        setUpdate('Update')
+        User.profile()
+          .then(({ data }) => {
+            setCurrentUser(data)
+            followCheck(data.following, post.user._id)
+          })
+          .catch(err => console.error(err))
       })
-
-  }, [currentUser])
+    if (props.comp == 'ViewMoreProfile') {
+      Cmnt.getFromPost(postId)
+        .then(({ data: postComments }) => {
+          setCmntList(postComments.reverse())
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }
+  }, [])
 
   useEffect(() => {
-    User.profile()
-      .then(({ data: user }) => {
-        followCheck(user.following, postState.user._id)
-      })
-    Cmnt.getFromPost(postId)
-      .then(({ data: postComments }) => {
-        setCmntList(postComments.reverse())
-        setUpdate('Up-to-Date')
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  }, [update])
+    if (props.comp == 'ViewMoreProfile') {
+
+      if (currentUser && postState.liked_by) {
+        likeCheck(postState.liked_by, currentUser)
+      }
+    }
+  }, [postState, currentUser])
+
+  const Render = () => {
+
+    return (
+      <>
+        {currentUser._id !== postState.user._id &&
+          <Button
+            className={followAction === 'follow' ? styles.follow : styles.following}
+            onClick={(() => handleFollow(postState.user._id))}
+          >
+            {followAction}
+          </Button>
+        }
+
+        {currentUser._id === postState.user._id &&
+          <>
+            <DeleteIcon onClick={props.toggleDeleteDialog} style={{ marginRight: 7, marginTop: 11 }} />
+
+            <Dialog
+              onClose={props.toggleDeleteDialog}
+              maxWidth="xs"
+              open={props.confirmOpen}
+            >
+              <DialogContent>
+                <h3>Do You Wish to Delete this Post?</h3>
+                <img src={postState.image} alt="" style={{ width: '100%', overflowY: 'auto' }} />
+              </DialogContent>
+              <DialogActions>
+                <Button autoFocus onClick={(() => props.handleConfirm('No', props.postId))} color="primary">
+                  No
+                    </Button>
+                <Button onClick={(() => props.handleConfirm('Yes', props.postId))} color="primary">
+                  Yes
+                    </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        }
+
+      </>
+    )
+  }
 
   let textInput = useRef(null)
 
@@ -229,39 +272,7 @@ const ViewMore = ({ props }) => {
                 </Avatar>
               </Link>
             }
-            action={
-              currentUser._id !== postState.user ?
-                (<Button
-                  className={followAction === 'follow' ? styles.follow : styles.following}
-                  onClick={(() => handleFollow(postState.user))}
-                >
-                  {followAction}
-                </Button>
-                ) : (
-                  <>
-                    <DeleteIcon onClick={props.toggleDeleteDialog} style={{ marginRight: 7, marginTop: 11 }} />
-
-                    <Dialog
-                      onClose={props.toggleDeleteDialog}
-                      maxWidth="xs"
-                      open={props.confirmOpen}
-                    >
-                      <DialogContent>
-                        <h3>Do You Wish to Delete this Post?</h3>
-                        <img src={postState.image} alt="" style={{ width: '100%', overflowY: 'auto' }} />
-                      </DialogContent>
-                      <DialogActions>
-                        <Button autoFocus onClick={(() => props.handleConfirm('No', props.postId))} color="primary">
-                          No
-                    </Button>
-                        <Button onClick={(() => props.handleConfirm('Yes', props.postId))} color="primary">
-                          Yes
-                    </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </>
-                )
-            }
+            action={currentUser._id && <Render />}
             title={
               <Link to={usernameLink} className={styles.postUsername}>
                 {username}
@@ -272,9 +283,9 @@ const ViewMore = ({ props }) => {
           <CardContent className={styles.likeCommentSpace}>
 
             <Typography className={styles.commentLine} variant="body2" color="textSecondary" component="p">
-              <Avatar aria-label="userAvatar" className={styles.commentAvatars} src={profile}></Avatar>
+              {/* <Avatar aria-label="userAvatar" className={styles.commentAvatars} src={profile}></Avatar> */}
               <div className={styles.un}>
-                {username}
+                caption:
               </div>
               <div className={styles.cap}>
                 {postState.caption}
