@@ -1,8 +1,8 @@
 import { useState, useEffect, React } from 'react'
-import { Post, User, Comment as Cmnt, FollowContext } from '../../utils/'
+import { Post, FollowContext } from '../../utils/'
 import { makeStyles } from '@material-ui/core/styles'
 import './ProfPost.css'
-import { Grid, Box, Paper, Tabs, Value, Tab } from '@material-ui/core'
+import { Grid, Box, Paper, Tabs, Tab } from '@material-ui/core'
 import human from 'human-time'
 import { Modal } from '../'
 
