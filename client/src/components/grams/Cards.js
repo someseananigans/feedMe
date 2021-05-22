@@ -15,7 +15,7 @@ const Cards = () => {
   const [view, setView] = useState(true)
   const [loading, setLoading] = useState(true)
   const [currentUser, setCurrentUser] = useState({
-    user: {}
+    // user: {}
   })
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -92,7 +92,7 @@ const Cards = () => {
   useEffect(() => {
     User.profile()
       .then(({ data }) => {
-        setCurrentUser({ user: data })
+        setCurrentUser(data)
       })
       .catch(err => console.error(err))
   }, [])
@@ -100,7 +100,7 @@ const Cards = () => {
   return (
     <>
       <Box xs={12} xl={12} lg={12} md={12} >
-        <Paper style={{ marginBottom: '20px' }}>
+        <Paper style={{ margin: '20px 0', boxShadow: 'none', }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -108,12 +108,13 @@ const Cards = () => {
             textColor="primary"
             variant='fullWidth'
           >
-            <Tab label='All Posts'></Tab>
-            <Tab label='Following'></Tab>
+            <Tab style={{ background: '#fafafa' }} label='All Posts'></Tab>
+            <Tab style={{ background: '#fafafa' }} label='Following'></Tab>
           </Tabs>
         </Paper>
       </Box>
       {loading && <LinearProgress />}
+      {/* if view thent Recent is rendered (only after loading 300s is complete) */}
       {view ? (<RenderRecent show={loading && 'none'} />) : (<RenderFollow />)}
 
     </>
