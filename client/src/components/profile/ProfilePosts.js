@@ -231,7 +231,48 @@ const ProfilePosts = ({ id, currentUser, user }) => {
         </Grid>
       }
 
-      {renderFocus === 'liked' && <p>liked</p>}
+      {/* !!!!!!!!! Needs liked post state */}
+
+      {renderFocus === 'liked' &&
+        <Grid container cellHeight={300} className={classes.gridList}>
+          {postState.posts.length > 0 && postState.posts.map(post => (
+            <Grid item key={post._id} className={classes.gridItem} >
+              <img src={post.image} alt={post.body} className={classes.imageHome} />
+
+              <Modal
+                classes={classes}
+                open={post.open}
+                comp="ViewMoreProfile"
+                usernameLink={currentUser._id === post.user ? ('/profile') : (`/${post.user}`)}
+                profile={postState.profile}
+                username={postState.username}
+                postId={post._id}
+
+                timePassed={(human((Date.now() - post.created_On) / 1000))}
+                currentUser={currentUser}
+                handleDeletePost={handleDeletePost}
+                toggleDeleteDialog={toggleDeleteDialog}
+                confirmOpen={confirmOpen}
+                handleConfirm={handleConfirm}
+
+                handleLike={handleLike}
+                setLikeCount={setLikeCount}
+                likeAction={likeAction}
+                likeCheck={likeCheck}
+                likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
+                handleComment={handleComment}
+                cmntList={cmntList}
+                setCmntList={setCmntList}
+                handleCommentInput={handleCommentInput}
+                comment={comment}
+                currentUser={currentUser}
+                update={update}
+                setUpdate={setUpdate}
+              />
+            </Grid>
+          ))}
+        </Grid>}
 
     </div>
 
