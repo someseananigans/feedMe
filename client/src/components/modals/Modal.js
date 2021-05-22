@@ -66,7 +66,7 @@ const PostModal = (props) => {
         </IconButton>)}
 
       {props.comp === "ViewMore2" &&
-        (<span onClick={toggleOpen}>{props.commentList.length > 1 ? `View all ${props.commentList.length} comments` : null}</span>)}
+        (<span onClick={toggleOpen} style={{ cursor: 'pointer' }}> {props.commentList.length > 1 ? `View all ${props.commentList.length} comments` : null}</span>)}
 
       {props.comp === "ViewMoreProfile" &&
         (<div className='overlay' onClick={toggleOpen}>
