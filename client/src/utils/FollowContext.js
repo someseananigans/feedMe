@@ -19,10 +19,12 @@ const FollowContext = () => {
         setFollowAction(followAction === 'follow' ? 'following' : 'follow')
       })
       .catch(err => console.log(err))
+    setUpdate('Update')
   }
 
   const followCheck = (usersFollow, focusedUser) => {
     setFollowAction(usersFollow.indexOf(focusedUser) !== -1 ? 'following' : 'follow')
+
   }
 
   // end follow functionality
@@ -68,7 +70,10 @@ const FollowContext = () => {
       post_id: comment.post_id
     })
       .then(({ data: cmnt }) => {
+        setCmntList([cmnt, ...cmntList])
+        setCommentList([cmnt, ...commentList])
         setComment({ ...comment, body: '', post_id: '' })
+
         setUpdate('Need Update')
       })
       .catch(err => console.error(err))
