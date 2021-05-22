@@ -1,10 +1,11 @@
 import { useState, useEffect, React } from 'react'
-import { Post, User, Comment as Cmnt } from '../utils/'
+import { Post, User, Comment as Cmnt, FollowContext } from '../utils/'
 import { makeStyles } from '@material-ui/core/styles'
 import './ProfPost.css'
-import { Grid } from '@material-ui/core'
+import { Grid, Box, Paper, Tabs, Value, Tab } from '@material-ui/core'
 import human from 'human-time'
 import Modal from './modals/Modal'
+
 
 
 
@@ -14,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "wrap",
     justifyContent: "space-around",
     backgroundColor: '#fafafa',
-    marginTop: 50,
+    marginTop: 30,
     marginBottom: 50,
   },
   gridList: {
@@ -38,8 +39,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   gridItem: {
-    height: '300px',
-    width: '300px',
+    height: '250px',
+    width: '250px',
     position: 'relative',
     objectFit: 'cover',
     margin: '20px',
@@ -50,14 +51,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   imageHome: {
-    height: '300px',
-    width: '300px',
+    height: '100%',
+    width: '100%',
     position: 'relative',
     objectFit: 'cover',
-    [theme.breakpoints.down('sm')]: {
-      height: '200px',
-      width: '200px',
-    }
+    backgroundColor: '#ececec',
   },
   imageWrapper: {
     alignSelf: 'center',
@@ -101,9 +99,18 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ProfilePosts = ({ id }) => {
+const ProfilePosts = ({ id, currentUser, user }) => {
 
   const classes = useStyles()
+
+  const {
+    comment,
+    handleComment, handleCommentInput,
+    cmntList, setCmntList,
+    likeCheck, likeAction,
+    likeCount, setLikeCount, handleLike,
+    update, setUpdate
+  } = FollowContext()
 
   const [postState, setPostState] = useState({
     posts: [],
@@ -111,32 +118,8 @@ const ProfilePosts = ({ id }) => {
     profile: '',
   })
 
-  const [likeAction, setLikeAction] = useState(false)
-  const [likeCount, setLikeCount] = useState(0)
-  const [currentUser, setCurrentUser] = useState({
-    user: {}
-  })
-
-  const [update, setUpdate] = useState('')
-
-
-  const likeCheck = (likedByUsers) => {
-    setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
-  }
-
-  const handleLike = async (postId) => {
-    await User.touchPost({
-      type: likeAction,
-      post_id: postId
-    })
-      .then()
-      .catch(err => console.log(err))
-    setLikeCount(likeAction === 'like' ? (likeCount + 1) : (likeCount - 1))
-    setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
-  }
 
   const [confirmOpen, setConfirmOpen] = useState(false)
-  const [confirm, setConfirm] = useState(false)
 
   const toggleDeleteDialog = () => {
     setConfirmOpen(!confirmOpen)
@@ -151,10 +134,12 @@ const ProfilePosts = ({ id }) => {
         handleDeletePost(id)
         toggleDeleteDialog()
         break;
+      default:
+        break;
     }
   }
 
-  const handleDeletePost = id => {
+  const handleDeletePost = (id) => {
     Post.delete(id)
       .then(() => {
         setUpdate('delete update')
@@ -166,53 +151,47 @@ const ProfilePosts = ({ id }) => {
   }
 
   useEffect(() => {
-    User.profile()
-      .then(({ data }) => {
-        setCurrentUser({ user: data })
-        User.getUser(id ? id : data._id)
-          .then(({ data }) => {
-            const posts = data.posts.map(post => ({
-              ...post,
-              open: false
-            }))
-            posts.reverse()
-            setPostState({ ...postState, posts, profile: data.profile, username: data.username })
-          })
-          .catch(err => { console.log(err) })
-      })
-      .catch(err => console.error(err))
-  }, [update])
+    const posts = user.posts.map(post => ({
+      ...post,
+      open: false
+    }))
+    posts.reverse()
+    setPostState({ ...postState, posts, profile: user.profile, username: user.username })
+
+  }, [update, user])
 
 
-  const [comment, setComment] = useState({
-    body: '',
-    post_id: ''
-  })
+  const [renderFocus, setRenderFocus] = useState('posts')
+  const [value, setValue] = useState(0);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    setRenderFocus(event.target.innerHTML)
+  };
 
-  const handleCommentInput = ({ target }) => {
-    setComment({ ...comment, body: target.value, post_id: target.id })
-  }
-
-  const handleComment = () => {
-    Cmnt.create({
-      comment: comment.body,
-      post_id: comment.post_id
-    })
-      .then(({ data: cmnt }) => {
-        setUpdate('Need Update')
-        setComment({ ...comment, body: '', post_id: '' })
-      })
-      .catch(err => console.error(err))
-  }
 
 
   return (
-    <>
 
-      <div className={classes.root}>
+    <div className={classes.root}>
+      <Box xs={12} xl={12} lg={12} md={12} style={{ maxWidth: '830px', width: '90%' }}>
+        <Paper style={{ margin: '20px 0', boxShadow: 'none', }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant='fullWidth'
+          >
+            <Tab style={{ background: '#fafafa' }} label='posts'></Tab>
+            <Tab style={{ background: '#fafafa' }} label='liked'></Tab>
+          </Tabs>
+        </Paper>
+      </Box>
+
+      {renderFocus === 'posts' &&
         <Grid container cellHeight={300} className={classes.gridList}>
-          {postState.posts.length ? postState.posts.map(post => (
+          {postState.posts.length && postState.posts.map(post => (
             <Grid item key={post._id} className={classes.gridItem} >
               <img src={post.image} alt={post.body} className={classes.imageHome} />
 
@@ -220,39 +199,42 @@ const ProfilePosts = ({ id }) => {
                 classes={classes}
                 open={post.open}
                 comp="ViewMoreProfile"
-                handleLike={(() => handleLike(post._id))}
-                likeAction={likeAction}
-                likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
-                username={postState.username}
-                caption={post.body}
-                usernameLink={currentUser.user._id === post.user ? ('/profile') : (`/${post.user}`)}
+                usernameLink={currentUser._id === post.user ? ('/profile') : (`/${post.user}`)}
                 profile={postState.profile}
-                image={post.image}
-                commentList={post.comments}
-                timePassed={(human((Date.now() - post.created_On) / 1000))}
+                username={postState.username}
                 postId={post._id}
-                userId={post.user}
-                handleComment={handleComment}
-                handleCommentInput={handleCommentInput}
-                comment={comment}
+
+                timePassed={(human((Date.now() - post.created_On) / 1000))}
                 currentUser={currentUser}
                 handleDeletePost={handleDeletePost}
-                setUpdate={setUpdate}
-                update={update}
-                likeCheck={likeCheck}
-                setLikeCount={setLikeCount}
-                postLikedBy={post.liked_by}
                 toggleDeleteDialog={toggleDeleteDialog}
                 confirmOpen={confirmOpen}
                 handleConfirm={handleConfirm}
+
+                handleLike={handleLike}
+                setLikeCount={setLikeCount}
+                likeAction={likeAction}
+                likeCheck={likeCheck}
+                likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
+                handleComment={handleComment}
+                cmntList={cmntList}
+                setCmntList={setCmntList}
+                handleCommentInput={handleCommentInput}
+                comment={comment}
+                currentUser={currentUser}
+                update={update}
+                setUpdate={setUpdate}
               />
             </Grid>
-          ))
-            : null
-          }
+          ))}
         </Grid>
-      </div>
-    </>
+      }
+
+      {renderFocus === 'liked' && <p>liked</p>}
+
+    </div>
+
   )
 }
 
