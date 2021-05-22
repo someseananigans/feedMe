@@ -136,31 +136,11 @@ const Card = (props) => {
     update, setUpdate
   } = FollowContext()
 
-  // const [commentList, setCommentList] = useState([])
-  // const [likeAction, setLikeAction] = useState(false)
-  // const [likeCount, setLikeCount] = useState(likedByNumber)
-
-  // const likeCheck = () => {
-  //   setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
-  // }
-
-
-  // const handleLike = async () => {
-  //   await User.touchPost({
-  //     type: likeAction,
-  //     post_id: postId
-  //   })
-  //     .then()
-  //     .catch(err => console.log(err))
-  //   setLikeCount(likeAction === 'like' ? (likeCount + 1) : (likeCount - 1))
-  //   setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
-  // }
-
   // renders on page load and re-renders when update is triggered
   useEffect(() => {
     Cmnt.getFromPost(postId)
       .then(({ data: postComments }) => {
-        setCommentList(postComments)
+        setCommentList(postComments.reverse())
         setUpdate('Up-to-Date')
       })
       .catch(err => {
@@ -179,7 +159,7 @@ const Card = (props) => {
       <PostCard className={classes.root} key={postId}>
         <CardHeader className={classes.cardHeader}
           avatar={
-            <Link to={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}>
+            <Link to={currentUser._id === userId ? ('/profile') : (`/${userId}`)}>
               <Avatar aria-label="userAvatar" className={classes.avatar} src={profile}>
               </Avatar>
             </Link>
@@ -190,7 +170,7 @@ const Card = (props) => {
             </IconButton>
           }
           title={
-            <Link to={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)} className={classes.postUsername}>
+            <Link to={currentUser._id === userId ? ('/profile') : (`/${userId}`)} className={classes.postUsername}>
               {username}
             </Link>
           }
@@ -218,17 +198,21 @@ const Card = (props) => {
             <Modal
               classes={classes}
               comp="ViewMore"
-              handleLike={(() => handleLike(postId))}
-              likeAction={likeAction}
-              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
               username={username}
-              caption={caption}
-              usernameLink={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}
+              usernameLink={currentUser._id === userId ? ('/profile') : (`/${userId}`)}
               profile={profile}
-              image={image}
               timePassed={(human((Date.now() - created_on) / 1000))}
               postId={postId}
-              userId={userId}
+
+              handleLike={handleLike}
+              setLikeCount={setLikeCount}
+              likeCheck={likeCheck}
+              likeAction={likeAction}
+              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
+              cmntList={commentList}
+              setCmntList={setCommentList}
               handleComment={handleComment}
               handleCommentInput={handleCommentInput}
               comment={comment}
@@ -253,18 +237,22 @@ const Card = (props) => {
             <Modal
               classes={classes}
               comp="ViewMore2"
-              handleLike={(() => handleLike(postId))}
-              likeAction={likeAction}
-              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
               username={username}
-              caption={caption}
-              usernameLink={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}
+              usernameLink={currentUser._id === userId ? ('/profile') : (`/${userId}`)}
               profile={profile}
-              image={image}
-              commentList={commentList}
               timePassed={(human((Date.now() - created_on) / 1000))}
               postId={postId}
-              userId={userId}
+
+              handleLike={handleLike}
+              setLikeCount={setLikeCount}
+              likeCheck={likeCheck}
+              likeAction={likeAction}
+              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
+              cmntList={commentList}
+              setCmntList={setCommentList}
+              commentList={commentList}
               handleComment={handleComment}
               handleCommentInput={handleCommentInput}
               comment={comment}
@@ -273,7 +261,7 @@ const Card = (props) => {
               setUpdate={setUpdate}
             />
             {commentList.map((com, index) => {
-              if (commentList.length <= index + 3) {
+              if (index < 3) {
                 return (
                   <Comment
                     key={com._id}
@@ -301,16 +289,13 @@ const Card = (props) => {
             value={comment.post_id === postId ? comment.body : ""}
             onChange={handleCommentInput}
             className={classes.commentField}
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault()
+                handleComment()
+              }
+            }}
           />
-          {/* Alternate input field choice */}
-          {/* <InputBase
-            id={postId}
-            type="comment"
-            value={comment.post_id === postId ? comment.body : ""}
-            className={classes.commentField}
-            placeholder="test"
-            onChange={handleCommentInput}
-          /> */}
           <Button onClick={handleComment}>Post</Button>
 
         </CardContent>
