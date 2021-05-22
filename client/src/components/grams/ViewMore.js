@@ -1,10 +1,10 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import {
   Card as PostCard, CardHeader, CardContent, CardActions, IconButton,
   Button, TextField, Avatar, Typography, Checkbox, FormControlLabel, DialogContent, DialogActions, Dialog
 } from '@material-ui/core';
 import { ChatBubbleOutline as ChatIcon, InsertEmoticon, Favorite, FavoriteBorder, Delete as DeleteIcon } from '@material-ui/icons'
-import { User, Comment as Cmnt } from '../../utils'
+import { User, Comment as Cmnt, Post } from '../../utils'
 import { makeStyles } from '@material-ui/core/styles';
 import Comment from './Comment'
 import { FollowContext } from '../../utils'
@@ -137,49 +137,58 @@ const ViewMore = ({ props }) => {
   const styles = useStyles();
 
   const {
-    handleLike,
-    likeAction,
-    likeDisplay,
     username,
-    caption,
     usernameLink,
     profile,
-    image,
     timePassed,
     postId,
-    handleComment,
-    handleCommentInput,
-    comment,
-    userId,
     currentUser,
-    update,
-    setUpdate,
-    likeCheck,
-    setLikeCount,
-    postLikedBy
+    likeDisplay,
+    comment,
+    handleComment, handleCommentInput,
+    cmntList, setCmntList,
+    likeCheck, likeAction,
+    likeCount, setLikeCount, handleLike,
+    update, setUpdate
   } = props
 
   const {
     handleFollow, // follow or unfollow
     followAction, // follow or following (updated by followCheck) 
     followCheck, // within Suggested Users, checks to see if user has followed
-    cmntList, setCmntList
+    // comment,
+    // handleComment, handleCommentInput,
+    // cmntList, setCmntList,
+    // likeCheck, likeAction,
+    // likeCount, setLikeCount, handleLike,
+    // update, setUpdate
   } = FollowContext()
 
-  // const [cmntList, setCmntList] = useState([])
+
+  const [postState, setPostState] = useState({
+    user: {
+      _id: ''
+    }
+  })
 
   useEffect(() => {
-    if (postLikedBy) {
-      likeCheck(postLikedBy)
-      setLikeCount(postLikedBy.length ? postLikedBy.length : 0)
-      setUpdate('needs Update')
-    }
-  }, [])
+    Post.getOne(postId)
+      .then(({ data: post }) => {
+        setPostState(post)
+        console.log(post)
+        console.log(currentUser)
+
+        likeCheck(post.liked_by, currentUser)
+        setLikeCount(post.liked_by.length)
+        setUpdate('needs Update')
+      })
+
+  }, [currentUser])
 
   useEffect(() => {
     User.profile()
       .then(({ data: user }) => {
-        followCheck(user.following, userId)
+        followCheck(user.following, postState.user._id)
       })
     Cmnt.getFromPost(postId)
       .then(({ data: postComments }) => {
@@ -205,14 +214,13 @@ const ViewMore = ({ props }) => {
           <div className={styles.imageWrapper}>
             <img
               className={styles.media}
-              src={image}
+              src={postState.image}
               alt="card content"
             />
           </div>
         </div>
 
         <div className={styles.halfRight}>
-
 
           <CardHeader className={styles.UserSpace}
             avatar={
@@ -222,10 +230,10 @@ const ViewMore = ({ props }) => {
               </Link>
             }
             action={
-              currentUser.user._id !== userId ?
+              currentUser._id !== postState.user ?
                 (<Button
                   className={followAction === 'follow' ? styles.follow : styles.following}
-                  onClick={(() => handleFollow(userId))}
+                  onClick={(() => handleFollow(postState.user))}
                 >
                   {followAction}
                 </Button>
@@ -240,7 +248,7 @@ const ViewMore = ({ props }) => {
                     >
                       <DialogContent>
                         <h3>Do You Wish to Delete this Post?</h3>
-                        <img src={props.image} alt="" style={{ width: '100%', overflowY: 'auto' }} />
+                        <img src={postState.image} alt="" style={{ width: '100%', overflowY: 'auto' }} />
                       </DialogContent>
                       <DialogActions>
                         <Button autoFocus onClick={(() => props.handleConfirm('No', props.postId))} color="primary">
@@ -253,8 +261,6 @@ const ViewMore = ({ props }) => {
                     </Dialog>
                   </>
                 )
-
-
             }
             title={
               <Link to={usernameLink} className={styles.postUsername}>
@@ -265,14 +271,13 @@ const ViewMore = ({ props }) => {
 
           <CardContent className={styles.likeCommentSpace}>
 
-
             <Typography className={styles.commentLine} variant="body2" color="textSecondary" component="p">
               <Avatar aria-label="userAvatar" className={styles.commentAvatars} src={profile}></Avatar>
               <div className={styles.un}>
                 {username}
               </div>
               <div className={styles.cap}>
-                {caption}
+                {postState.caption}
               </div>
             </Typography>
 
@@ -290,7 +295,6 @@ const ViewMore = ({ props }) => {
                     />
                   </div>
                 )
-
               })}
             </Typography>
             <CardActions disableSpacing className={styles.likeComment}>
@@ -299,7 +303,7 @@ const ViewMore = ({ props }) => {
                   control={<Checkbox icon={<FavoriteBorder />}
                     checkedIcon={<Favorite />}
                     name="checkedH"
-                    onClick={handleLike}
+                    onClick={(() => handleLike(postId))}
                     checked={likeAction === 'unlike' ? true : false}
                   />}
                 />
@@ -324,6 +328,12 @@ const ViewMore = ({ props }) => {
               label="Add a comment..."
               type="comment"
               value={comment.post_id === postId ? comment.body : ""}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault()
+                  handleComment()
+                }
+              }}
               onChange={handleCommentInput}
               className={styles.commentField}
               inputRef={textInput}
@@ -335,10 +345,6 @@ const ViewMore = ({ props }) => {
         </div>
 
       </PostCard>
-
-
-
-
     </>
   )
 }
