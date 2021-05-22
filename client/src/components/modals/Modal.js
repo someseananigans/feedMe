@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Dialog, Typography, IconButton, Badge, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import { CreatePost } from '../'
-import { EditProfile } from '../'
-import ViewMore from '../grams/ViewMore'
+import { CreatePost, EditProfile, ViewMore } from '../'
 import { Add as AddIcon, ChatBubbleOutline as ChatIcon } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
