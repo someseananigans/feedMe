@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { User } from '../utils'
 // import SearchResult from './SearchResult'
 import { FollowContext } from '../utils'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 
 
@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
   followBtn: {
     display: 'flex',
     alignItems: 'center'
+  },
+  userItem: {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#e8eef0',
+    },
   }
 }));
 
@@ -54,27 +60,33 @@ const SearchResult = (props) => {
     followCheck, // within Suggested Users, checks to see if user has followed
   } = FollowContext()
 
+  const history = useHistory()
+
+
   useEffect(() => {
     followCheck(usersFollowing, user._id)
   }, [usersFollowing])
+
+  const handleFollowClick = (event) => {
+    handleFollow(user._id)
+    event.stopPropagation()
+  }
 
   return (
     <>
       <CardHeader
         key={user._id}
+        className={classes.userItem}
+        onClick={(() => history.push(`/${user._id}`))}
         avatar={
           <Avatar alt={user.firstName} src={user.profile}>
           </Avatar>
         }
-        title={
-          <Link to={`/${user._id}`} style={{ textDecoration: 'none', color: 'black' }} >
-            {user.username}
-          </Link>
-        }
+        title={user.username}
         action={
           <Button
             className={followAction === 'follow' ? classes.follow : classes.following}
-            onClick={(() => handleFollow(user._id))}
+            onClick={((event) => handleFollowClick(event))}
             style={{ marginTop: 10 }}
           >
             {followAction}
@@ -114,7 +126,7 @@ const Search = ({ searchQuery }) => {
       <div className={classes.root}>
         <Paper>
           <Typography className={classes.suggestions}>Search Results</Typography>
-          <hr />
+          <hr style={{ marginBottom: 0 }} />
           {users.length > 0 ? users.map(user => (
             currentUser.userId !== user._id ? (
               <SearchResult
