@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Typography, Paper, Avatar, CardHeader, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { User } from '../utils'
-// import SearchResult from './SearchResult'
-import { FollowContext } from '../utils'
-import { Link, useHistory } from 'react-router-dom'
+import { User, FollowContext } from '../utils'
+import { useHistory } from 'react-router-dom'
 
 
 

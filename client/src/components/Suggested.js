@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Avatar, CardHeader, Typography, Paper, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { User } from '../utils'
-import { FollowContext } from '../utils'
+import { User, FollowContext } from '../utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,7 +79,7 @@ const SuggestedUsers = (props) => {
   }, [])
 
   return (
-    <CardHeader key={user_id} className={classes.suggestions}
+    <CardHeader className={classes.suggestions}
       avatar={
         <Link to={`/${user_id}`} >
           <Avatar alt={firstName} src={profile} className={classes.avatar}>

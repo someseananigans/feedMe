@@ -121,8 +121,11 @@ const Card = (props) => {
     likedByNumber,
     postId,
     likedByUsers,
-    currentUser
+    currentUser,
+    theComments
   } = props
+
+
 
   const {
     likeAction,
@@ -137,26 +140,23 @@ const Card = (props) => {
   } = FollowContext()
 
   // renders on page load and re-renders when update is triggered
+
   useEffect(() => {
     Cmnt.getFromPost(postId)
       .then(({ data: postComments }) => {
         setCommentList(postComments.reverse())
-        setUpdate('Up-to-Date')
       })
       .catch(err => {
         console.error(err)
       })
     setLikeCount(likedByNumber)
-  }, [update])
-
-  useEffect(() => {
     likeCheck(likedByUsers, currentUser)
   }, [])
 
 
   return (
     <div>
-      <PostCard className={classes.root} key={postId}>
+      <PostCard className={classes.root} key={postId.toString()}>
         <CardHeader className={classes.cardHeader}
           avatar={
             <Link to={currentUser._id === userId ? ('/profile') : (`/${userId}`)}>
@@ -216,14 +216,14 @@ const Card = (props) => {
               handleComment={handleComment}
               handleCommentInput={handleCommentInput}
               comment={comment}
-              currentUser={currentUser}
+              // currentUser={currentUser}
               update={update}
               setUpdate={setUpdate}
             />
           </CardActions>
 
           <strong>{likeCount !== 1 ? `${likeCount} likes` : '1 like'}</strong>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="body2" color="textSecondary" component="div">
             <div className={classes.un}>
               {username}
             </div>
@@ -232,7 +232,7 @@ const Card = (props) => {
             </div>
           </Typography>
 
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="body2" color="textSecondary" component="div">
             {/* {commentList.length > 1 ? `View all ${commentList.length} comments` : null} */}
             <Modal
               classes={classes}
@@ -256,7 +256,7 @@ const Card = (props) => {
               handleComment={handleComment}
               handleCommentInput={handleCommentInput}
               comment={comment}
-              currentUser={currentUser}
+              // currentUser={currentUser}
               update={update}
               setUpdate={setUpdate}
             />
@@ -265,14 +265,14 @@ const Card = (props) => {
                 return (
                   <Comment
                     key={com._id}
-                    accountName={com.user}
+                    accountName={currentUser}
                     comment={com.comment}
                   />
                 )
               } else return null
             })}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="body2" color="textSecondary" component="div">
             <div className={classes.time}>
               {human((Date.now() - created_on) / 1000)}
             </div>

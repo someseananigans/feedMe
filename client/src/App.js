@@ -3,7 +3,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import { Home, Profile, Login, UserProfile, Search, Chat } from './pages'
+import { Home, Login, UserProfile, Search, Chat } from './pages'
 import { LockedView } from './utils'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 
