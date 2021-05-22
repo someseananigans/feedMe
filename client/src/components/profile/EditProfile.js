@@ -81,7 +81,6 @@ const EditProfile = ({ toggleOpen, props }) => {
 
   const handleInputChange = ({ target }) => {
     setUserInfo({ ...userInfo, [target.name]: target.value })
-    console.log(userInfo)
   }
 
   const handleUpload = event => {
@@ -113,7 +112,6 @@ const EditProfile = ({ toggleOpen, props }) => {
       bio: userInfo.bio
     })
       .then(() => {
-        console.log('updated')
         props.setUpdate('needs update')
         toggleOpen()
         // window.location.reload()
