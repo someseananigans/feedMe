@@ -29,6 +29,31 @@ router.get('/posts', (req, res) => {
     .catch(err => console.log(err))
 })
 
+router.get('/posts/:postId', (req, res) => {
+  Post.findOne({ _id: req.params.postId })
+    .populate(
+      {
+        path: 'comments',
+        model: 'Comment',
+        select: 'comment user _id',
+        populate: {
+          path: 'user',
+          model: 'User',
+          select: 'username profile _id'
+        }
+      }
+    )
+    .populate(
+      {
+        path: 'user',
+        model: 'User',
+        select: 'username profile _id'
+      }
+    )
+    .then(posts => res.json(posts))
+    .catch(err => console.log(err))
+})
+
 router.get('/user/posts', passport.authenticate('jwt'), (req, res) => {
   // req.user is the user information that has posts.... > req.user._id is it's id
   // res.json(req.user)
