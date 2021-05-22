@@ -1,9 +1,8 @@
 import { Avatar, Button } from '@material-ui/core'
-import Modal from './modals/Modal'
+import { Modal } from '../'
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
-import { User } from '../utils'
-import { FollowContext } from '../utils'
+import { User, FollowContext } from '../../utils'
 import { makeStyles } from '@material-ui/core/styles';
 
 
