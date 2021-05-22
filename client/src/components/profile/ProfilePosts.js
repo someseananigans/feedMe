@@ -191,7 +191,7 @@ const ProfilePosts = ({ id, currentUser, user }) => {
 
       {renderFocus === 'posts' &&
         <Grid container cellHeight={300} className={classes.gridList}>
-          {postState.posts.length && postState.posts.map(post => (
+          {postState.posts.length > 0 && postState.posts.map(post => (
             <Grid item key={post._id} className={classes.gridItem} >
               <img src={post.image} alt={post.body} className={classes.imageHome} />
 
