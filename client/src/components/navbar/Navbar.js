@@ -275,7 +275,7 @@ const Navbar = () => {
         />
         {/* <p>Create a Post</p> */}
       </MenuItem>
-      <MenuItem className={classes.dropDownItems} onClick={handleGoHome} >
+      <MenuItem className={classes.dropDownItems} onClick={handleLogOut} >
         <IconButton color="inherit">
           <Badge badgeContent={0} color="secondary">
             <ExitToAppIcon />
