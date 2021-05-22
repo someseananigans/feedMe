@@ -16,7 +16,7 @@ const Auth = () => {
   const classes = useStyles()
 
   const {
-    showPassword, setShowPassword,
+    showPassword,
     isSignup,
     registerState,
     loginState,
