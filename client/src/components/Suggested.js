@@ -49,11 +49,14 @@ const useStyles = makeStyles((theme) => ({
   username: {
     textDecoration: 'none',
     color: 'black',
-    fontWeight: 500
+    fontWeight: 500,
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   name: {
     margin: 0
-  }
+  },
 }));
 
 const SuggestedUsers = (props) => {
@@ -77,31 +80,28 @@ const SuggestedUsers = (props) => {
   }, [])
 
   return (
-    <>
-      <CardHeader key={user_id} className={classes.suggestions}
-        avatar={
-          <Link to={`/${user_id}`} style={{ textDecoration: 'none', color: 'black' }} >
-            <Avatar alt={firstName} src={profile} className={classes.avatar}>
-            </Avatar>
-          </Link>
+    <CardHeader key={user_id} className={classes.suggestions}
+      avatar={
+        <Link to={`/${user_id}`} >
+          <Avatar alt={firstName} src={profile} className={classes.avatar}>
+          </Avatar>
+        </Link>
 
-        }
-        title={
-          <Link to={`/${user_id}`} style={{ textDecoration: 'none', color: 'black' }} >
-            {username}
-          </Link>
-        }
-        action={
-          <Button
-            className={followAction === 'follow' ? classes.follow : classes.following}
-            onClick={(() => handleFollow(user_id))}
-          >
-            {followAction}
-          </Button>
-        }
-        classes={{ action: classes.buttonParent }}
-      />
-    </>
+      }
+      title={
+        <Link to={`/${user_id}`} className={classes.username} >
+          {username}
+        </Link>
+      }
+      action={
+        <Button
+          className={followAction === 'follow' ? classes.follow : classes.following}
+          onClick={(() => handleFollow(user_id))}>
+          {followAction}
+        </Button>
+      }
+      classes={{ action: classes.buttonParent }}
+    />
   )
 }
 
