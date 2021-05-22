@@ -9,60 +9,25 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   follow: {
-    fontSize: 13,
-    color: 'black'
+    fontSize: ".8rem",
+    lineHeight: 1,
+    padding: "6px 9px",
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
   },
   following: {
-    fontSize: 13,
-    color: 'black'
+    fontSize: ".8rem",
+    lineHeight: 1,
+    padding: "6px 9px",
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
   },
 }));
 
-const ProfileInfo = ({ id }) => {
+const ProfileInfo = ({ id, followAction, setUpdate, handleFollow, user }) => {
   const classes = useStyles()
-
-  const [userState, setUserState] = useState({
-    user: {
-      posts: [],
-      following: [],
-      followers: [],
-      _id: ''
-    }
-  })
-
-  const [update, setUpdate] = useState('updated')
-
-  useEffect(() => {
-    if (id) {
-      User.getUser(id)
-        .then(({ data: user }) => {
-          setUserState({ ...userState, user })
-          User.profile()
-            .then(({ data: currentUser }) => {
-              followCheck(currentUser.following, user._id)
-            })
-            .catch(err => console.log(err))
-        })
-        .catch(err => { console.log(err) })
-    } else {
-      User.profile()
-        .then(({ data: user }) => {
-          setUserState({ ...userState, user })
-          setUpdate('updated')
-        })
-    }
-  }, [update])
-
-  const { user } = userState
-
-  const {
-    handleFollow, // follow or unfollow
-    followAction, // follow or following (updated by followCheck) 
-    followCheck, // within Suggested Users, checks to see if user has followed
-  } = FollowContext()
-
-
-  console.log(user)
 
   return (
     <>
@@ -137,6 +102,7 @@ const ProfileInfo = ({ id }) => {
       </Profile>
 
 
+
     </>
   )
 }
@@ -144,6 +110,7 @@ export default ProfileInfo
 
 const Profile = styled.div`
   margin-top: 35px;
+  margin-bottom: 30px;
   display: flex;
   flex-direction: row;
   width: 80%;
@@ -266,7 +233,7 @@ const AvatarP = styled(Avatar)`
   }
 `
 const Bio = styled.div`
-
+  min-width: 200px;
 `
 const Username = styled.p`
   font-size: 30px;
