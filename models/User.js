@@ -14,7 +14,7 @@ const User = new Schema({
   },
   profile: {
     type: String,
-    default: 'https://firebasestorage.googleapis.com/v0/b/reinsta-884d1.appspot.com/o/images%2Fpexels-ann-h-1762851.jpg?alt=media&token=35072ee2-e6c7-4406-93db-92ad796a05d7'
+    default: 'https://firebasestorage.googleapis.com/v0/b/reinsta-884d1.appspot.com/o/images%2FGram1621567414811?alt=media&token=81b10f2f-99f6-4308-91d6-8515359b588b'
   },
   bio: String,
   posts: [{

@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react'
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core'
-import { User } from '../../utils'
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import useStyles from './styles'
@@ -18,11 +16,11 @@ const Auth = () => {
   const classes = useStyles()
 
   const {
-    showPassword, setShowPassword,
-    isSignup, setIsSignup,
-    registerState, setRegisterState,
-    loginState, setLoginState,
-    snackAlert, setAlert,
+    showPassword,
+    isSignup,
+    registerState,
+    loginState,
+    snackAlert,
     handleInputChange,
     handleSubmit,
     switchMode,
