@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
-import { Dialog, Typography, IconButton, Badge, Button, DialogContent, DialogActions } from '@material-ui/core'
+import { Dialog, Typography, IconButton, Badge, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import CreatePost from '../CreatePost'
-import EditProfile from '../EditProfile'
-import ViewMore from '../grams/ViewMore'
-import { Add as AddIcon, ChatBubbleOutline as ChatIcon, Delete as DeleteIcon } from '@material-ui/icons'
+import { CreatePost, EditProfile, ViewMore } from '../'
+import { Add as AddIcon, ChatBubbleOutline as ChatIcon } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -66,7 +64,7 @@ const PostModal = (props) => {
         </IconButton>)}
 
       {props.comp === "ViewMore2" &&
-        (<span onClick={toggleOpen}>{props.commentList.length > 1 ? `View all ${props.commentList.length} comments` : null}</span>)}
+        (<span onClick={toggleOpen} style={{ cursor: 'pointer' }}> {props.commentList.length > 1 ? `View all ${props.commentList.length} comments` : null}</span>)}
 
       {props.comp === "ViewMoreProfile" &&
         (<div className='overlay' onClick={toggleOpen}>

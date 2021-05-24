@@ -15,11 +15,11 @@ router.get('/userlist/:count', (req, res) => {
     .catch(err => console.log(err))
 })
 
-const getMatches = async function (users, username) {
-  const res = await new Promise((resolve, reject) => {
+const getMatches = function (users, toMatch) {
+  const res = new Promise((resolve, reject) => {
     let searchResults = []
     for (let i = 0; i < users.length; i++) {
-      if (users[i].username.includes(username)) {
+      if (users[i].username.includes(toMatch)) {
         searchResults.push(users[i])
       }
     }

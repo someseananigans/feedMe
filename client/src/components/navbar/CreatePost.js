@@ -1,10 +1,8 @@
 import { React, useState } from 'react';
-import { Post } from '../utils'
-import { storage } from '../utils/firebase'
+import { Post } from '../../utils'
+import { storage } from '../../utils/firebase'
 import { Card, CardContent, Button, TextField, DialogTitle, Fab, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import imageCompressiong from 'browser-image-compression'
-
 import { AddPhotoAlternate as AddPhoto, Close as CloseIcon } from '@material-ui/icons'
 import MuiAlert from '@material-ui/lab/Alert';
 import imageCompression from 'browser-image-compression';
@@ -89,7 +87,6 @@ const CreatePost = (props) => {
         image: postState.image,
       })
         .then(({ data: post }) => {
-          console.log(post)
           setPostState({ ...postState, body: '', image: '' })
           window.location.reload()
         })
@@ -129,11 +126,11 @@ const CreatePost = (props) => {
       useWebWorker: true
     }
     const upload = event.target.files[0]
-    console.log(`originalFile size ${upload.size / 1024 / 1024} MB`);
+    // console.log(`originalFile size ${upload.size / 1024 / 1024} MB`);
 
     try {
       const compressedFile = await imageCompression(upload, options)
-      console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+      // console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
 
       await uploadtoFirebase(compressedFile)
     } catch (err) { console.log(err) }

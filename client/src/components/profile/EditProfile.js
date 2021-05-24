@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
-import { User } from '../utils'
-import { storage } from '../utils/firebase'
+import { User } from '../../utils'
+import { storage } from '../../utils/firebase'
 import { Button, Grid, Fab, Card, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
@@ -81,7 +81,6 @@ const EditProfile = ({ toggleOpen, props }) => {
 
   const handleInputChange = ({ target }) => {
     setUserInfo({ ...userInfo, [target.name]: target.value })
-    console.log(userInfo)
   }
 
   const handleUpload = event => {
@@ -113,7 +112,6 @@ const EditProfile = ({ toggleOpen, props }) => {
       bio: userInfo.bio
     })
       .then(() => {
-        console.log('updated')
         props.setUpdate('needs update')
         toggleOpen()
         // window.location.reload()

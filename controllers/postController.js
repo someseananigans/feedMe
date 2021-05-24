@@ -29,6 +29,31 @@ router.get('/posts', (req, res) => {
     .catch(err => console.log(err))
 })
 
+router.get('/posts/:postId', (req, res) => {
+  Post.findOne({ _id: req.params.postId })
+    .populate(
+      {
+        path: 'comments',
+        model: 'Comment',
+        select: 'comment user _id',
+        populate: {
+          path: 'user',
+          model: 'User',
+          select: 'username profile _id'
+        }
+      }
+    )
+    .populate(
+      {
+        path: 'user',
+        model: 'User',
+        select: 'username profile _id'
+      }
+    )
+    .then(posts => res.json(posts))
+    .catch(err => console.log(err))
+})
+
 router.get('/user/posts', passport.authenticate('jwt'), (req, res) => {
   // req.user is the user information that has posts.... > req.user._id is it's id
   // res.json(req.user)
@@ -103,12 +128,11 @@ router.delete('/post/:post_id', passport.authenticate('jwt'), (req, res) => {
 router.get('/post/following', passport.authenticate('jwt'), async (req, res) => {
   let followingUsers = req.user.following
   let followedPosts = []
-  let postIds = []
   let feed = []
   let allFollowPosts = []
 
-  for (followedUser of followingUsers) {
 
+  for (followedUser of followingUsers) {
     const userData = await User.findById(followedUser).populate({
       path: 'posts',
       model: 'Post',
@@ -121,16 +145,14 @@ router.get('/post/following', passport.authenticate('jwt'), async (req, res) => 
     console.log('hit')
   }
 
-  for (point of followedPosts) {
-    for (posts of point) {
-      allFollowPosts.push(posts)
+  for (posts of followedPosts) {
+    for (post of posts) {
+      feed.push(post)
     }
   }
 
-  // followedPosts = followedPosts[0]
-  allFollowPosts.sort((a, b) => (b.created_On - a.created_On))
-  console.log(allFollowPosts)
-  res.json(allFollowPosts)
+  feed.sort((a, b) => (b.created_On - a.created_On))
+  res.json(feed)
 
 
 })
