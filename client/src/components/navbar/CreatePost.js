@@ -1,11 +1,12 @@
 import { React, useState } from 'react';
-import { Post } from '../utils'
-import { storage } from '../utils/firebase'
+import { useLocation, useHistory } from 'react-router-dom'
+import { Post } from '../../utils'
+import { storage } from '../../utils/firebase'
 import { Card, CardContent, Button, TextField, DialogTitle, Fab, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { AddPhotoAlternate as AddPhoto, Close as CloseIcon } from '@material-ui/icons'
 import MuiAlert from '@material-ui/lab/Alert';
+import imageCompression from 'browser-image-compression';
 
 
 function Alert(props) {
@@ -62,6 +63,8 @@ const useStyles = makeStyles({
 })
 
 const CreatePost = (props) => {
+  const history = useHistory()
+  const location = useLocation()
   const classes = useStyles()
 
   const [display, setDisplay] = useState(false)
@@ -77,6 +80,8 @@ const CreatePost = (props) => {
     setDisplay(true)
   }
 
+
+
   const handleCreatePost = event => {
     event.preventDefault()
     if (postState.image) {
@@ -85,9 +90,17 @@ const CreatePost = (props) => {
         image: postState.image,
       })
         .then(({ data: post }) => {
-          console.log(post)
           setPostState({ ...postState, body: '', image: '' })
-          window.location.reload()
+          console.log(location.pathname)
+          if (location.pathname === '/') {
+            setTimeout(() => {
+              history.push('/reloadHome')
+            }, 2000);
+          } else if (location.pathname === '/profile') {
+            setTimeout(() => {
+              history.push('/reloadProfile')
+            }, 2000);
+          }
         })
         .catch(err => console.error(err))
     } else {
@@ -95,10 +108,8 @@ const CreatePost = (props) => {
     }
   }
 
-  const handleFileChange = event => {
-    event.preventDefault()
-    // **** can put conditional on file.size to put a limit on the size of a file
-    const file = event.target.files[0]
+  const uploadtoFirebase = (compressedFile) => {
+    const file = compressedFile
     const imgName = "Gram" + Date.now()
     const uploadTask = storage.ref(`images/${imgName}`).put(file)
     uploadTask.on(
@@ -117,6 +128,25 @@ const CreatePost = (props) => {
           })
       }
     )
+  }
+
+  const handleFileChange = async event => {
+    event.preventDefault()
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 720,
+      useWebWorker: true
+    }
+    const upload = event.target.files[0]
+    // console.log(`originalFile size ${upload.size / 1024 / 1024} MB`);
+
+    try {
+      const compressedFile = await imageCompression(upload, options)
+      // console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
+      await uploadtoFirebase(compressedFile)
+    } catch (err) { console.log(err) }
+
   }
 
   const cardReset = event => {

@@ -3,18 +3,23 @@ const { User, Post, Comment } = require('../models')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
-// only for testing purposes
 router.get('/users', (req, res) => {
   User.find({})
     .then(users => res.json(users))
     .catch(err => console.log(err))
 })
 
-const getMatches = async function (users, username) {
-  const res = await new Promise((resolve, reject) => {
+router.get('/userlist/:count', (req, res) => {
+  User.find({})
+    .then(users => res.json(users.slice(0, req.params.count)))
+    .catch(err => console.log(err))
+})
+
+const getMatches = function (users, toMatch) {
+  const res = new Promise((resolve, reject) => {
     let searchResults = []
     for (let i = 0; i < users.length; i++) {
-      if (users[i].username.includes(username)) {
+      if (users[i].username.includes(toMatch)) {
         searchResults.push(users[i])
       }
     }
@@ -97,30 +102,45 @@ router.post('/user/register', (req, res) => {
     lowerCaseUsername = req.body.username.toLowerCase()
   }
 
-  User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, (err, user) => {
-    if (err) {
-      // checks if email/username already exists
-      registeredUsers.email.indexOf(email) !== -1 && (status.email = "Email is Already in Use")
-      registeredUsers.username.indexOf(username) !== -1 && (status.username = "Username is Already in Use")
-      res.json({
-        status: status,
-        err
-      })
-      return
-    }
+  if (status.name || status.username || status.password || status.email) {
     res.json({
-      data: user,
-      status: 200,
-      message: 'Successfully Registered User'
+      status: status,
+      message: 'Registration Unsuccessful'
     })
-  })
+  } else {
+    User.register(new User({ name, email, username: lowerCaseUsername }), req.body.password, (err, user) => {
+      if (err) {
+        // checks if email/username already exists
+        registeredUsers.email.indexOf(email) !== -1 && (status.email = "Email is Already in Use")
+        registeredUsers.username.indexOf(username) !== -1 && (status.username = "Username is Already in Use")
+        res.json({
+          status: status,
+          err
+        })
+        return
+      }
+      res.json({
+        data: user,
+        status: 200,
+        message: 'Successfully Registered User'
+      })
+    })
+  }
 })
 
 router.post('/user/login', (req, res) => {
   User.authenticate()(req.body.username, req.body.password, (err, user) => {
     if (err) { console.log(err) }
+    else if (!user) {
+      res.json({
+        err: 'Username or Password was Incorrect',
+      })
+    } else {
+      res.json({
+        user: user ? jwt.sign({ id: user._id }, process.env.SECRET) : null
+      })
+    }
 
-    res.json(user ? jwt.sign({ id: user._id }, process.env.SECRET) : null)
   })
 })
 
@@ -166,11 +186,12 @@ router.put('/post/interaction', passport.authenticate('jwt'), async (req, res) =
   try {
     if (req.body.type === 'like') {
       await Post.findByIdAndUpdate(req.body.post_id, { $addToSet: { liked_by: req.user._id } }, { "new": true })
-      await User.findByIdAndUpdate(req.user._id, { $addToSet: { liked_posts: req.body.post_id } }, { "new": true })
+      await User.findByIdAndUpdate(req.user._id, { $addToSet: { liked_post: req.body.post_id } }, { "new": true })
+      console.log(req.user)
     }
     if (req.body.type === 'unlike') {
       await Post.findByIdAndUpdate(req.body.post_id, { $pull: { liked_by: req.user._id } }, { "new": true })
-      await User.findByIdAndUpdate(req.user._id, { $pull: { liked_posts: req.body.post_id } }, { "new": true })
+      await User.findByIdAndUpdate(req.user._id, { $pull: { liked_post: req.body.post_id } }, { "new": true })
     }
     res.json({
       status: 200,

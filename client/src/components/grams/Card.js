@@ -1,15 +1,37 @@
-import { React, useState, useEffect } from 'react'
+import { useEffect } from 'react'
+
+// Library
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Card as PostCard, CardHeader, CardContent, CardActions, IconButton,
-  Button, TextField, Avatar, Typography, Checkbox, FormControlLabel
-} from '@material-ui/core';
-import { MoreHoriz, InsertEmoticon, Favorite, FavoriteBorder } from '@material-ui/icons'
-import Comment from './Comment'
-import { Link } from 'react-router-dom'
-import { Comment as Cmnt, User } from '../../utils'
 import human from 'human-time'
-import Modal from '../modals/Modal'
+
+// Utils
+import { Comment as Cmnt, FollowContext } from '../../utils'
+
+// Components
+import Comment from './Comment'
+// import Modal from '../modals/Modal'
+import { Modal } from '../'
+import { Link } from 'react-router-dom'
+import {
+  Card as PostCard,
+  CardHeader,
+  CardContent,
+  CardActions,
+  IconButton,
+  Button,
+  TextField,
+  Avatar,
+  Typography,
+  Checkbox,
+  FormControlLabel
+} from '@material-ui/core';
+import {
+  MoreHoriz,
+  InsertEmoticon,
+  Favorite,
+  FavoriteBorder
+} from '@material-ui/icons'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,54 +122,44 @@ const Card = (props) => {
     postId,
     likedByUsers,
     currentUser,
-    comment,
-    handleCommentInput,
-    handleComment,
-    update,
-    setUpdate
+    theComments
   } = props
 
-  const [commentList, setCommentList] = useState([])
-  const [likeAction, setLikeAction] = useState(false)
-  const [likeCount, setLikeCount] = useState(likedByNumber)
 
-  const likeCheck = () => {
-    setLikeAction(likedByUsers.indexOf(currentUser.user._id) !== -1 ? 'unlike' : 'like')
-  }
+
+  const {
+    likeAction,
+    likeCount, setLikeCount,
+    likeCheck,
+    handleLike,
+    comment,
+    commentList, setCommentList,
+    handleComment,
+    handleCommentInput,
+    update, setUpdate
+  } = FollowContext()
 
   // renders on page load and re-renders when update is triggered
+
   useEffect(() => {
     Cmnt.getFromPost(postId)
       .then(({ data: postComments }) => {
-        setCommentList(postComments)
-        setUpdate('Up-to-Date')
+        setCommentList(postComments.reverse())
       })
       .catch(err => {
         console.error(err)
       })
-  }, [update])
-
-  useEffect(() => {
-    likeCheck()
+    setLikeCount(likedByNumber)
+    likeCheck(likedByUsers, currentUser)
   }, [])
 
-  const handleLike = async () => {
-    await User.touchPost({
-      type: likeAction,
-      post_id: postId
-    })
-      .then()
-      .catch(err => console.log(err))
-    setLikeCount(likeAction === 'like' ? (likeCount + 1) : (likeCount - 1))
-    setLikeAction(likeAction === 'like' ? 'unlike' : 'like')
-  }
 
   return (
     <div>
-      <PostCard className={classes.root} key={postId}>
+      <PostCard className={classes.root} key={postId.toString()}>
         <CardHeader className={classes.cardHeader}
           avatar={
-            <Link to={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}>
+            <Link to={currentUser._id === userId ? ('/profile') : (`/${userId}`)}>
               <Avatar aria-label="userAvatar" className={classes.avatar} src={profile}>
               </Avatar>
             </Link>
@@ -158,7 +170,7 @@ const Card = (props) => {
             </IconButton>
           }
           title={
-            <Link to={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)} className={classes.postUsername}>
+            <Link to={currentUser._id === userId ? ('/profile') : (`/${userId}`)} className={classes.postUsername}>
               {username}
             </Link>
           }
@@ -178,7 +190,7 @@ const Card = (props) => {
                 control={<Checkbox icon={<FavoriteBorder />}
                   checkedIcon={<Favorite />}
                   name="checkedH"
-                  onClick={handleLike}
+                  onClick={(() => handleLike(postId))}
                   checked={likeAction === 'unlike' ? true : false}
                 />}
               />
@@ -186,28 +198,32 @@ const Card = (props) => {
             <Modal
               classes={classes}
               comp="ViewMore"
-              handleLike={handleLike}
-              likeAction={likeAction}
-              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
               username={username}
-              caption={caption}
-              usernameLink={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}
+              usernameLink={currentUser._id === userId ? ('/profile') : (`/${userId}`)}
               profile={profile}
-              image={image}
               timePassed={(human((Date.now() - created_on) / 1000))}
               postId={postId}
-              userId={userId}
+
+              handleLike={handleLike}
+              setLikeCount={setLikeCount}
+              likeCheck={likeCheck}
+              likeAction={likeAction}
+              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
+              cmntList={commentList}
+              setCmntList={setCommentList}
               handleComment={handleComment}
               handleCommentInput={handleCommentInput}
               comment={comment}
-              currentUser={currentUser}
+              // currentUser={currentUser}
               update={update}
               setUpdate={setUpdate}
             />
           </CardActions>
 
           <strong>{likeCount !== 1 ? `${likeCount} likes` : '1 like'}</strong>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="body2" color="textSecondary" component="div">
             <div className={classes.un}>
               {username}
             </div>
@@ -216,43 +232,47 @@ const Card = (props) => {
             </div>
           </Typography>
 
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="body2" color="textSecondary" component="div">
             {/* {commentList.length > 1 ? `View all ${commentList.length} comments` : null} */}
             <Modal
               classes={classes}
               comp="ViewMore2"
-              handleLike={handleLike}
-              likeAction={likeAction}
-              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
               username={username}
-              caption={caption}
-              usernameLink={currentUser.user._id === userId ? ('/profile') : (`/${userId}`)}
+              usernameLink={currentUser._id === userId ? ('/profile') : (`/${userId}`)}
               profile={profile}
-              image={image}
-              commentList={commentList}
               timePassed={(human((Date.now() - created_on) / 1000))}
               postId={postId}
-              userId={userId}
+
+              handleLike={handleLike}
+              setLikeCount={setLikeCount}
+              likeCheck={likeCheck}
+              likeAction={likeAction}
+              likeDisplay={likeCount !== 1 ? `${likeCount} likes` : '1 like'}
+
+              cmntList={commentList}
+              setCmntList={setCommentList}
+              commentList={commentList}
               handleComment={handleComment}
               handleCommentInput={handleCommentInput}
               comment={comment}
-              currentUser={currentUser}
+              // currentUser={currentUser}
               update={update}
               setUpdate={setUpdate}
             />
             {commentList.map((com, index) => {
-              if (commentList.length <= index + 3) {
+              if (index < 3) {
                 return (
                   <Comment
                     key={com._id}
-                    accountName={com.user}
+                    accountName={currentUser}
                     comment={com.comment}
                   />
                 )
               } else return null
             })}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="body2" color="textSecondary" component="div">
             <div className={classes.time}>
               {human((Date.now() - created_on) / 1000)}
             </div>
@@ -269,16 +289,13 @@ const Card = (props) => {
             value={comment.post_id === postId ? comment.body : ""}
             onChange={handleCommentInput}
             className={classes.commentField}
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault()
+                handleComment()
+              }
+            }}
           />
-          {/* Alternate input field choice */}
-          {/* <InputBase
-            id={postId}
-            type="comment"
-            value={comment.post_id === postId ? comment.body : ""}
-            className={classes.commentField}
-            placeholder="test"
-            onChange={handleCommentInput}
-          /> */}
           <Button onClick={handleComment}>Post</Button>
 
         </CardContent>

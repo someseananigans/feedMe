@@ -1,11 +1,12 @@
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route, Redirect
 } from 'react-router-dom'
-import { Home, Profile, Login, User, Search, Chat } from './pages'
+import { Home, Login, UserProfile, Search, Chat } from './pages'
 import { LockedView } from './utils'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
+
 
 const theme = createMuiTheme({
   breakpoints: {
@@ -33,10 +34,16 @@ function App() {
           <Route exact path='/auth' component={Login} />
           <Route exact path='/profile'>
             <LockedView>
-              <Profile />
+              <UserProfile />
             </LockedView>
           </Route>
-          <Route exact path='/:id' component={User} />
+          <Route exact path='/reloadProfile' >
+            <Redirect to="/profile" />
+          </Route>
+          <Route exact path='/reloadHome' >
+            <Redirect to="/" />
+          </Route>
+          <Route exact path='/:id' component={UserProfile} />
           <LockedView>
             <Route exact path='/search/:username' component={Search} />
           </LockedView>

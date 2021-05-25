@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Avatar, CardHeader, Typography, Paper } from '@material-ui/core';
+import { Avatar, CardHeader, Typography, Paper, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { User } from '../utils'
-import SuggestedUsers from './SuggestedUsers'
+import { User, FollowContext } from '../utils'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,16 +48,64 @@ const useStyles = makeStyles((theme) => ({
   username: {
     textDecoration: 'none',
     color: 'black',
-    fontWeight: 500
+    fontWeight: 500,
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   name: {
     margin: 0
-  }
+  },
 }));
+
+const SuggestedUsers = (props) => {
+  const {
+    user_id,
+    username,
+    profile,
+    firstName,
+    usersfollowing,
+    classes
+  } = props
+
+  const {
+    handleFollow, // follow or unfollow
+    followAction, // follow or following (updated by followCheck) 
+    followCheck, // within Suggested Users, checks to see if user has followed
+  } = FollowContext()
+
+  useEffect(() => {
+    followCheck(usersfollowing, user_id)
+  }, [])
+
+  return (
+    <CardHeader className={classes.suggestions}
+      avatar={
+        <Link to={`/${user_id}`} >
+          <Avatar alt={firstName} src={profile} className={classes.avatar}>
+          </Avatar>
+        </Link>
+
+      }
+      title={
+        <Link to={`/${user_id}`} className={classes.username} >
+          {username}
+        </Link>
+      }
+      action={
+        <Button
+          className={followAction === 'follow' ? classes.follow : classes.following}
+          onClick={(() => handleFollow(user_id))}>
+          {followAction}
+        </Button>
+      }
+      classes={{ action: classes.buttonParent }}
+    />
+  )
+}
 
 const Suggested = () => {
   const classes = useStyles();
-
   const [userState, setUser] = useState({
     users: []
   })
@@ -68,8 +115,10 @@ const Suggested = () => {
   })
 
   useEffect(() => {
-    User.getUsers()
+
+    User.getNUsers(6)
       .then(({ data: users }) => {
+
         User.profile()
           .then(({ data: user }) => {
             setCurrentUser({ ...currentUser, user })
@@ -105,7 +154,6 @@ const Suggested = () => {
         />
         <Typography className={classes.suggestBox}>Suggestions for you</Typography>
         {userState.users.length ? userState.users.map(user =>
-
           <SuggestedUsers
             user_id={user._id}
             username={user.username}

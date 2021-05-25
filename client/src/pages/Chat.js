@@ -1,12 +1,13 @@
-import { Navbar, Dm } from '../components'
+import { Navbar } from '../components'
 
 
 const Chat = ({ match }) => {
   return (
     <>
       <Navbar />
-      <Dm roomCode={match.params.room} />
+      {/* <Dm roomCode={match.params.room} /> */}
     </>
+
   )
 }
 

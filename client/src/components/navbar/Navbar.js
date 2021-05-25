@@ -1,13 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'
 import { fade, makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, SvgIcon } from '@material-ui/core'
-import { Search as SearchIcon, AccountCircle, MoreVert as MoreIcon } from '@material-ui/icons'
-import Modal from '../components/modals/Modal'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-// import TextField from '@material-ui/core/TextField';
-// import Autocomplete from '@material-ui/lab/Autocomplete';
-// import User from '../utils/User'
-// import { Link } from 'react-router-dom'
+import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu, SvgIcon, Avatar, ClickAwayListener } from '@material-ui/core'
+import { Search as SearchIcon, AccountCircle, MoreVert as MoreIcon, ExitToApp as ExitToAppIcon } from '@material-ui/icons'
+import { Modal } from '../'
+import { User } from '../../utils'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +51,16 @@ const useStyles = makeStyles((theme) => ({
     },
 
   },
+  searchDropDown: {
+    position: 'absolute',
+    background: '#f0f0f0',
+    borderRadius: '4px',
+    width: '100%',
+    color: '#272727',
+    marginTop: '10px',
+    overflowY: 'auto',
+    maxHeight: '450px'
+  },
   searchIcon: {
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -79,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 0 0%',
     justifyContent: 'flex-end',
     display: 'none',
+    alignItems: 'center',
     [theme.breakpoints.up('md')]: {
       display: 'flex',
     }
@@ -94,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
   logOut: {
     marginLeft: 20,
     alignSelf: 'center',
+    cursor: 'pointer',
   },
 
   dropDownItems: {
@@ -103,6 +113,38 @@ const useStyles = makeStyles((theme) => ({
   dropDown: {
     padding: '0 !important',
   },
+  avatar: {
+    height: '40px',
+    width: '40px',
+    cursor: 'pointer',
+    border: '4px solid transparent',
+    '&:hover': {
+      border: '4px solid #00b5cc',
+    },
+  },
+  list: {
+    listStyleType: 'none',
+    margin: 0,
+    padding: '10px 15px'
+  },
+  listItem: {
+    display: 'flex',
+    alignItems: 'center',
+    height: '60px',
+    fontWeight: '500',
+    paddingLeft: '5px'
+  },
+  listHead: {
+    display: 'flex',
+    alignItems: 'center',
+    height: '45px',
+    fontWeight: '500'
+  },
+  itemAvatar: {
+    height: '40px',
+    width: '40px',
+    paddingRight: '10px',
+  }
 }));
 
 function HomeIcon(props) {
@@ -120,17 +162,12 @@ function HomeIcon(props) {
 
 const Navbar = () => {
   const classes = useStyles();
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  // const [open, setOpen] = React.useState(false);
-
-
-  // const handleProfileMenuOpen = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -146,30 +183,53 @@ const Navbar = () => {
   };
 
   const handleGoToProfile = () => {
-    window.location = '/profile'
+    history.push('/profile')
   }
   const handleGoHome = () => {
-    window.location = '/'
+    history.push('/')
   }
 
   const handleLogOut = () => {
     localStorage.removeItem('user')
-    window.location = '/auth'
+    history.push('/auth')
   }
 
-  const [searchState, setSearchState] = useState({
-    search: ''
-  })
+  const [searchState, setSearchState] = useState('')
+
+  const [allUsers, setAllUsers] = useState([])
+
   const handleSearchChange = ({ target }) => {
-    setSearchState({ ...searchState, search: target.value.toLowerCase() })
+    setSearchState(target.value.toLowerCase())
+    User.search(target.value.toLowerCase())
+      .then(({ data: users }) => {
+        setAllUsers(users)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    if (target.value === '' || target.value === ' ') {
+      setAllUsers([])
+    }
   }
 
-  const menuId = 'primary-search-account-menu';
+
+  const [currentUser, setCurrentUser] = useState({ profile: '' });
+
+  useEffect(() => {
+    User.profile()
+      .then(({ data: user }) => {
+        setCurrentUser(user)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  }, [])
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
+      id={'primary-search-account-menu'}
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
@@ -180,12 +240,11 @@ const Navbar = () => {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
+      id={'primary-search-account-menu-mobile'}
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
@@ -216,8 +275,8 @@ const Navbar = () => {
         />
         {/* <p>Create a Post</p> */}
       </MenuItem>
-      <MenuItem className={classes.dropDownItems} onClick={handleGoHome} >
-        <IconButton aria-label="show 4 new mails" color="inherit">
+      <MenuItem className={classes.dropDownItems} onClick={handleLogOut} >
+        <IconButton color="inherit">
           <Badge badgeContent={0} color="secondary">
             <ExitToAppIcon />
           </Badge>
@@ -229,49 +288,27 @@ const Navbar = () => {
 
 
 
-  // const [allUsersState, setAllUsersState] = useState({
-  //   users: []
-  // });
-
-  // const handleAutoSearchChange = () => {
-  //   User.getUsers()
-  //   .then(({ data: users }) => {
-  //     setAllUsersState({...allUsersState, users})
-  //   })
-  //   .catch(err => {
-  //     console.error(err)
-  //   })
-  // }
-
-  // useEffect(() => {
-  //   User.getUsers()
-  //   .then(({ data: users }) => {
-  //     setAllUsersState({...allUsersState, users})
-  //   })
-  //   .catch(err => {
-  //     console.error(err)
-  //   })
-  // }, [])
-
   return (
     <div className={classes.grow}>
       <AppBar position="relative" className={classes.appBar}>
         <Toolbar className={classes.navWrap}>
           <div className={classes.imageWrap}>
 
-            <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/730/5123634730_d958ae6a-bc04-4366-b183-35e4a8407a94.png?cb=1619210685" alt="logo" />
+            <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/626/5308215626_d945acf3-4dcd-4b1f-bc88-d8f66e48d54e.png?cb=1621536314" alt="logo" />
           </div>
+
           <div className={classes.search}>
             <form onSubmit={(event) => {
               event.preventDefault()
-              window.location = `/search/${searchState.search}`
+              searchState && history.push(`/search/${searchState}`)
+              setAllUsers([])
             }}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
               <InputBase
                 onChange={handleSearchChange}
-                value={searchState.search}
+                value={searchState}
                 placeholder="Search for a user…"
                 classes={{
                   root: classes.inputRoot,
@@ -280,45 +317,61 @@ const Navbar = () => {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </form>
+            {/* This Search Drop Down -> clickaway or empty to clear */}
+            <ClickAwayListener onClickAway={(() => setAllUsers([]))}>
+              <div className={classes.searchDropDown} >
+                {allUsers.length >= 1 &&
+                  <ul className={classes.list}>
+                    <li
+                      className={classes.listHead}
+                      style={{ fontWeight: '500' }} >
+                      <p>Search Results</p>
+                    </li>
+                    {allUsers.map(user =>
+                      <li
+                        className={classes.listItem}
+                        onClick={() => { history.push(`/${user._id}`) }}>
+                        <Avatar
+                          className={classes.itemAvatar}
+                          src={user.profile} />
+                        <div>
+                          <p style={{ margin: 0, }}>{user.username}</p>
+                          <p style={{ margin: 0, fontWeight: 100 }}>{user.name}</p>
+                        </div>
+                      </li>
+                    )}
+                  </ul>
+                }
+              </div>
+            </ClickAwayListener>
 
           </div>
-          {/* <Autocomplete
-            openOnFocus={false}
-            className={classes.search}
-            options={allUsersState.users}
-            // onChange={handleAutoSearchChange}
-            getOptionLabel={(option) => option.username}
-            style={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Search a username..." variant="outlined" />}
-            renderOption={(option) => <Typography onClick={() => window.location = `/user/${option._id}`} noWrap>{option.username}</Typography>}
-         /> */}
-          {/* <div className={classes.grow} /> */}
+
           <div className={classes.sectionDesktop}>
-            <Modal
-              comp='createPost'
-            />
-            <IconButton
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
+            <Modal comp='createPost' />
+
+            <Avatar
+              className={classes.avatar}
               onClick={handleGoToProfile}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <IconButton aria-label="" color="inherit" onClick={handleGoHome}>
+              alt="profileImg"
+              src={currentUser.profile} />
+            <IconButton color="inherit" onClick={handleGoHome}>
               <Badge badgeContent={0} color="secondary">
                 <HomeIcon />
               </Badge>
             </IconButton>
 
-            <Typography onClick={handleLogOut} className={classes.logOut} style={{ cursor: 'pointer' }}>Log Out</Typography>
+            <Typography
+              onClick={handleLogOut}
+              className={classes.logOut}>
+              Log Out
+            </Typography>
           </div>
 
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
-              aria-controls={mobileMenuId}
+              aria-controls={'primary-search-account-menu-mobile'}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
               color="inherit"

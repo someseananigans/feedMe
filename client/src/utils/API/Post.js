@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const Post = {
   getAll: () => axios.get('/api/posts'),
+  getOne: (post_id) => axios.get(`/api/posts/${post_id}`),
   // May not be necessry. User already contains its post... but not comments. Can include comments in back-end if using the user to call and populate whole page.
   getOwned: (id) => axios.get('/api/user/posts', {
     headers: {
@@ -28,6 +29,11 @@ const Post = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
-  })
+  }),
+  getLiked: () => axios.get('/api/post/liked', {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('user')}`
+    }
+  }),
 }
 export default Post
