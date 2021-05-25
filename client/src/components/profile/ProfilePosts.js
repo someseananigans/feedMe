@@ -5,6 +5,7 @@ import './ProfPost.css'
 import { Grid, Box, Paper, Tabs, Tab } from '@material-ui/core'
 import human from 'human-time'
 import { Modal } from '../'
+import { useHistory } from 'react-router-dom'
 
 
 
@@ -101,6 +102,7 @@ const useStyles = makeStyles(theme => ({
 
 const ProfilePosts = ({ id, currentUser, user }) => {
 
+  const history = useHistory()
   const classes = useStyles()
 
   const {
@@ -118,6 +120,8 @@ const ProfilePosts = ({ id, currentUser, user }) => {
     profile: '',
   })
 
+  const [likedPostState, setLikedPostState] = useState([])
+
 
   const [confirmOpen, setConfirmOpen] = useState(false)
 
@@ -132,6 +136,7 @@ const ProfilePosts = ({ id, currentUser, user }) => {
         break;
       case 'Yes':
         handleDeletePost(id)
+        history.push('/reloadProfile')
         toggleDeleteDialog()
         break;
       default:
@@ -157,6 +162,13 @@ const ProfilePosts = ({ id, currentUser, user }) => {
     }))
     posts.reverse()
     setPostState({ ...postState, posts, profile: user.profile, username: user.username })
+
+    Post.getLiked()
+      .then(({ data }) => {
+        setLikedPostState(data)
+        console.log(data)
+      })
+      .catch(err => console.log(err))
 
   }, [update, user])
 
@@ -235,7 +247,7 @@ const ProfilePosts = ({ id, currentUser, user }) => {
 
       {renderFocus === 'liked' &&
         <Grid container cellHeight={300} className={classes.gridList}>
-          {postState.posts.length > 0 && postState.posts.map(post => (
+          {likedPostState.length > 0 && likedPostState.map(post => (
             <Grid item key={post._id} className={classes.gridItem} >
               <img src={post.image} alt={post.body} className={classes.imageHome} />
 
@@ -243,9 +255,9 @@ const ProfilePosts = ({ id, currentUser, user }) => {
                 classes={classes}
                 open={post.open}
                 comp="ViewMoreProfile"
-                usernameLink={currentUser._id === post.user ? ('/profile') : (`/${post.user}`)}
-                profile={postState.profile}
-                username={postState.username}
+                usernameLink={`/${post._id}`}
+                profile={post.user.profile}
+                username={post.user.username}
                 postId={post._id}
 
                 timePassed={(human((Date.now() - post.created_On) / 1000))}

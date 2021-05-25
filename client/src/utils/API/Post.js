@@ -29,6 +29,11 @@ const Post = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('user')}`
     }
-  })
+  }),
+  getLiked: () => axios.get('/api/post/liked', {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('user')}`
+    }
+  }),
 }
 export default Post
