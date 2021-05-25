@@ -59,7 +59,8 @@ const useStyles = makeStyles((theme) => ({
     color: '#272727',
     marginTop: '10px',
     overflowY: 'auto',
-    maxHeight: '450px'
+    maxHeight: '450px',
+    boxShadow: '0px 0px 7px 0px gray',
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -143,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
   itemAvatar: {
     height: '40px',
     width: '40px',
-    paddingRight: '10px',
+    marginRight: '10px',
   }
 }));
 
