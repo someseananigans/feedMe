@@ -85,7 +85,9 @@ const useStyles = makeStyles((theme) => ({
   un: {
     display: 'inline-flex',
     paddingRight: 5,
-    color: 'black'
+    color: 'black',
+    fontWeight: 'bold',
+    color: 'rgba(0, 0, 0, 0.54)',
   },
   cap: {
     display: 'inline-flex'
@@ -193,6 +195,7 @@ const ViewMore = ({ props }) => {
   }, [])
 
   useEffect(() => {
+    console.log(postState)
     if (props.comp == 'ViewMoreProfile') {
 
       if (currentUser && postState.liked_by) {
@@ -282,13 +285,14 @@ const ViewMore = ({ props }) => {
 
           <CardContent className={styles.likeCommentSpace}>
 
-            <Typography className={styles.commentLine} variant="body2" color="textSecondary" component="p">
-              {/* <Avatar aria-label="userAvatar" className={styles.commentAvatars} src={profile}></Avatar> */}
+            <Typography className={styles.commentLine} variant="body2" color="textSecondary" component="div">
+              <Avatar aria-label="userAvatar" className={styles.commentAvatars} src={profile}></Avatar>
               <div className={styles.un}>
-                caption:
+                {/* caption: */}
+                {postState.user.username}
               </div>
               <div className={styles.cap}>
-                {postState.caption}
+                {postState.body}
               </div>
             </Typography>
 

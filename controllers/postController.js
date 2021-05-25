@@ -157,5 +157,42 @@ router.get('/post/following', passport.authenticate('jwt'), async (req, res) => 
 
 })
 
+router.get('/post/liked', passport.authenticate('jwt'), async (req, res) => {
+  let likedPosts = req.user.liked_post
+
+  let allLikedPosts = []
+
+  for (post of likedPosts) {
+    const postData = await Post.findById(post).populate(
+      {
+        path: 'user',
+        model: 'User',
+        select: 'username profile _id'
+      }
+    )
+      .populate(
+        {
+          path: 'comments',
+          model: 'Comment',
+          select: 'comment user _id',
+          populate: {
+            path: 'user',
+            model: 'User',
+            select: 'username profile _id'
+          }
+        }
+      )
+
+
+    allLikedPosts.push(postData)
+    console.log(postData)
+  }
+
+  allLikedPosts.sort((a, b) => (b.created_On - a.created_On))
+  res.json(allLikedPosts)
+
+
+})
+
 
 module.exports = router

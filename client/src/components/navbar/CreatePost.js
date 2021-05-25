@@ -1,4 +1,5 @@
 import { React, useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom'
 import { Post } from '../../utils'
 import { storage } from '../../utils/firebase'
 import { Card, CardContent, Button, TextField, DialogTitle, Fab, Snackbar } from '@material-ui/core';
@@ -62,6 +63,8 @@ const useStyles = makeStyles({
 })
 
 const CreatePost = (props) => {
+  const history = useHistory()
+  const location = useLocation()
   const classes = useStyles()
 
   const [display, setDisplay] = useState(false)
@@ -88,7 +91,16 @@ const CreatePost = (props) => {
       })
         .then(({ data: post }) => {
           setPostState({ ...postState, body: '', image: '' })
-          window.location.reload()
+          console.log(location.pathname)
+          if (location.pathname === '/') {
+            setTimeout(() => {
+              history.push('/reloadHome')
+            }, 2000);
+          } else if (location.pathname === '/profile') {
+            setTimeout(() => {
+              history.push('/reloadProfile')
+            }, 2000);
+          }
         })
         .catch(err => console.error(err))
     } else {

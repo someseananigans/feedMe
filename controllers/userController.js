@@ -186,11 +186,12 @@ router.put('/post/interaction', passport.authenticate('jwt'), async (req, res) =
   try {
     if (req.body.type === 'like') {
       await Post.findByIdAndUpdate(req.body.post_id, { $addToSet: { liked_by: req.user._id } }, { "new": true })
-      await User.findByIdAndUpdate(req.user._id, { $addToSet: { liked_posts: req.body.post_id } }, { "new": true })
+      await User.findByIdAndUpdate(req.user._id, { $addToSet: { liked_post: req.body.post_id } }, { "new": true })
+      console.log(req.user)
     }
     if (req.body.type === 'unlike') {
       await Post.findByIdAndUpdate(req.body.post_id, { $pull: { liked_by: req.user._id } }, { "new": true })
-      await User.findByIdAndUpdate(req.user._id, { $pull: { liked_posts: req.body.post_id } }, { "new": true })
+      await User.findByIdAndUpdate(req.user._id, { $pull: { liked_post: req.body.post_id } }, { "new": true })
     }
     res.json({
       status: 200,
