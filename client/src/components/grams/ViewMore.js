@@ -195,7 +195,6 @@ const ViewMore = ({ props }) => {
   }, [])
 
   useEffect(() => {
-    console.log(postState)
     if (props.comp == 'ViewMoreProfile') {
 
       if (currentUser && postState.liked_by) {
