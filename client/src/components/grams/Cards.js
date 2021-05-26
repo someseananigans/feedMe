@@ -21,7 +21,6 @@ const Cards = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
     handleView()
-    console.log(followingPosts.length)
     if (newValue === 1 && followingPosts.length < 1) {
       setLoading2(true)
       Post.getFollowing()
@@ -69,7 +68,7 @@ const Cards = () => {
       <>
         { loading2 && <LinearProgress />}
         <Box xs={12} xl={12} lg={12} md={12} style={{ display: show }}>
-          {followingPosts.length && followingPosts.map(gram =>
+          {followingPosts.length > 0 ? followingPosts.map(gram =>
             <Card
               postId={gram._id}
               userId={gram.user._id}
@@ -82,7 +81,7 @@ const Cards = () => {
               likedByUsers={gram.liked_by}
               currentUser={currentUser}
             />
-          )
+          ) : (<h3 style={{textAlign: 'center'}}>You aren't following any users</h3>)
           }
         </Box>
       </>

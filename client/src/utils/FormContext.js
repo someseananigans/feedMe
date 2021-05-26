@@ -84,7 +84,6 @@ const FormContext = () => {
     })
       .then(({ data }) => {
         setAlert({ username: data.err })
-        console.log(data.err)
         if (data.user) {
           localStorage.setItem('user', data.user)
           // *** incorporate a logging in page transition ***

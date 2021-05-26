@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 9999 0%'
   },
   logo: {
-    maxHeight: 60,
-    maxWidth: 100,
+    maxHeight: 42,
+    // maxWidth: 100,
     cursor: 'pointer',
   },
   search: {
@@ -295,7 +295,7 @@ const Navbar = () => {
         <Toolbar className={classes.navWrap}>
           <div className={classes.imageWrap}>
 
-            <img onClick={handleGoHome} className={classes.logo} src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/626/5308215626_d945acf3-4dcd-4b1f-bc88-d8f66e48d54e.png?cb=1621536314" alt="logo" />
+            <img onClick={handleGoHome} className={classes.logo} src="https://firebasestorage.googleapis.com/v0/b/reinsta-884d1.appspot.com/o/images%2Ffeedme%20-%20logo.png?alt=media&token=7b792898-e382-40e2-be70-dd91d0c65c46" alt="logo" />
           </div>
 
           <div className={classes.search}>
