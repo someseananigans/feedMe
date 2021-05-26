@@ -122,7 +122,7 @@ const Card = (props) => {
     postId,
     likedByUsers,
     currentUser,
-    theComments
+    // theComments
   } = props
 
 
