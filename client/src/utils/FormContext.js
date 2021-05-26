@@ -64,7 +64,7 @@ const FormContext = () => {
             username: registerState.username,
             password: registerState.password
           })
-            .then(({ loginUser }) => {
+            .then(({ data: loginUser }) => {
               if (loginUser) {
                 localStorage.setItem('user', loginUser.user)
                 // *** incorporate a logging in page transition ***
