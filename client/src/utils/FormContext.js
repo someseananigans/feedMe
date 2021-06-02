@@ -49,8 +49,8 @@ const FormContext = () => {
   // Show Password Functionality
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
 
-  const handleRegister = (event) => {
-    User.register({
+  const handleRegister = async (event) => {
+    await User.register({
       name: registerState.name,
       username: registerState.username,
       email: registerState.email,
@@ -60,7 +60,7 @@ const FormContext = () => {
         setAlert(data.status)
 
         if (data.message.includes("Success")) {
-          User.login({
+          await User.login({
             username: registerState.username,
             password: registerState.password
           })
