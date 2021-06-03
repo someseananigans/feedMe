@@ -60,17 +60,6 @@ const FormContext = () => {
         setAlert(data.status)
 
         if (data.message.includes("Success")) {
-          // User.login({
-          //   username: registerState.username,
-          //   password: registerState.password
-          // })
-          //   .then(({ data: loginUser }) => {
-          //     if (loginUser) {
-          //       
-          //     }
-          //   })
-          //   .catch(err => console.log(err))
-          console.log(data)
           localStorage.setItem('user', data.user)
           history.push('/')
         }
