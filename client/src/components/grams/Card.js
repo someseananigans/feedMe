@@ -151,6 +151,7 @@ const Card = (props) => {
       })
     setLikeCount(likedByNumber)
     likeCheck(likedByUsers, currentUser)
+    // eslint-disable-next-line
   }, [])
 
 
@@ -265,7 +266,7 @@ const Card = (props) => {
                 return (
                   <Comment
                     key={com._id}
-                    accountName={currentUser}
+                    accountName={com.user}
                     comment={com.comment}
                   />
                 )
