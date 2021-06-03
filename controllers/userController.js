@@ -119,17 +119,29 @@ router.post('/user/register', (req, res) => {
         })
         return
       }
-      res.json({
-        data: user,
-        status: 200,
-        message: 'Successfully Registered User'
+      User.authenticate()(req.body.username.toLowerCase(), req.body.password, (err, user) => {
+        if (err) { console.log(err) }
+        else if (!user) {
+          res.json({
+            err: 'Username or Password was Incorrect',
+          })
+        } else {
+          res.json({
+            data: user,
+            status: 200,
+            message: 'Successfully Registered User',
+            user: user ? jwt.sign({ id: user._id }, process.env.SECRET) : null
+          })
+        }
+
       })
+
     })
   }
 })
 
 router.post('/user/login', (req, res) => {
-  User.authenticate()(req.body.username, req.body.password, (err, user) => {
+  User.authenticate()(req.body.username.toLowerCase(), req.body.password, (err, user) => {
     if (err) { console.log(err) }
     else if (!user) {
       res.json({

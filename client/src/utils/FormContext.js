@@ -60,18 +60,19 @@ const FormContext = () => {
         setAlert(data.status)
 
         if (data.message.includes("Success")) {
-          await User.login({
-            username: registerState.username,
-            password: registerState.password
-          })
-            .then(({ data: loginUser }) => {
-              if (loginUser) {
-                localStorage.setItem('user', loginUser.user)
-                // *** incorporate a logging in page transition ***
-                history.push('/')
-              }
-            })
-            .catch(err => console.log(err))
+          // User.login({
+          //   username: registerState.username,
+          //   password: registerState.password
+          // })
+          //   .then(({ data: loginUser }) => {
+          //     if (loginUser) {
+          //       
+          //     }
+          //   })
+          //   .catch(err => console.log(err))
+          console.log(data)
+          localStorage.setItem('user', data.user)
+          history.push('/')
         }
       })
       .catch(err => console.log(err))

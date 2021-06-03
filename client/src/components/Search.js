@@ -126,14 +126,14 @@ const Search = ({ searchQuery }) => {
           <Typography className={classes.suggestions}>Search Results</Typography>
           <hr style={{ marginBottom: 0 }} />
           {users.length > 0 ? users.map(user => (
-            currentUser.userId !== user._id ? (
+            currentUser.userId !== user._id && (
               <SearchResult
                 usersFollowing={currentUser.following}
                 user={user}
                 classes={classes}
                 className={classes.followBtn}
               />
-            ) : (<p style={{ marginLeft: '20px' }}>No matching user detected</p>)
+            )
           )) : (<p style={{ marginLeft: '20px' }}>No matching user detected</p>)
           }
         </Paper>

@@ -45,6 +45,7 @@ const Cards = () => {
         <Box xs={12} xl={12} lg={12} md={12} style={{ display: show }}>
           {postState.length && postState.map(post =>
             <Card
+              key={post._id}
               postId={post._id}
               userId={post.user._id}
               username={post.user.username}
@@ -70,6 +71,7 @@ const Cards = () => {
         <Box xs={12} xl={12} lg={12} md={12} style={{ display: show }}>
           {followingPosts.length > 0 ? followingPosts.map(gram =>
             <Card
+              key={gram._id}
               postId={gram._id}
               userId={gram.user._id}
               username={gram.user.username}
