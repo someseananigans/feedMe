@@ -48,5 +48,10 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     zIndex: 99,
     marginTop: '30px'
+  },
+  snackChild: {
+    left: 'unset !important',
+    transform: 'unset !important',
+    position: 'unset !important'
   }
 }));

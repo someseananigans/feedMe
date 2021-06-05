@@ -90,7 +90,9 @@ const Auth = () => {
               open={snackAlert[key] ? true : false}
               autoHideDuration={600000}
               className={classes.child}
-              onClose={handleClose} >
+              onClose={handleClose}
+              style={{ left: 'unset', transform: 'unset', position: 'unset' }}
+            >
 
               <Alert style={{ flex: 1 }} onClose={handleClose} severity="error">
                 {value}
