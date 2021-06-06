@@ -42,7 +42,6 @@ const UserProfile = ({ match }) => {
     } else {
       User.profile()
         .then(({ data: user }) => {
-          console.log(user)
           setThisUser(user)
           setCurrentUser(user)
           setUpdate('updated')

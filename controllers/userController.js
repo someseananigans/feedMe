@@ -119,17 +119,29 @@ router.post('/user/register', (req, res) => {
         })
         return
       }
-      res.json({
-        data: user,
-        status: 200,
-        message: 'Successfully Registered User'
+      User.authenticate()(req.body.username.toLowerCase(), req.body.password, (err, user) => {
+        if (err) { console.log(err) }
+        else if (!user) {
+          res.json({
+            err: 'Username or Password was Incorrect',
+          })
+        } else {
+          res.json({
+            data: user,
+            status: 200,
+            message: 'Successfully Registered User',
+            user: user ? jwt.sign({ id: user._id }, process.env.SECRET) : null
+          })
+        }
+
       })
+
     })
   }
 })
 
 router.post('/user/login', (req, res) => {
-  User.authenticate()(req.body.username, req.body.password, (err, user) => {
+  User.authenticate()(req.body.username.toLowerCase(), req.body.password, (err, user) => {
     if (err) { console.log(err) }
     else if (!user) {
       res.json({
@@ -187,7 +199,6 @@ router.put('/post/interaction', passport.authenticate('jwt'), async (req, res) =
     if (req.body.type === 'like') {
       await Post.findByIdAndUpdate(req.body.post_id, { $addToSet: { liked_by: req.user._id } }, { "new": true })
       await User.findByIdAndUpdate(req.user._id, { $addToSet: { liked_post: req.body.post_id } }, { "new": true })
-      console.log(req.user)
     }
     if (req.body.type === 'unlike') {
       await Post.findByIdAndUpdate(req.body.post_id, { $pull: { liked_by: req.user._id } }, { "new": true })

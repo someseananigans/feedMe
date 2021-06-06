@@ -13,6 +13,8 @@ import { useHistory } from 'react-router-dom'
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
+    flexDirection: 'column',
+    alignItems: 'center',
     flexWrap: "wrap",
     justifyContent: "space-around",
     backgroundColor: '#fafafa',
@@ -20,8 +22,11 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 50,
   },
   gridList: {
-    width: '95%',
+    width: '1000px',
     justifyContent: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    },
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
@@ -166,7 +171,6 @@ const ProfilePosts = ({ id, currentUser, user }) => {
     Post.getLiked()
       .then(({ data }) => {
         setLikedPostState(data)
-        console.log(data)
       })
       .catch(err => console.log(err))
 

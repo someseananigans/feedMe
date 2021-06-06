@@ -142,7 +142,6 @@ router.get('/post/following', passport.authenticate('jwt'), async (req, res) => 
       }
     })
     followedPosts.push(userData.posts)
-    console.log('hit')
   }
 
   for (posts of followedPosts) {
@@ -185,7 +184,6 @@ router.get('/post/liked', passport.authenticate('jwt'), async (req, res) => {
 
 
     allLikedPosts.push(postData)
-    console.log(postData)
   }
 
   allLikedPosts.sort((a, b) => (b.created_On - a.created_On))

@@ -155,6 +155,7 @@ const Suggested = () => {
         <Typography className={classes.suggestBox}>Suggestions for you</Typography>
         {userState.users.length ? userState.users.map(user =>
           <SuggestedUsers
+            key={user.username}
             user_id={user._id}
             username={user.username}
             profile={user.profile}

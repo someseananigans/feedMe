@@ -85,7 +85,6 @@ const useStyles = makeStyles((theme) => ({
   un: {
     display: 'inline-flex',
     paddingRight: 5,
-    color: 'black',
     fontWeight: 'bold',
     color: 'rgba(0, 0, 0, 0.54)',
   },
@@ -149,7 +148,8 @@ const ViewMore = ({ props }) => {
     cmntList, setCmntList,
     likeCheck, likeAction,
     setLikeCount, handleLike,
-    update, setUpdate
+    // update, 
+    setUpdate
   } = props
 
   const {
@@ -170,7 +170,7 @@ const ViewMore = ({ props }) => {
   })
 
   useEffect(() => {
-    if (props.comp == 'ViewMoreProfile') { setCmntList([]) }
+    if (props.comp === 'ViewMoreProfile') { setCmntList([]) }
     Post.getOne(postId)
       .then(({ data: post }) => {
         setPostState(post)
@@ -183,7 +183,7 @@ const ViewMore = ({ props }) => {
           })
           .catch(err => console.error(err))
       })
-    if (props.comp == 'ViewMoreProfile') {
+    if (props.comp === 'ViewMoreProfile') {
       Cmnt.getFromPost(postId)
         .then(({ data: postComments }) => {
           setCmntList(postComments.reverse())
@@ -195,8 +195,7 @@ const ViewMore = ({ props }) => {
   }, [])
 
   useEffect(() => {
-    console.log(postState)
-    if (props.comp == 'ViewMoreProfile') {
+    if (props.comp === 'ViewMoreProfile') {
 
       if (currentUser && postState.liked_by) {
         likeCheck(postState.liked_by, currentUser)

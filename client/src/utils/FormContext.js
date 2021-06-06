@@ -49,8 +49,8 @@ const FormContext = () => {
   // Show Password Functionality
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
 
-  const handleRegister = (event) => {
-    User.register({
+  const handleRegister = async (event) => {
+    await User.register({
       name: registerState.name,
       username: registerState.username,
       email: registerState.email,
@@ -60,18 +60,8 @@ const FormContext = () => {
         setAlert(data.status)
 
         if (data.message.includes("Success")) {
-          User.login({
-            username: registerState.username,
-            password: registerState.password
-          })
-            .then(({ data }) => {
-              if (data) {
-                localStorage.setItem('user', data.user)
-                // *** incorporate a logging in page transition ***
-                history.push('/')
-              }
-            })
-            .catch(err => console.log(err))
+          localStorage.setItem('user', data.user)
+          history.push('/')
         }
       })
       .catch(err => console.log(err))
@@ -84,7 +74,6 @@ const FormContext = () => {
     })
       .then(({ data }) => {
         setAlert({ username: data.err })
-        console.log(data.err)
         if (data.user) {
           localStorage.setItem('user', data.user)
           // *** incorporate a logging in page transition ***

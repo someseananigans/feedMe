@@ -91,7 +91,6 @@ const CreatePost = (props) => {
       })
         .then(({ data: post }) => {
           setPostState({ ...postState, body: '', image: '' })
-          console.log(location.pathname)
           if (location.pathname === '/') {
             setTimeout(() => {
               history.push('/reloadHome')
