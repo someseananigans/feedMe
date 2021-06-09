@@ -20,9 +20,7 @@ Feed-me is a web-based, mobile-friendly application where fellow gastronomes can
 
 ## Preview
 
-Home                                         |  Profile
-:-------------------------------------------:|:-------------------------------------------:
-![alt screenshot]()  |  ![alt screenshot]()
+![alt screenshot](feedMeSS.png)
 
 ## Questions
 
