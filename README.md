@@ -4,7 +4,7 @@
 Feed-me is a web-based, mobile-friendly application where fellow gastronomes can share or browse photos of various epicurean delights. We have created a specialized social media platform with a nod and a wink to Instagram utilizing many of the same technologies, including; like, follow, comment, and direct-message capabilities. We have also implemented multiple back-end algorithms to filter content and suggest accounts to follow based on mutual contacts and interests.
 
 ### Deployed Link
-[Feed-me](https://mighty-mesa-72754.herokuapp.com/)
+[Feed-me](https://feedmepics.herokuapp.com/)
 
 ## Feed-me Users Can...
 - Create a profile with personalized picture and bio
